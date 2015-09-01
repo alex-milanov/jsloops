@@ -1,0 +1,22 @@
+{
+  "name": "jsloops",
+  "version": "0.1.0",
+  "authors": [
+    "Alex Milanov <alex@i4web.biz>"
+  ],
+  "description": "Music Making App",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "lodash": "~3.10.1",
+    "moment": "~2.10.6"
+  }
+}
