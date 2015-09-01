@@ -27,7 +27,7 @@ var paths = {
 
 // additional, not recognized bower files
 bowerFiles
-	.push("./src/lib/jade/jade.js");
+	.push("./src/lib/audiosynth/audiosynth.js");
 
 gulp.task('sass', function(done) {
 	// www

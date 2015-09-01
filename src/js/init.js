@@ -9,24 +9,57 @@ function beep() {
     snd.play();
 }
 
+var barPattern = [
+	[1,0,1,0,1,0,1,0],
+	[0,1,0,0,0,1,0,0],
+	[0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0]
+];
+
+var rowNotes = [
+	['C',4,0.2],
+	['F',4,0.2],
+	['G',4,0.2],
+	['A',4,0.2]
+]
+
 function playStep() {
-	$(".bar").eq(barIndex).removeClass("current");
+
+	var piano = Synth.createInstrument('piano');
+
+	$(".bars").each(function(){
+		$(this).find(".bar").eq(barIndex).removeClass("current");
+	});
 
 	if(barIndex < 7)
 		barIndex++;
 	else
 		barIndex = 0;
 
-	$(".bar").eq(barIndex).addClass("current");
-
-	if($(".bar").eq(barIndex).hasClass("selected")){
-		beep();
-	}
+	$(".bars").each(function(rowIndex){
+		$(this).find(".bar").eq(barIndex).each(function(){
+			$(this).addClass("current");
+			if($(this).hasClass("selected")){
+				piano.play(rowNotes[rowIndex][0], rowNotes[rowIndex][1], rowNotes[rowIndex][2]);
+			}
+		});		
+	});
 
 }
 
 
 $(document).ready(function(){
+
+	console.log(barPattern);
+
+	for(var row in barPattern){
+		for(var bar in barPattern[row]){
+			if(barPattern[row][bar] == 1) {
+				console.log("#row"+row+"-bar"+bar);
+				$("#row"+row+"-bar"+bar).addClass("selected");
+			}
+		}
+	}
 
 	$(".bar").click(function(){
 		$(this).toggleClass("selected");
@@ -36,6 +69,7 @@ $(document).ready(function(){
 	$("#play").click(function(){
 		if(playLoop) {
 			clearInterval(playLoop);
+			playLoop = false;
 		} else {
 			playLoop = setInterval(playStep, 500);
 		}

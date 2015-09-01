@@ -13,10 +13,11 @@ button#play {
 	height: 30px;
 	line-height: 30px;
 	width: 187px;
+	cursor: pointer;
 }
 
 .sequencer {
-	.bars-row {
+	.bars {
 		margin: 10px;
 		.bar {
 			display: inline-block;
