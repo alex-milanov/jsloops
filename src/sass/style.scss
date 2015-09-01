@@ -17,20 +17,54 @@ button#play {
 }
 
 .sequencer {
-	.bars {
-		margin: 10px;
-		.bar {
-			display: inline-block;
-			background: #bbb;
-			border-radius: 3px;
-			width: 20px;
+	.prefs {
+		height: 30px;
+		line-height: 30px;
+		margin: 0px 10px;
+		input {
 			height: 30px;
-			&.selected {
-				background: #999;
-			}
-			&.current {
-				background: #777;
-			}
+			line-height: 30px;
+			width: 50px;
+			padding-left: 3px;
 		}
 	}
+	
+	.tracks
+		.track {
+			height: 30px;
+			line-height: 30px;
+			display: block;
+			margin: 10px;
+			padding: 0px;
+			> * {
+				display: inline-block;
+				height: 30px;
+				line-height: 30px;
+				margin: 0px;
+				margin-right: 10px;
+				padding: 0px;
+				box-sizing: border-box;
+				float: left;
+			}
+			.track-note {
+				width: 20px;
+				padding-left: 3px;
+			}
+			.bars {
+				.bar {
+					display: inline-block;
+					background: #bbb;
+					border-radius: 3px;
+					width: 20px;
+					height: 30px;
+					margin: 0px 2px;
+					&.selected {
+						background: #999;
+					}
+					&.current {
+						background: #777;
+					}
+				}
+			}
+		}
 }

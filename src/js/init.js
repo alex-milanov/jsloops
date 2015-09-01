@@ -9,18 +9,26 @@ function beep() {
     snd.play();
 }
 
-var barPattern = [
-	[1,0,1,0,1,0,1,0],
-	[0,1,0,0,0,1,0,0],
-	[0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0]
-];
 
-var rowNotes = [
-	['C',4,0.2],
-	['F',4,0.2],
-	['G',4,0.2],
-	['A',4,0.2]
+var tracks = [
+	{
+		name: "Track 0",
+		note: "C",
+		pattern: [1,0,1,0]
+	},
+	{
+		name: "Track 1",
+		note: "F",
+		pattern: [0,1,0,0]
+	},
+	{
+		name: "Track 2",
+		note: "G"
+	},
+	{
+		name: "Track 3",
+		note: "A"
+	}
 ]
 
 function playStep() {
@@ -31,37 +39,58 @@ function playStep() {
 		$(this).find(".bar").eq(barIndex).removeClass("current");
 	});
 
-	if(barIndex < 7)
+	if(barIndex < $("#bar-count").val()-1)
 		barIndex++;
 	else
 		barIndex = 0;
 
-	$(".bars").each(function(rowIndex){
+	$(".bars").each(function(trackIndex){
 		$(this).find(".bar").eq(barIndex).each(function(){
 			$(this).addClass("current");
 			if($(this).hasClass("selected")){
-				piano.play(rowNotes[rowIndex][0], rowNotes[rowIndex][1], rowNotes[rowIndex][2]);
+				piano.play($("#track"+trackIndex+" .track-note").val(), 4, 0.2);
 			}
 		});		
 	});
 
 }
 
+function displayTracks(){
+	var $tracks = $(".sequencer .tracks");
+	$tracks.html("");
+	tracks.forEach(function(track, index){
+		var $track = $("<div></div>").addClass("track").attr("id","track"+index);
+		$track.append($("<div></div>").addClass("track-name").html(track.name));
+		$track.append($("<input></input>").addClass("track-note").val(track.note));
+		var $bars = $("<div></div>").addClass("bars");
+
+
+		var patternIndex = 0;
+		for(var bar = 0; bar < $("#bar-count").val(); bar++){
+			var $bar = $("<div></div>").addClass("bar").attr("id","track"+index+"-bar"+bar);
+			if(track.pattern){
+				if(track.pattern[patternIndex] == 1){
+					$bar.addClass("selected");
+				}
+				if(patternIndex < track.pattern.length-1){
+					patternIndex++;
+				} else {
+					patternIndex = 0;
+				}
+			}
+			$bars.append($bar);
+				
+		}
+		$track.append($bars);
+		$tracks.append($track);
+	})
+}
 
 $(document).ready(function(){
 
-	console.log(barPattern);
+	displayTracks();
 
-	for(var row in barPattern){
-		for(var bar in barPattern[row]){
-			if(barPattern[row][bar] == 1) {
-				console.log("#row"+row+"-bar"+bar);
-				$("#row"+row+"-bar"+bar).addClass("selected");
-			}
-		}
-	}
-
-	$(".bar").click(function(){
+	$(".sequencer").on("click", ".bar", function(){
 		$(this).toggleClass("selected");
 	})
 
@@ -71,8 +100,19 @@ $(document).ready(function(){
 			clearInterval(playLoop);
 			playLoop = false;
 		} else {
-			playLoop = setInterval(playStep, 500);
+			playLoop = setInterval(playStep, $("#interval").val());
 		}
+	})
+
+	$("#interval").change(function(){
+		if(playLoop) {
+			clearInterval(playLoop);
+			playLoop = setInterval(playStep, $("#interval").val());
+		} 
+	})
+
+	$("#bar-count").change(function(){
+		displayTracks();
 	})
 
 })

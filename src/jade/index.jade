@@ -7,42 +7,24 @@ html
 
 
 		.sequencer
-			.bars#row0
-				.bar.current#row0-bar0
-				.bar#row0-bar1
-				.bar#row0-bar2
-				.bar#row0-bar3
-				.bar#row0-bar4
-				.bar#row0-bar5
-				.bar#row0-bar6
-				.bar#row0-bar7
-			.bars#row1
-				.bar.current#row1-bar0
-				.bar#row1-bar1
-				.bar#row1-bar2
-				.bar#row1-bar3
-				.bar#row1-bar4
-				.bar#row1-bar5
-				.bar#row1-bar6
-				.bar#row1-bar7
-			.bars#row2
-				.bar.current#row2-bar0
-				.bar#row2-bar1
-				.bar#row2-bar2
-				.bar#row2-bar3
-				.bar#row2-bar4
-				.bar#row2-bar5
-				.bar#row2-bar6
-				.bar#row2-bar7
-			.bars#row3
-				.bar.current#row3-bar0
-				.bar#row3-bar1
-				.bar#row3-bar2
-				.bar#row3-bar3
-				.bar#row3-bar4
-				.bar#row3-bar5
-				.bar#row3-bar6
-				.bar#row3-bar7
+			.prefs
+				| Bar Count
+				input#bar-count(value="8")
+				| Interval
+				input#interval(value="500")
+			.tracks
+				.track#track0
+					.track-name Track 0
+					input.track-note#track0-note(value="C")
+					.bars
+						.bar.current#track0-bar0
+						.bar#track0-bar1
+						.bar#track0-bar2
+						.bar#track0-bar3
+						.bar#track0-bar4
+						.bar#track0-bar5
+						.bar#track0-bar6
+						.bar#track0-bar7
 
 
 		button#play Play
