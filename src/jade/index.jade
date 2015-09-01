@@ -1,12 +1,27 @@
 html
 	head
 		title JSLoops - Music Making App
-		link(rel="stylesheets",href="css/style.css")
+		link(rel="stylesheet",href="css/style.css")
 	body
 		h1 JSLoops - Music Making App
+
+
+		.sequencer
+			.bars-row#row1
+				.bar.current#row1-bar1
+				.bar.selected#row1-bar2
+				.bar#row1-bar3
+				.bar#row1-bar4
+				.bar#row1-bar5
+				.bar#row1-bar6
+				.bar#row1-bar7
+				.bar#row1-bar8
+
+		button#play Play
 
 		//- libs
 		script(src="lib/jquery.js")
 		script(src="lib/lodash.js")
+		script(src="lib/moment.js")
 		//- app
 		script(src="js/init.js")

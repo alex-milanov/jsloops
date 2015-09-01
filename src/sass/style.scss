@@ -1,0 +1,35 @@
+@import url(http://fonts.googleapis.com/css?family=Play:400,700&subset=latin,cyrillic-ext,cyrillic);
+
+body {
+	font-family: "Play" Helvetica Arial sans-serif;
+}
+
+
+button#play {
+	margin: 0px 10px;
+	background: #bbb;
+	border-radius: 3px;
+	border: 0px;
+	height: 30px;
+	line-height: 30px;
+	width: 187px;
+}
+
+.sequencer {
+	.bars-row {
+		margin: 10px;
+		.bar {
+			display: inline-block;
+			background: #bbb;
+			border-radius: 3px;
+			width: 20px;
+			height: 30px;
+			&.selected {
+				background: #999;
+			}
+			&.current {
+				background: #777;
+			}
+		}
+	}
+}
