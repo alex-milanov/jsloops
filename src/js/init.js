@@ -1,7 +1,7 @@
 "use strict";
 
 
-var barIndex = 0;
+var barIndex = -1;
 var playLoop = false;
 
 function beep() {
@@ -102,7 +102,23 @@ $(document).ready(function(){
 		} else {
 			playLoop = setInterval(playStep, $("#interval").val());
 		}
+
+		$(this).toggleClass("active");
 	})
+
+	$("#stop").click(function(){
+		if(playLoop) {
+			clearInterval(playLoop);
+		}
+		playLoop = false;
+		$(".bars").each(function(){
+			$(this).find(".bar").eq(barIndex).removeClass("current");
+		});
+		barIndex = -1;
+
+		$("#play").removeClass("active");
+	})
+
 
 	$("#interval").change(function(){
 		if(playLoop) {

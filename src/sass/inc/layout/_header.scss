@@ -1,0 +1,70 @@
+.layout {
+	.header {
+		position: absolute;
+		display: block;
+		top: 0px;
+		left: 0px;
+		right: 0px;
+		height: $jsloops-header-height;
+		background: $jsloops-header-bg-color;
+		color: $jsloops-header-fg-color;
+		> * {
+			display: block;
+			margin: 0px;
+			padding: 0px;
+			height: $jsloops-header-height;
+			line-height: $jsloops-header-height;
+			float: left;
+		}
+		.logo {
+			margin: 0px 20px;
+			font-weight: bold;
+			font-size: 22px;
+		}
+		.indicators {
+			height: $jsloops-header-height;
+			line-height: $jsloops-header-height;
+			> * {
+				display: inline-block;
+				height: $jsloops-header-element-height;
+				line-height: $jsloops-header-element-height;
+				margin: 0px 5px;
+				border-radius: 1px;
+			}
+			input {
+				border: 0px;
+				outline: none;
+				background: #999;
+				width: 50px;
+				padding: 0px;
+				padding-left: 2px;
+			}
+		}
+		.controls {
+			position: absolute;
+			top: 0px;
+			left: 50%;
+			width: 200px;
+			margin-left: -200px;
+			> button {
+				margin: 0px 5px;
+				padding: 0px;
+				height: $jsloops-header-element-height;
+				line-height: $jsloops-header-element-height;
+				padding: 0px 10px;
+				background: #aaa;
+				border: 0px;
+				cursor: pointer;
+				outline: none;
+				&:hover {
+					background: #ccc;
+				}
+
+			}
+			#play.active {
+				color: #bd7;
+				background: #777;
+			}
+		}
+	}
+}

@@ -1,33 +1,41 @@
 html
 	head
 		title JSLoops - Music Making App
+		link(rel="stylesheet",href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css")
 		link(rel="stylesheet",href="css/style.css")
 	body
-		h1 JSLoops - Music Making App
+		.layout
+			.header
+				.logo
+					i.fa.fa-music
+					span JSLoops
+				.indicators
+					span Bar Count
+					input#bar-count(value="16")
+					span Interval
+					input#interval(value="300")
+				.controls
+					button#play
+						i.fa.fa-play
+					button#stop
+						i.fa.fa-stop 
+			.sequencer
+				.tracks
+					.track#track0
+						.track-name Track 0
+						input.track-note#track0-note(value="C")
+						.bars
+							.bar.current#track0-bar0
+							.bar#track0-bar1
+							.bar#track0-bar2
+							.bar#track0-bar3
+							.bar#track0-bar4
+							.bar#track0-bar5
+							.bar#track0-bar6
+							.bar#track0-bar7
 
 
-		.sequencer
-			.prefs
-				| Bar Count
-				input#bar-count(value="8")
-				| Interval
-				input#interval(value="500")
-			.tracks
-				.track#track0
-					.track-name Track 0
-					input.track-note#track0-note(value="C")
-					.bars
-						.bar.current#track0-bar0
-						.bar#track0-bar1
-						.bar#track0-bar2
-						.bar#track0-bar3
-						.bar#track0-bar4
-						.bar#track0-bar5
-						.bar#track0-bar6
-						.bar#track0-bar7
-
-
-		button#play Play
+		
 
 		//- libs
 		script(src="lib/jquery.js")

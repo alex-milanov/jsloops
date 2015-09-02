@@ -1,70 +1,7 @@
 @import url(http://fonts.googleapis.com/css?family=Play:400,700&subset=latin,cyrillic-ext,cyrillic);
 
-body {
-	font-family: "Play" Helvetica Arial sans-serif;
-}
+@import "inc/vars.scss";
+@import "inc/common.scss";
 
-
-button#play {
-	margin: 0px 10px;
-	background: #bbb;
-	border-radius: 3px;
-	border: 0px;
-	height: 30px;
-	line-height: 30px;
-	width: 187px;
-	cursor: pointer;
-}
-
-.sequencer {
-	.prefs {
-		height: 30px;
-		line-height: 30px;
-		margin: 0px 10px;
-		input {
-			height: 30px;
-			line-height: 30px;
-			width: 50px;
-			padding-left: 3px;
-		}
-	}
-	
-	.tracks
-		.track {
-			height: 30px;
-			line-height: 30px;
-			display: block;
-			margin: 10px;
-			padding: 0px;
-			> * {
-				display: inline-block;
-				height: 30px;
-				line-height: 30px;
-				margin: 0px;
-				margin-right: 10px;
-				padding: 0px;
-				box-sizing: border-box;
-				float: left;
-			}
-			.track-note {
-				width: 20px;
-				padding-left: 3px;
-			}
-			.bars {
-				.bar {
-					display: inline-block;
-					background: #bbb;
-					border-radius: 3px;
-					width: 20px;
-					height: 30px;
-					margin: 0px 2px;
-					&.selected {
-						background: #999;
-					}
-					&.current {
-						background: #777;
-					}
-				}
-			}
-		}
-}
+@import "inc/layout/header.scss";
+@import "inc/layout/sequencer.scss";

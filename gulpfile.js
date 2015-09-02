@@ -26,8 +26,8 @@ var paths = {
 };
 
 // additional, not recognized bower files
-bowerFiles
-	.push("./src/lib/audiosynth/audiosynth.js");
+bowerFiles.push("./src/lib/audiosynth/audiosynth.js");
+bowerFiles.push("./src/lib/font-awesome/css/font-awesome.css");
 
 gulp.task('sass', function(done) {
 	// www
