@@ -1,6 +1,8 @@
 "use strict";
 
 
+var context = new AudioContext;
+
 var barIndex = -1;
 var playLoop = false;
 
@@ -14,7 +16,7 @@ var tracks = [
 	{
 		name: "Track 1",
 		note: "H",
-		pattern: [1,1,1,1]
+		pattern: [0,1,0,1]
 	},
 	{
 		name: "Track 2",
@@ -29,10 +31,10 @@ var tracks = [
 
 
 var kit = {
-	K: new Audio("samples/kick01.ogg"),
-	H: new Audio("samples/hihat_opened02.ogg"),
-	S: new Audio("samples/snare01.ogg"),
-	C: new Audio("samples/clap01.ogg"),
+	K: new Sampler(context, "samples/kick01.ogg"),
+	H: new Sampler(context, "samples/hihat_opened02.ogg"),
+	S: new Sampler(context, "samples/snare01.ogg"),
+	C: new Sampler(context, "samples/clap01.ogg"),
 }
 
 function playStep() {
@@ -51,7 +53,6 @@ function playStep() {
 		$(this).find(".bar").eq(barIndex).each(function(){
 			$(this).addClass("current");
 			if($(this).hasClass("selected")){
-				kit[$("#track"+trackIndex+" .track-note").val()].pause();
 				kit[$("#track"+trackIndex+" .track-note").val()].play();
 			}
 		});		
@@ -91,10 +92,6 @@ function displayTracks(){
 }
 
 $(document).ready(function(){
-
-	for(var inst in kit){
-		kit[inst].load()
-	}
 
 	displayTracks();
 

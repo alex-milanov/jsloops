@@ -46,7 +46,7 @@ gulp.task('jade', function(done) {
 	// TODO: get from config
 	var YOUR_LOCALS = {};
 
-	var filterForViews = gulpFilter(['*','!views/']);
+	var filterForViews = gulpFilter(['**/*','!views/']);
 	
 	del([
 		'./dist/views/**/*'

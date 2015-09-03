@@ -1,0 +1,36 @@
+html
+	head
+		title JSLoops Web Audio API Tests
+	body
+		h1 JSLoops Web Audio API Tests
+		button#sound Play A Sound
+
+		//- libs
+		script(src="../lib/jquery/dist/jquery.js")
+
+		//- app
+
+		script(src="../js/synths/kick.js")
+		script(src="../js/synths/snare.js")
+		script(src="../js/synths/sampler.js")
+		script.
+
+			var context = new AudioContext;
+
+			$(document).ready(function(){
+
+				var kick = new Kick(context);
+				var snare = new Snare(context);
+				var hihat = new Sampler(context, '../samples/hihat_opened02.ogg');
+				
+				$("#sound").click(function(){
+					var now = context.currentTime;
+					for(var i = 0; i<= 4; i += 1){
+						kick.trigger(now + i);
+						hihat.trigger(now + i + 0.25);
+						snare.trigger(now + i + 0.5);	
+						hihat.trigger(now + i + 0.75);
+					}
+				})
+
+			});
