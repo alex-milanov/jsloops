@@ -26,6 +26,18 @@ var tracks = [
 	{
 		name: "Track 3",
 		note: "C"
+	},
+	{
+		name: "Track 4",
+		note: "P,C"
+	},
+	{
+		name: "Track 5",
+		note: "P,F"
+	},
+	{
+		name: "Track 6",
+		note: "P,G"
 	}
 ]
 
@@ -35,6 +47,9 @@ var kit = {
 	H: new Sampler(context, "samples/hihat_opened02.ogg"),
 	S: new Sampler(context, "samples/snare01.ogg"),
 	C: new Sampler(context, "samples/clap01.ogg"),
+	"P,C": new Piano(context, "C5"),
+	"P,F": new Piano(context, "F5"),
+	"P,G": new Piano(context, "G5"),
 }
 
 function playStep() {
@@ -129,7 +144,7 @@ $(document).ready(function(){
 		if(playLoop) {
 			clearInterval(playLoop);
 			playLoop = setInterval(playStep, 60/$("#bpm").val()*1000/2);
-		} 
+		}
 	})
 
 	$("#bar-count").change(function(){
