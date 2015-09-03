@@ -105,7 +105,7 @@ $(document).ready(function(){
 			clearInterval(playLoop);
 			playLoop = false;
 		} else {
-			playLoop = setInterval(playStep, $("#interval").val());
+			playLoop = setInterval(playStep, 60/$("#bpm").val()*1000/2);
 		}
 
 		$(this).toggleClass("active");
@@ -125,10 +125,10 @@ $(document).ready(function(){
 	})
 
 
-	$("#interval").change(function(){
+	$("#bpm").change(function(){
 		if(playLoop) {
 			clearInterval(playLoop);
-			playLoop = setInterval(playStep, $("#interval").val());
+			playLoop = setInterval(playStep, 60/$("#bpm").val()*1000/2);
 		} 
 	})
 
