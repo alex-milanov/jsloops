@@ -10,29 +10,46 @@ html
 					i.fa.fa-music
 					span JSLoops
 				.indicators
-					span Bar Count
-					input#bar-count(value="32")
 					span BPM
 					input#bpm(value="120")
 				.controls
 					button#play
 						i.fa.fa-play
 					button#stop
-						i.fa.fa-stop 
+						i.fa.fa-stop
+				.file-operations
+					button#save
+						i.fa.fa-floppy-o
+					button#load
+						i.fa.fa-upload
+					button#clear
+						i.fa.fa-trash
+			.panel
+				.instruments-pane
+					.section
+						.title Instruments
+						ul.entities
+							li Sampler
+							li Synth
 			.sequencer
-				.tracks
-					.track#track0
-						.track-name Track 0
-						input.track-note#track0-note(value="C")
+				.toolbar
+					.title Sequencer
+					.prefs
+						span Bar Count
+						input#bar-count(value="16")
+				.channels
+					.channel#channel0
+						.channel-name channel 0
+						input.channel-note#channel0-note(value="C")
 						.bars
-							.bar.current#track0-bar0
-							.bar#track0-bar1
-							.bar#track0-bar2
-							.bar#track0-bar3
-							.bar#track0-bar4
-							.bar#track0-bar5
-							.bar#track0-bar6
-							.bar#track0-bar7
+							.bar.current#channel0-bar0
+							.bar#channel0-bar1
+							.bar#channel0-bar2
+							.bar#channel0-bar3
+							.bar#channel0-bar4
+							.bar#channel0-bar5
+							.bar#channel0-bar6
+							.bar#channel0-bar7
 
 
 		

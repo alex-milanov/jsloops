@@ -7,36 +7,36 @@ var barIndex = -1;
 var playLoop = false;
 
 
-var tracks = [
+var channels = [
 	{
-		name: "Track 0",
+		name: "Channel 0",
 		note: "K",
 		pattern: [1,0,0,0]
 	},
 	{
-		name: "Track 1",
+		name: "Channel 1",
 		note: "H",
 		pattern: [0,1,0,1]
 	},
 	{
-		name: "Track 2",
+		name: "Channel 2",
 		note: "S",
 		pattern: [0,0,1,0]
 	},
 	{
-		name: "Track 3",
+		name: "Channel 3",
 		note: "C"
 	},
 	{
-		name: "Track 4",
+		name: "Channel 4",
 		note: "P,C"
 	},
 	{
-		name: "Track 5",
+		name: "Channel 5",
 		note: "P,F"
 	},
 	{
-		name: "Track 6",
+		name: "Channel 6",
 		note: "P,G"
 	}
 ]
@@ -64,35 +64,35 @@ function playStep() {
 	else
 		barIndex = 0;
 
-	$(".bars").each(function(trackIndex){
+	$(".bars").each(function(channelIndex){
 		$(this).find(".bar").eq(barIndex).each(function(){
 			$(this).addClass("current");
 			if($(this).hasClass("selected")){
-				kit[$("#track"+trackIndex+" .track-note").val()].play();
+				kit[$("#channel"+channelIndex+" .channel-note").val()].play();
 			}
 		});		
 	});
 
 }
 
-function displayTracks(){
-	var $tracks = $(".sequencer .tracks");
-	$tracks.html("");
-	tracks.forEach(function(track, index){
-		var $track = $("<div></div>").addClass("track").attr("id","track"+index);
-		$track.append($("<div></div>").addClass("track-name").html(track.name));
-		$track.append($("<input></input>").addClass("track-note").val(track.note));
+function displayChannels(){
+	var $channels = $(".sequencer .channels");
+	$channels.html("");
+	channels.forEach(function(channel, index){
+		var $channel = $("<div></div>").addClass("channel").attr("id","channel"+index);
+		$channel.append($("<div></div>").addClass("channel-name").html(channel.name));
+		$channel.append($("<input></input>").addClass("channel-note").val(channel.note));
 		var $bars = $("<div></div>").addClass("bars");
 
 
 		var patternIndex = 0;
 		for(var bar = 0; bar < $("#bar-count").val(); bar++){
-			var $bar = $("<div></div>").addClass("bar").attr("id","track"+index+"-bar"+bar);
-			if(track.pattern){
-				if(track.pattern[patternIndex] == 1){
+			var $bar = $("<div></div>").addClass("bar").attr("id","channel"+index+"-bar"+bar);
+			if(channel.pattern){
+				if(channel.pattern[patternIndex] == 1){
 					$bar.addClass("selected");
 				}
-				if(patternIndex < track.pattern.length-1){
+				if(patternIndex < channel.pattern.length-1){
 					patternIndex++;
 				} else {
 					patternIndex = 0;
@@ -101,14 +101,14 @@ function displayTracks(){
 			$bars.append($bar);
 				
 		}
-		$track.append($bars);
-		$tracks.append($track);
+		$channel.append($bars);
+		$channels.append($channel);
 	})
 }
 
 $(document).ready(function(){
 
-	displayTracks();
+	displayChannels();
 
 	$(".sequencer").on("click", ".bar", function(){
 		$(this).toggleClass("selected");
@@ -148,7 +148,7 @@ $(document).ready(function(){
 	})
 
 	$("#bar-count").change(function(){
-		displayTracks();
+		displayChannels();
 	})
 
 })

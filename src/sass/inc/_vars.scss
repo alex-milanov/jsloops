@@ -1,7 +1,21 @@
-$jsloops-font: "Play" Helvetica Arial sans-serif;
-$jsloops-header-height: 50px;
-$jsloops-header-element-height: 25px;
-$jsloops-panel-width: 250px;
 
-$jsloops-header-bg-color: #3a3b3c;
-$jsloops-header-fg-color: #ccc;
+$jsloops-bg-color: #333;
+$jsloops-fg-color: #ccc;
+$jsloops-border-color: #000;
+
+$jsloops-font: "Play" Helvetica Arial sans-serif;
+
+$jsloops-header-height: 40px;
+$jsloops-header-element-height: 25px;
+
+$jsloops-header-bg-color: #ccc;
+$jsloops-header-fg-color: #3a3b3c;
+
+$jsloops-panel-width: 200px;
+$jsloops-panel-bg-color: #3a3b3c;
+$jsloops-panel-fg-color: #ccc;
+
+$jsloops-sequencer-toolbar-height: 35px;
+$jsloops-sequencer-toolbar-el-height: 20px;
+$jsloops-sequencer-channel-height: 20px;
+$jsloops-sequencer-bar-width: 14px;
