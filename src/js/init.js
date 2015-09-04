@@ -47,25 +47,25 @@ var defaultSong = {
 					name: "Channel 6",
 					note: "P,G"
 				}
-			],
-			kit: {
-				K: new Sampler(context, "samples/kick01.ogg"),
-				H: new Sampler(context, "samples/hihat_opened02.ogg"),
-				S: new Sampler(context, "samples/snare01.ogg"),
-				C: new Sampler(context, "samples/clap01.ogg"),
-				"P,C": new Piano(context, "C5"),
-				"P,F": new Piano(context, "F5"),
-				"P,G": new Piano(context, "G5"),
-			}
+			]
 		}
 	]
 }
 
 var song = {};
 
+var kit = {
+	K: new Sampler(context, "samples/kick01.ogg"),
+	H: new Sampler(context, "samples/hihat_opened02.ogg"),
+	S: new Sampler(context, "samples/snare01.ogg"),
+	C: new Sampler(context, "samples/clap01.ogg"),
+	"P,C": new Piano(context, "C5"),
+	"P,F": new Piano(context, "F5"),
+	"P,G": new Piano(context, "G5"),
+}
+
 
 function playStep() {
-
 
 	$(".bars").each(function(){
 		$(this).find(".bar").eq(barIndex).removeClass("current");
@@ -80,7 +80,7 @@ function playStep() {
 		$(this).find(".bar").eq(barIndex).each(function(){
 			$(this).addClass("current");
 			if($(this).hasClass("selected")){
-				song.tracks[0].kit[$("#channel"+channelIndex+" .channel-note").val()].play();
+				kit[$("#channel"+channelIndex+" .channel-note").val()].play();
 			}
 		});		
 	});
