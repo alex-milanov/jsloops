@@ -18,6 +18,7 @@
 			line-height: $jsloops-header-height;
 			float: left;
 			> button {
+				display: inline-block;
 				margin: 0px 5px;
 				padding: 0px;
 				height: $jsloops-header-element-height;
@@ -70,6 +71,9 @@
 		.file-operations {
 			float: right;
 			margin: 0px 10px;
+			#load-file {
+				display: none;
+			}
 		}
 	}
 }

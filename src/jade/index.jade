@@ -18,8 +18,9 @@ html
 					button#stop
 						i.fa.fa-stop
 				.file-operations
-					button#save
+					button(type="link")#save
 						i.fa.fa-floppy-o
+					input#load-file(type="file")
 					button#load
 						i.fa.fa-upload
 					button#clear
@@ -59,6 +60,7 @@ html
 		script(src="lib/lodash/lodash.js")
 		script(src="lib/moment/moment.js")
 		script(src="lib/audiosynth/audiosynth.js")
+		script(src="lib/file-saver.js/FileSaver.js")
 		//- app
 		script(src="js/synths/sampler.js")
 		script(src="js/synths/piano.js")
