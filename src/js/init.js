@@ -128,15 +128,72 @@ function loadSong(data) {
 	displayChannels();
 }
 
+
+var grid = {
+	step: [36,18],
+	sections: [
+		[4,16],
+		[8]
+	],
+	color: "#333",
+	sectionColors: [
+		["#444",'#777'],
+		["#444"]
+	]
+}
+
+
+function drawLine(ctx, start, finish, dash, stroke){
+	ctx.beginPath();
+	ctx.moveTo(start[0],start[1]);
+	ctx.lineTo(finish[0],finish[1]);
+	//ctx.setLineDash(dash);
+	context.lineWidth = 1;
+	ctx.strokeStyle = stroke;
+	ctx.stroke();
+}
+
+function drawGrid(el, conf){
+	var ctx = el.getContext("2d");
+
+	ctx.canvas.width = $(ctx.canvas.parentNode).width();
+	ctx.canvas.height = $(ctx.canvas.parentNode).height();
+
+	var center = [ctx.canvas.width/2,ctx.canvas.height/2];
+	var sizeVector = [ctx.canvas.width,ctx.canvas.height];
+
+	// draw horizontal lines
+	for(var xPos = 0; xPos < sizeVector[0]; xPos += conf.step[0]){
+		var lineColor = conf.color;
+		for(var section in conf.sections[0]){
+			if(parseInt(xPos/conf.step[0]/conf.sections[0][section]) == xPos/conf.step[0]/conf.sections[0][section]){
+				lineColor = conf.sectionColors[0][section];
+			}
+		}
+		drawLine(ctx, [xPos,0], [xPos,sizeVector[1]],null,lineColor);
+	}
+
+	for(var yPos = 0; yPos < sizeVector[1]; yPos += conf.step[1]){
+		var lineColor = conf.color;
+		for(var section in conf.sections){
+			if(parseInt(yPos/conf.step[1]/conf.sections[1][section]) == yPos/conf.step[1]/conf.sections[1][section]){
+				lineColor = conf.sectionColors[1][section];
+			}
+		}
+		drawLine(ctx, [0,yPos], [sizeVector[0],yPos],null,lineColor);
+	}
+}
+
 $(document).ready(function(){
 
 	$(".workspace > *").draggable({
 		containment: "parent",
 		cursor: "crosshair",
-		distance: 10,
 		grid: [5,5],
 		handle: ".toolbar"
 	});
+
+	drawGrid($(".piano-roll .grid")[0],grid);
 
 	loadSong(defaultSong);
 
