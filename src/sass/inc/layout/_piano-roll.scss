@@ -1,0 +1,15 @@
+.layout {
+	.workspace {
+		.piano-roll {
+			left: 10;
+			top: 190;
+			min-width: 800px;
+			min-width: 800px;
+			.grid {
+				height: 280px;
+				background: #1a1a1a;
+				margin: 5px;
+			}
+		}
+	}
+}

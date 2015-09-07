@@ -32,31 +32,37 @@ html
 						ul.entities
 							li Sampler
 							li Synth
-			.sequencer
-				.toolbar
-					.title Sequencer
-					.prefs
-						span Bar Count
-						input#bar-count(value="16")
-				.channels
-					.channel#channel0
-						.channel-name channel 0
-						input.channel-note#channel0-note(value="C")
-						.bars
-							.bar.current#channel0-bar0
-							.bar#channel0-bar1
-							.bar#channel0-bar2
-							.bar#channel0-bar3
-							.bar#channel0-bar4
-							.bar#channel0-bar5
-							.bar#channel0-bar6
-							.bar#channel0-bar7
+			.workspace
+				.sequencer
+					.toolbar
+						.title Sequencer
+						.prefs
+							span Bar Count
+							input#bar-count(value="16")
+					.channels
+						.channel#channel0
+							.channel-name channel 0
+							input.channel-note#channel0-note(value="C")
+							.bars
+								.bar.current#channel0-bar0
+								.bar#channel0-bar1
+								.bar#channel0-bar2
+								.bar#channel0-bar3
+								.bar#channel0-bar4
+								.bar#channel0-bar5
+								.bar#channel0-bar6
+								.bar#channel0-bar7
+				.piano-roll
+					.toolbar
+						.title Piano Roll
+					.grid
 
 
 		
 
 		//- libs
 		script(src="lib/jquery/dist/jquery.js")
+		script(src="lib/jquery-ui/jquery-ui.js")
 		script(src="lib/lodash/lodash.js")
 		script(src="lib/moment/moment.js")
 		script(src="lib/audiosynth/audiosynth.js")

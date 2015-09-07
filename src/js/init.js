@@ -34,18 +34,6 @@ var defaultSong = {
 				{
 					name: "Channel 3",
 					note: "C"
-				},
-				{
-					name: "Channel 4",
-					note: "P,C"
-				},
-				{
-					name: "Channel 5",
-					note: "P,F"
-				},
-				{
-					name: "Channel 6",
-					note: "P,G"
 				}
 			]
 		}
@@ -141,6 +129,14 @@ function loadSong(data) {
 }
 
 $(document).ready(function(){
+
+	$(".workspace > *").draggable({
+		containment: "parent",
+		cursor: "crosshair",
+		distance: 10,
+		grid: [5,5],
+		handle: ".toolbar"
+	});
 
 	loadSong(defaultSong);
 

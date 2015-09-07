@@ -1,92 +1,52 @@
 .layout {
-	.sequencer {
-		position: absolute;
-		display: block;
-		left: $jsloops-panel-width+10;
-		top: $jsloops-header-height+14;
-		background: #3a3b3c;
-		border: 1px solid $jsloops-border-color;
-		.toolbar {
-			color: #aaa;
-			width: 100%;
-			height: $jsloops-sequencer-toolbar-height;
-			line-height: $jsloops-sequencer-toolbar-height;
-			> * {
-				display: block;
-				margin: 0px;
-				padding: 0px;
-				height: $jsloops-sequencer-toolbar-height;
-				line-height: $jsloops-sequencer-toolbar-height;
-				float: left;
-			}
-			.title {
-				font-weight: bold;
-				font-size: 16px;
-				margin: 0px 10px;
-			}
-			.prefs {
-				height: $jsloops-sequencer-toolbar-height;
-				line-height: $jsloops-sequencer-toolbar-height;
-				> * {
-					display: inline-block;
-					height: $jsloops-sequencer-toolbar-el-height;
-					line-height: $jsloops-sequencer-toolbar-el-height;
-					margin: 0px 5px;
-					border-radius: 1px;
-				}
-				input {
-					border: 0px;
-					outline: none;
-					background: #999;
-					width: 50px;
-					padding: 0px;
-					padding-left: 2px;
-				}
-			}
-		}
-		.channels {
-			clear: both;
-			margin: 10px;
-			.channel {
-				height: $jsloops-sequencer-channel-height;
-				line-height: $jsloops-sequencer-channel-height;
-				display: block;
-				margin: 10px 0px;
-				padding: 0px;
-				> * {
-					display: inline-block;
+	.workspace {
+		.sequencer {
+			left: 10;
+			top: 10;
+			.channels {
+				clear: both;
+				margin: 10px;
+				.channel {
 					height: $jsloops-sequencer-channel-height;
 					line-height: $jsloops-sequencer-channel-height;
-					margin: 0px;
-					margin-right: 10px;
+					display: block;
+					margin: 10px 0px;
 					padding: 0px;
-					box-sizing: border-box;
-					float: left;
-				}
-				.channel-name {
-					color: #ccc;
-				}
-				.channel-note {
-					width: 40px;
-					border: 0px;
-					outline: none;
-					background: #999;
-					padding: 0px;
-					padding-left: 3px;
-				}
-				.bars {
-					.bar {
+					> * {
 						display: inline-block;
-						background: #454d4f;
-						border-radius: 3px;
-						width: $jsloops-sequencer-bar-width;
 						height: $jsloops-sequencer-channel-height;
-						margin: 0px 2px;
-						&.selected {
-							background: #b8bec1;
-						}
-						&.current {
-							background: #a4aa64;
+						line-height: $jsloops-sequencer-channel-height;
+						margin: 0px;
+						margin-right: 10px;
+						padding: 0px;
+						box-sizing: border-box;
+						float: left;
+					}
+					.channel-name {
+						color: #ccc;
+					}
+					.channel-note {
+						width: 40px;
+						border: 0px;
+						outline: none;
+						background: #999;
+						padding: 0px;
+						padding-left: 3px;
+					}
+					.bars {
+						.bar {
+							display: inline-block;
+							background: #454d4f;
+							border-radius: 3px;
+							width: $jsloops-sequencer-bar-width;
+							height: $jsloops-sequencer-channel-height;
+							margin: 0px 2px;
+							&.selected {
+								background: #b8bec1;
+							}
+							&.current {
+								background: #a4aa64;
+							}
 						}
 					}
 				}
