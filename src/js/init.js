@@ -139,7 +139,17 @@ var grid = {
 	sectionColors: [
 		["#444",'#777'],
 		["#444"]
-	]
+	],
+	backgrounds: [
+		"#000","#111"
+	],
+	backgroundPattern: [
+		1,0,1,0,1,0,1,1,0,1,0,1
+	],
+	labels: [
+		"C","B","A#","A","G#","G","F#","F","E","D#","D","C#"
+	],
+	labelColor: "#555"
 }
 
 
@@ -153,6 +163,13 @@ function drawLine(ctx, start, finish, dash, stroke){
 	ctx.stroke();
 }
 
+function drawRect(ctx, start, finish, background){
+	ctx.beginPath();
+	ctx.rect(start[0], start[1], finish[0], finish[1]);
+	ctx.fillStyle = background;
+	ctx.fill();
+}
+
 function drawGrid(el, conf){
 	var ctx = el.getContext("2d");
 
@@ -162,7 +179,36 @@ function drawGrid(el, conf){
 	var center = [ctx.canvas.width/2,ctx.canvas.height/2];
 	var sizeVector = [ctx.canvas.width,ctx.canvas.height];
 
-	// draw horizontal lines
+	
+
+	var patternIndex = 0;
+
+	for(var yPos = 0; yPos < sizeVector[1]; yPos += conf.step[1]){
+
+		var backgroundColor = conf.backgrounds[conf.backgroundPattern[patternIndex]];
+
+		drawRect(ctx, [0,yPos], [sizeVector[0],yPos+conf.step[1]], backgroundColor);
+
+		ctx.font="16px Georgia";
+		ctx.fillStyle=conf.labelColor;
+		ctx.fillText(conf.labels[patternIndex],5,yPos-3);
+
+		if(patternIndex < conf.backgroundPattern.length-1){
+			patternIndex++;
+		} else {
+			patternIndex = 0;
+		}
+
+		var lineColor = conf.color;
+		for(var section in conf.sections){
+			if(parseInt(yPos/conf.step[1]/conf.sections[1][section]) == yPos/conf.step[1]/conf.sections[1][section]){
+				lineColor = conf.sectionColors[1][section];
+			}
+		}
+		drawLine(ctx, [0,yPos], [sizeVector[0],yPos],null,lineColor);
+	}
+
+	// draw horizontal sectors
 	for(var xPos = 0; xPos < sizeVector[0]; xPos += conf.step[0]){
 		var lineColor = conf.color;
 		for(var section in conf.sections[0]){
@@ -171,16 +217,6 @@ function drawGrid(el, conf){
 			}
 		}
 		drawLine(ctx, [xPos,0], [xPos,sizeVector[1]],null,lineColor);
-	}
-
-	for(var yPos = 0; yPos < sizeVector[1]; yPos += conf.step[1]){
-		var lineColor = conf.color;
-		for(var section in conf.sections){
-			if(parseInt(yPos/conf.step[1]/conf.sections[1][section]) == yPos/conf.step[1]/conf.sections[1][section]){
-				lineColor = conf.sectionColors[1][section];
-			}
-		}
-		drawLine(ctx, [0,yPos], [sizeVector[0],yPos],null,lineColor);
 	}
 }
 
