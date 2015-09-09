@@ -28,9 +28,9 @@ Piano.prototype.noteToFrequency = function (note) {
 };
 
 
-Piano.prototype.setup = function() {
+Piano.prototype.setup = function(note) {
 	this.osc = context.createOscillator();
-	this.osc.frequency.value = this.noteToFrequency(this.note);
+	this.osc.frequency.value = this.noteToFrequency(note);
 
 	this.gain = this.context.createGain();
 	this.osc.connect(this.gain);
@@ -39,19 +39,26 @@ Piano.prototype.setup = function() {
 
 
 
-Piano.prototype.trigger = function(time) {
-	this.setup();
+Piano.prototype.trigger = function(time, duration, note) {
 
+	note = note || this.note;
+	duration = duration || 0.5;
+	note = note || this.note || "C";
+	
+	console.log(time, duration, note)
+
+	this.setup(note);
+    
 	this.gain.gain.setValueAtTime(1, time);
-	this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+	this.gain.gain.exponentialRampToValueAtTime(0.01, time + duration);
 
 	this.osc.start(time);
 
-	this.osc.stop(time + 0.5);
+	this.osc.stop(time + duration);
 };
 
 
 Piano.prototype.play = function(){
 	var now = this.context.currentTime;
-	this.trigger(now);
+	this.trigger(now); 
 }

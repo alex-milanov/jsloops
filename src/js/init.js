@@ -6,6 +6,15 @@ var context = new AudioContext;
 var barIndex = -1;
 var playLoop = false;
 
+var durations = {
+	"whole": 240,
+	"half": 120,
+	"quarter": 60,
+	"eighth": 30,
+	"sixteenth": 15,
+}
+
+
 
 var defaultSong = {
 	name: "Song 1",
@@ -19,21 +28,93 @@ var defaultSong = {
 				{
 					name: "Channel 0",
 					note: "K",
-					pattern: [1,0,0,0]
+					pattern: [1,0,0,0,0,0,0,0]
 				},
 				{
 					name: "Channel 1",
 					note: "H",
-					pattern: [0,1,0,1]
+					pattern: [0,0,1,0,0,0,1,0]
 				},
 				{
 					name: "Channel 2",
 					note: "S",
-					pattern: [0,0,1,0]
+					pattern: [0,0,0,0,1,0,0,0]
 				},
 				{
 					name: "Channel 3",
 					note: "C"
+				}
+			]
+		},
+		{
+			name: "Track 2",
+			type: "midi",
+			events: [
+				{ 
+					type: "noteon", 
+					note: "C",
+					start: 0,
+					duration: durations.eighth 
+				},
+				{ 
+					type: "noteon", 
+					note: "E",
+					start: durations.eighth,
+					duration: durations.eighth 
+				},
+				{ 
+					type: "noteon", 
+					note: "C",
+					start: durations.eighth*2,
+					duration: durations.eighth 
+				},
+				{ 
+					type: "noteon", 
+					note: "E",
+					start: durations.eighth*3,
+					duration: durations.eighth 
+				},
+				{ 
+					type: "noteon", 
+					note: "G",
+					start: durations.eighth*4,
+					duration: durations.half 
+				},
+				{ 
+					type: "noteon", 
+					note: "E",
+					start: durations.whole-durations.eighth,
+					duration: durations.eighth 
+				},
+				{
+					type: "noteon", 
+					note: "G",
+					start: durations.whole,
+					duration: durations.eighth 
+				},
+				{ 
+					type: "noteon", 
+					note: "G",
+					start: durations.whole+durations.eighth,
+					duration: durations.eighth 
+				},
+				{ 
+					type: "noteon", 
+					note: "F",
+					start: durations.whole+durations.eighth*2,
+					duration: durations.eighth 
+				},
+				{ 
+					type: "noteon", 
+					note: "F",
+					start: durations.whole+durations.eighth*3,
+					duration: durations.eighth 
+				},
+				{ 
+					type: "noteon", 
+					note: "E",
+					start: durations.whole+durations.eighth*4,
+					duration: durations.half 
 				}
 			]
 		}
@@ -47,11 +128,8 @@ var kit = {
 	H: new Sampler(context, "samples/hihat_opened02.ogg"),
 	S: new Sampler(context, "samples/snare01.ogg"),
 	C: new Sampler(context, "samples/clap01.ogg"),
-	"P,C": new Piano(context, "C5"),
-	"P,F": new Piano(context, "F5"),
-	"P,G": new Piano(context, "G5"),
+	"P": new Piano(context, "C5")
 }
-
 
 function playStep() {
 
@@ -244,7 +322,14 @@ $(document).ready(function(){
 			clearInterval(playLoop);
 			playLoop = false;
 		} else {
-			playLoop = setInterval(playStep, 60/$("#bpm").val()*1000/4);
+
+			var bpm = parseInt($("#bpm").val());
+			playLoop = setInterval(playStep, 60/bpm*1000/4);
+
+			// play the second track
+			song.tracks[1].events.forEach(function(event){
+				kit["P"].trigger(context.currentTime+15/bpm+(event.start/bpm),event.duration/bpm,event.note+5)
+			});
 		}
 
 		$(this).toggleClass("active");
