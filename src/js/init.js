@@ -244,7 +244,7 @@ $(document).ready(function(){
 			clearInterval(playLoop);
 			playLoop = false;
 		} else {
-			playLoop = setInterval(playStep, 60/$("#bpm").val()*1000/2);
+			playLoop = setInterval(playStep, 60/$("#bpm").val()*1000/4);
 		}
 
 		$(this).toggleClass("active");
@@ -268,7 +268,7 @@ $(document).ready(function(){
 		song.bpm = $(this).val();
 		if(playLoop) {
 			clearInterval(playLoop);
-			playLoop = setInterval(playStep, 60/$("#bpm").val()*1000/2);
+			playLoop = setInterval(playStep, 60/$("#bpm").val()*1000/4);
 		}
 	})
 
