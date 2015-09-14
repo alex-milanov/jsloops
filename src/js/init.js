@@ -14,8 +14,6 @@ var durations = {
 	"sixteenth": 15,
 }
 
-
-
 var defaultSong = {
 	name: "Song 1",
 	bpm: 120,
@@ -124,35 +122,33 @@ var defaultSong = {
 var song = {};
 
 var kit = {
-	K: new Sampler(context, "samples/kick01.ogg"),
-	H: new Sampler(context, "samples/hihat_opened02.ogg"),
-	S: new Sampler(context, "samples/snare01.ogg"),
-	C: new Sampler(context, "samples/clap01.ogg"),
-	"P": new Piano(context, "C5")
+	K: new JSL.instr.Sampler(context, "samples/kick01.ogg"),
+	H: new JSL.instr.Sampler(context, "samples/hihat_opened02.ogg"),
+	S: new JSL.instr.Sampler(context, "samples/snare01.ogg"),
+	C: new JSL.instr.Sampler(context, "samples/clap01.ogg"),
+	"P": new JSL.instr.BasicSynth(context, "C5")
 }
 
-function playStep() {
+function playStep(sequencer) {
 
-	$(".bars").each(function(){
-		$(this).find(".bar").eq(barIndex).removeClass("current");
-	});
-
-	if(barIndex < $("#bar-count").val()-1)
+	if(barIndex < song.tracks[0].bars -1)
 		barIndex++;
 	else
 		barIndex = 0;
 
-	$(".bars").each(function(channelIndex){
-		$(this).find(".bar").eq(barIndex).each(function(){
-			$(this).addClass("current");
-			if($(this).hasClass("selected")){
-				kit[$("#channel"+channelIndex+" .channel-note").val()].play();
-			}
-		});		
-	});
+
+	song.tracks[0].channels.forEach(function(channel, channelIndex){
+		if(channel.pattern && channel.pattern[barIndex] == 1) {
+			kit[channel.note].play();
+		}
+	})
+
+	if(sequencer){
+		sequencer.tick(barIndex);
+	}
 
 }
-
+/*
 function updatePattern(){
 	$(".bars").each(function(channelIndex){
 		song.tracks[0].channels[channelIndex].pattern = [];
@@ -197,13 +193,13 @@ function displayChannels(){
 		$channels.append($channel);
 	})
 }
+*/
 
 
-function loadSong(data) {
+function loadSong(data, sequencer) {
 	song = _.cloneDeep(data);
 	$("#bpm").val(song.bpm);
-	$("#bar-count").val(song.tracks[0].bars);
-	displayChannels();
+	sequencer.link(song.tracks[0]);
 }
 
 
@@ -310,22 +306,15 @@ function drawGrid(el, conf){
 
 $(document).ready(function(){
 
-	$(".workspace > *").draggable({
-		containment: "parent",
-		cursor: "crosshair",
-		grid: [5,5],
-		handle: ".toolbar"
-	});
+	var sequencer = new JSL.gui.Sequencer($(".sequencer")[0]);
+	var pianoRoll = new JSL.gui.PianoRoll($(".piano-roll")[0])
+
+	sequencer.init();
+	pianoRoll.init();
 
 	drawGrid($(".piano-roll .grid")[0],grid);
 
-	loadSong(defaultSong);
-
-	$(".sequencer").on("click", ".bar", function(){
-		$(this).toggleClass("selected");
-		updatePattern();
-	})
-
+	loadSong(defaultSong, sequencer);
 
 	$("#play").click(function(){
 		if(playLoop) {
@@ -334,12 +323,14 @@ $(document).ready(function(){
 		} else {
 
 			var bpm = parseInt($("#bpm").val());
-			playLoop = setInterval(playStep, 60/bpm*1000/4);
+			playLoop = setInterval(function(){
+				playStep(sequencer);
+			}, 60/bpm*1000/4);
 
 			// play the second track
-			song.tracks[1].events.forEach(function(event){
+			/*song.tracks[1].events.forEach(function(event){
 				kit["P"].trigger(context.currentTime+15/bpm+(event.start/bpm),event.duration/bpm,event.note+5)
-			});
+			});*/
 		}
 
 		$(this).toggleClass("active");
@@ -367,11 +358,6 @@ $(document).ready(function(){
 		}
 	})
 
-	$("#bar-count").change(function(){
-		song.tracks[0].bars = $(this).val();
-		displayChannels();
-	})
-
 	$("#save").click(function(){
 		var blob = new Blob([JSON.stringify(song)], {type: "text/plain;charset=utf-8"});
   		window.saveAs(blob, "song.json");
@@ -389,12 +375,12 @@ $(document).ready(function(){
 		
 		function receivedText(e) {
 			var data = JSON.parse(e.target.result);
-			loadSong(data);
+			loadSong(data, sequencer);
 		}
 	})
 
 	$("#clear").click(function(){
-		loadSong(defaultSong);
+		loadSong(defaultSong, sequencer);
 	})
 
 })

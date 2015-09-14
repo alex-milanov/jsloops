@@ -1,11 +1,14 @@
 "use strict";
 
-function Piano(context, note) {
+if(typeof JSL === "undefined"){ var JSL = {}; }
+if(typeof JSL.instr === "undefined"){ JSL.instr = {}; }
+
+JSL.instr.BasicSynth = function(context, note) {
 	this.context = context;
 	this.note = note;
 };
 
-Piano.prototype.noteToFrequency = function (note) {
+JSL.instr.BasicSynth.prototype.noteToFrequency = function (note) {
 	var notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'],
 		key_number,
 		octave;
@@ -28,7 +31,7 @@ Piano.prototype.noteToFrequency = function (note) {
 };
 
 
-Piano.prototype.setup = function(note) {
+JSL.instr.BasicSynth.prototype.setup = function(note) {
 	this.osc = context.createOscillator();
 	this.osc.frequency.value = this.noteToFrequency(note);
 
@@ -39,7 +42,7 @@ Piano.prototype.setup = function(note) {
 
 
 
-Piano.prototype.trigger = function(time, duration, note) {
+JSL.instr.BasicSynth.prototype.trigger = function(time, duration, note) {
 
 	note = note || this.note;
 	duration = duration || 0.5;
@@ -58,7 +61,7 @@ Piano.prototype.trigger = function(time, duration, note) {
 };
 
 
-Piano.prototype.play = function(){
+JSL.instr.BasicSynth.prototype.play = function(){
 	var now = this.context.currentTime;
 	this.trigger(now); 
 }
