@@ -30,6 +30,29 @@
 					height: $jsloops-sequencer-toolbar-height;
 					line-height: $jsloops-sequencer-toolbar-height;
 					float: left;
+					> button {
+						display: inline-block;
+						margin: 0px 2px;
+						height: $jsloops-sequencer-toolbar-el-height;
+						line-height: $jsloops-sequencer-toolbar-el-height;
+						padding: 0px 5px;
+						border: 0px;
+						cursor: pointer;
+						outline: none;
+						background: inherit;
+						color: #777;
+						position: relative;
+						-webkit-transition: background 0.5s, color 0.5s;
+						transition: background 0.5s, color 0.5s;
+						&:hover {
+							background: #2a2a2a;
+							color: #aaa;
+						}
+						&.selected {
+							background: #2a2a2a;
+							color: #aaa;
+						}
+					}
 				}
 				.title {
 					font-weight: bold;
@@ -54,6 +77,9 @@
 						padding: 0px;
 						padding-left: 2px;
 					}
+				}
+				.toolbar-controls {
+					margin-left: 20px;
 				}
 			}
 		}

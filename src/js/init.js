@@ -222,7 +222,7 @@ var grid = {
 		"#000","#111"
 	],
 	backgroundPattern: [
-		1,0,1,0,1,0,1,1,0,1,0,1
+		1,1,0,1,0,1,0,1,1,0,1,0
 	],
 	labels: [
 		"C","B","A#","A","G#","G","F#","F","E","D#","D","C#"
@@ -241,11 +241,16 @@ function drawLine(ctx, start, finish, dash, stroke){
 	ctx.stroke();
 }
 
-function drawRect(ctx, start, finish, background){
+function drawRect(ctx, start, finish, background, stroke){
 	ctx.beginPath();
 	ctx.rect(start[0], start[1], finish[0], finish[1]);
 	ctx.fillStyle = background;
 	ctx.fill();
+	if(stroke){
+		context.lineWidth = 1;
+		ctx.strokeStyle = stroke;
+		ctx.stroke();
+	}
 }
 
 function drawGrid(el, conf){
@@ -264,12 +269,17 @@ function drawGrid(el, conf){
 	for(var yPos = 0; yPos < sizeVector[1]; yPos += conf.step[1]){
 
 		var backgroundColor = conf.backgrounds[conf.backgroundPattern[patternIndex]];
+		var pianoBGColor = (conf.backgroundPattern[patternIndex] == 1) ?  "#999" : "#000";
+		var pianoFGColor = (conf.backgroundPattern[patternIndex] == 1) ?  "#000" : "#999";
 
-		drawRect(ctx, [0,yPos], [sizeVector[0],yPos+conf.step[1]], backgroundColor);
+		//
+		drawRect(ctx,  [0,yPos], [conf.step[0],yPos+conf.step[1]], pianoBGColor,"#000");
+
+		drawRect(ctx,  [conf.step[0],yPos], [sizeVector[0],yPos+conf.step[1]], backgroundColor);
 
 		ctx.font="16px Georgia";
-		ctx.fillStyle=conf.labelColor;
-		ctx.fillText(conf.labels[patternIndex],5,yPos-3);
+		ctx.fillStyle=pianoFGColor;
+		ctx.fillText(conf.labels[patternIndex],5,yPos-3+18);
 
 		if(patternIndex < conf.backgroundPattern.length-1){
 			patternIndex++;
@@ -283,14 +293,14 @@ function drawGrid(el, conf){
 				lineColor = conf.sectionColors[1][section];
 			}
 		}
-		drawLine(ctx, [0,yPos], [sizeVector[0],yPos],null,lineColor);
+		drawLine(ctx, [conf.step[0],yPos], [sizeVector[0],yPos],null,lineColor);
 	}
 
 	// draw horizontal sectors
-	for(var xPos = 0; xPos < sizeVector[0]; xPos += conf.step[0]){
+	for(var xPos = conf.step[0]; xPos < sizeVector[0]; xPos += conf.step[0]){
 		var lineColor = conf.color;
 		for(var section in conf.sections[0]){
-			if(parseInt(xPos/conf.step[0]/conf.sections[0][section]) == xPos/conf.step[0]/conf.sections[0][section]){
+			if(parseInt((xPos-conf.step[0])/conf.step[0]/conf.sections[0][section]) == (xPos-conf.step[0])/conf.step[0]/conf.sections[0][section]){
 				lineColor = conf.sectionColors[0][section];
 			}
 		}
