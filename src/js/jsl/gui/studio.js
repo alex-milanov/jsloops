@@ -97,7 +97,7 @@ JSL.gui.Studio.prototype.init = function(){
 			$(this).find(".bar").removeClass("current");
 		});
 
-		tickIndex = -1;
+		studio._tickIndex = -1;
 
 		$("#play").removeClass("active");
 	})

@@ -41,6 +41,7 @@
 							width: $jsloops-sequencer-bar-width;
 							height: $jsloops-sequencer-channel-height;
 							margin: 0px 2px;
+							cursor: pointer;
 							&.selected {
 								background: #b8bec1;
 							}

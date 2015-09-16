@@ -17,9 +17,28 @@ JSL.gui.Sequencer.prototype.init = function(){
 
 	var sequencer = this;
 
-	$(this._dom).on("click", ".bar", function(){
+	var mousedown = false;
+	var lastBar = false;
+
+	$(this._dom).on("mousedown", ".bar", function(){
+		mousedown = true;
+		lastBar = this;
 		$(this).toggleClass("selected");
 		sequencer.refresh();
+	})
+
+	$(this._dom).on("mousemove", ".bar", function(){
+		if(mousedown == true && lastBar !== this){
+			lastBar = this;
+			$(this).toggleClass("selected");
+			sequencer.refresh();
+		}
+	})
+
+
+	$("body").on("mouseup", function(){
+		mousedown = false;
+		lastBar = false;
 	})
 
 
