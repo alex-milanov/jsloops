@@ -39,9 +39,9 @@ JSL.gfx.Grid.prototype.redraw = function(){
 
 		this.rect([conf.step[0],yPos], [sizeVector[0],yPos+conf.step[1]], backgroundColor);
 
-		ctx.font="16px Georgia";
+		ctx.font="14px Georgia";
 		ctx.fillStyle=pianoFGColor;
-		ctx.fillText(conf.labels[patternIndex],5,yPos-3+18);
+		ctx.fillText(conf.labels[patternIndex],5,yPos-6+18);
 
 		if(patternIndex < conf.backgroundPattern.length-1){
 			patternIndex++;

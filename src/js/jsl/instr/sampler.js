@@ -23,12 +23,14 @@ JSL.instr.Sampler.prototype.setup = function() {
 	this.source.connect(this.context.destination);
 };
 
-JSL.instr.Sampler.prototype.trigger = function(time) {
+JSL.instr.Sampler.prototype.trigger = function(start, end) {
 	this.setup();
-	this.source.start(time);
+	this.source.start(start);
+	if(end)
+		this.source.stop(end);
 };
 
-JSL.instr.Sampler.prototype.play = function(){
+JSL.instr.Sampler.prototype.play = function(duration){
 	var now = this.context.currentTime;
-	this.trigger(now);
+	this.trigger(now, now+duration);
 }

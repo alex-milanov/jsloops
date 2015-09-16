@@ -12,6 +12,7 @@ var durations = {
 var defaultSong = {
 	name: "Song 1",
 	bpm: 120,
+	bars: 128,
 	tracks: [
 		{
 			name: "Track 1",
@@ -42,6 +43,7 @@ var defaultSong = {
 		{
 			name: "Track 2",
 			type: "midi",
+			bars: 32,
 			events: [
 				{ 
 					type: "noteon", 
@@ -110,6 +112,18 @@ var defaultSong = {
 					duration: durations.half 
 				}
 			]
+		}
+	],
+	arrangement: [
+		{
+			track: 0,
+			start: 0,
+			repeat: 8
+		},
+		{
+			track: 1,
+			start: 0,
+			repeat: 4
 		}
 	]
 }

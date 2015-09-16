@@ -32,7 +32,7 @@ JSL.instr.BasicSynth.prototype.noteToFrequency = function (note) {
 
 
 JSL.instr.BasicSynth.prototype.setup = function(note) {
-	this.osc = context.createOscillator();
+	this.osc = this.context.createOscillator();
 	this.osc.frequency.value = this.noteToFrequency(note);
 
 	this.gain = this.context.createGain();
@@ -48,7 +48,7 @@ JSL.instr.BasicSynth.prototype.trigger = function(time, duration, note) {
 	duration = duration || 0.5;
 	note = note || this.note || "C";
 	
-	console.log(time, duration, note)
+	//console.log(time, duration, note)
 
 	this.setup(note);
     

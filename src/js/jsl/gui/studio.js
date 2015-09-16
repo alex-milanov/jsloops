@@ -31,19 +31,42 @@ JSL.gui.Studio.prototype.constructor = JSL.gui.Studio;
 
 JSL.gui.Studio.prototype.tick = function(){
 	var studio = this;
-	if(this._tickIndex < this._song.tracks[0].bars -1)
+	if(this._tickIndex < this._song.bars -1)
 		this._tickIndex++;
 	else
 		this._tickIndex = 0;
 
-	this._song.tracks[0].channels.forEach(function(channel, channelIndex){
-		if(channel.pattern && channel.pattern[studio._tickIndex] == 1) {
-			studio._kit[channel.note].play();
-		}
+	var bpm = this._song.bpm;
+
+	this._song.arrangement.forEach(function(item){
+		var track = studio._song.tracks[item.track];
+		if(studio._tickIndex >= item.start && studio._tickIndex < item.start + track.bars * item.repeat){
+			var trackTick = studio._tickIndex-item.start-parseInt(studio._tickIndex/track.bars)*track.bars;
+			switch(track.type){
+				case "sequencer":
+					track.channels.forEach(function(channel, channelIndex){
+						if(channel.pattern && channel.pattern[trackTick] == 1) {
+							studio._kit[channel.note].play();
+						}
+					})
+					studio._sequencer.tick(trackTick);
+					break;
+				case "midi":
+					var now = studio._actx.currentTime;
+					track.events.forEach(function(event){
+						if(parseInt(event.start/bpm*8) == trackTick){		
+							var evStart = event.start/bpm*8-parseInt(event.start/bpm*8)
+							var evDuration = event.duration/bpm*8;
+							studio._kit["P"].trigger(now+evStart, evDuration, event.note+"4");
+						}
+					})
+					break;
+			}
+		}		
 	})
 
 	if(this._sequencer){
-		this._sequencer.tick(this._tickIndex);
+		
 	}
 }
 
@@ -51,6 +74,7 @@ JSL.gui.Studio.prototype.load = function(data){
 	this._song = _.cloneDeep(data);
 	$("#bpm").val(this._song.bpm);
 	this._sequencer.link(this._song.tracks[0]);
+	this._pianoRoll.link(this._song.tracks[1]);
 }
 
 JSL.gui.Studio.prototype.init = function(){
