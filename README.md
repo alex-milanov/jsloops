@@ -1,6 +1,7 @@
 # JSLoops
 JSLoops is Full-Stack JavaScript Music Production Web App in development, 
 part of a the live coding stream "Fun Stuff With JavaScript" at https://www.livecoding.tv/alex_milanov/
+
 The core idea behind it is to create a cloud based music making app that I would actualy use myself.
 
 ## Technologies
@@ -15,23 +16,23 @@ The core idea behind it is to create a cloud based music making app that I would
 - [Trello](https://trello.com/b/R25n686F/jsloops)
 
 
-## setup
+## Setup
 
-### dependencies
+### Dependencies
 ```sh
 npm install -g gulp node-serve
 # we will need sass
 gem install sass
 ```
 
-### install & build
+### Install & build
 ```sh
 npm install
 bower install
 gulp build
 ```
 
-### running options
+### Running options
 the easiest way
 ```sh
 # launches gulp build and gulp serve
