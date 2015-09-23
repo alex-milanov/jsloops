@@ -11,7 +11,7 @@ The core idea behind it is to create a cloud based music making app that I would
 - jQuery, sass, jade, gulp
 
 ## Links
-- [Live coding stream](https://www.livecoding.tv/alex_milanov/)
+- [Live coding stream](https://www.livecoding.tv/alex_milanov/) (Mon-Fri 21:00/22:00 EEST)
 - [Demo](http://jsloops.wp.alexmilanov.com)
 - [Trello](https://trello.com/b/R25n686F/jsloops)
 
