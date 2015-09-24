@@ -22,7 +22,8 @@ var path = require('path');
 var paths = {
 	sass: ['./src/sass/**/*.scss'],
 	jade: ['./src/jade/**/*.jade'],
-	js: ['./src/js/**/*.js']
+	js: ['./src/js/**/*.js'],
+	data: ['./src/data/**/*']
 };
 
 gulp.task('sass', function(done) {
@@ -64,6 +65,16 @@ gulp.task('jade', function(done) {
 	});
 });
 
+gulp.task('data', function(done) {
+	del([
+		'./dist/data/**/*'
+	], function(){
+		gulp.src('./src/data/**/*')
+			.pipe(gulp.dest('./dist/data/'))
+			.pipe( livereload())
+			.on('end',done);
+	});
+});
 
 gulp.task("bower-files", function(done){
 
@@ -123,9 +134,10 @@ gulp.task('watch', function() {
 	gulp.watch(paths.sass, ['sass']);
 	gulp.watch(paths.jade, ['jade']);
 	gulp.watch(paths.js, ['js']);
+	gulp.watch(paths.data, ['data']);
 });
 
-gulp.task('build', ['sass','jade','js','bower-files']);
+gulp.task('build', ['sass','jade','js','data','bower-files']);
 
 gulp.task('serve', ['express','livereload','watch']);
 
