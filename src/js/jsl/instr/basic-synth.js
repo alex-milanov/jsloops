@@ -6,6 +6,26 @@ if(typeof JSL.instr === "undefined"){ JSL.instr = {}; }
 JSL.instr.BasicSynth = function(context, note) {
 	this.context = context;
 	this.note = note;
+
+	this.vco = this.context.createOscillator();
+	this.lfo = this.context.createOscillator();
+	this.lfoGain = this.context.createGain();
+	this.vcf = this.context.createBiquadFilter();
+	this.output = this.context.createGain();
+	this.vco.connect(this.vcf);
+	this.lfo.connect(this.lfoGain);
+	this.lfoGain.connect(this.vcf.frequency);
+	this.vcf.connect(this.output);
+	this.output.gain.value = 0;
+	this.vco.type = "sawtooth";
+	this.lfo.type = "sawtooth";
+	this.vco.start(this.context.currentTime);
+	this.lfo.start(this.context.currentTime);
+	this.volume = this.context.createGain();
+	this.volume.gain.value = 0.4;
+	this.output.connect(this.volume);
+	this.volume.connect(this.context.destination);
+
 };
 
 JSL.instr.BasicSynth.prototype.noteToFrequency = function (note) {
@@ -32,12 +52,16 @@ JSL.instr.BasicSynth.prototype.noteToFrequency = function (note) {
 
 
 JSL.instr.BasicSynth.prototype.setup = function(note) {
+
+	/*
 	this.osc = this.context.createOscillator();
+
 	this.osc.frequency.value = this.noteToFrequency(note);
 
 	this.gain = this.context.createGain();
 	this.osc.connect(this.gain);
 	this.gain.connect(this.context.destination)
+	*/
 };
 
 
@@ -52,12 +76,23 @@ JSL.instr.BasicSynth.prototype.trigger = function(time, duration, note) {
 
 	this.setup(note);
     
-	this.gain.gain.setValueAtTime(1, time);
+    var frequency = this.noteToFrequency(note);
+
+	this.vco.frequency.setValueAtTime(frequency, time);
+	this.output.gain.linearRampToValueAtTime(1.0, time + 0.01);
+
+    this.output.gain.linearRampToValueAtTime(0.0, time + duration - 0.01);
+
+
+    /*
+	this.gain.gain.setValueAtTime(0.1, time);
+	//this.gain.gain.setValueAtTime(0.01, time + duration);
 	this.gain.gain.exponentialRampToValueAtTime(0.01, time + duration);
 
 	this.osc.start(time);
 
 	this.osc.stop(time + duration);
+	*/
 };
 
 

@@ -4,11 +4,10 @@
 var durations = {
 	"whole": 240,
 	"half": 120,
-	"quarter": 60,
+	"quarter": 60, // 960
 	"eighth": 30,
 	"sixteenth": 15,
 }
-
 var defaultSong = {
 	name: "Song 1",
 	bpm: 120,
@@ -45,6 +44,44 @@ var defaultSong = {
 			type: "midi",
 			bars: 32,
 			events: [
+				{ 
+					type: "noteon", 
+					note: "E",
+					start: 0,
+					duration: durations.quarter+durations.eighth 
+				},
+				{ 
+					type: "noteon", 
+					note: "E",
+					start: durations.quarter+durations.eighth,
+					duration: durations.quarter+durations.eighth 
+				},
+				{ 
+					type: "noteon", 
+					note: "E",
+					start: (durations.quarter+durations.eighth)*2,
+					duration: durations.quarter 
+				},
+				{ 
+					type: "noteon", 
+					note: "F",
+					start: durations.whole,
+					duration: durations.quarter+durations.eighth 
+				},
+				{ 
+					type: "noteon", 
+					note: "F",
+					start: durations.whole+durations.quarter+durations.eighth,
+					duration: durations.quarter+durations.eighth 
+				},
+				{ 
+					type: "noteon", 
+					note: "F",
+					start: durations.whole+(durations.quarter+durations.eighth)*2,
+					duration: durations.quarter 
+				},
+			]
+			/*events: [
 				{ 
 					type: "noteon", 
 					note: "C",
@@ -111,7 +148,7 @@ var defaultSong = {
 					start: durations.whole+durations.eighth*4,
 					duration: durations.half 
 				}
-			]
+			]*/
 		}
 	],
 	arrangement: [

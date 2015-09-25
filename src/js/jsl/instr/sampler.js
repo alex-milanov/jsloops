@@ -15,12 +15,16 @@ JSL.instr.Sampler = function(context, file) {
 		});
 	};
 	request.send();
+
+	this.volume = this.context.createGain();
+	this.volume.gain.value = 0.4;
 };
 
 JSL.instr.Sampler.prototype.setup = function() {
 	this.source = this.context.createBufferSource();
 	this.source.buffer = this.buffer;
-	this.source.connect(this.context.destination);
+	this.source.connect(this.volume);
+	this.volume.connect(this.context.destination);
 };
 
 JSL.instr.Sampler.prototype.trigger = function(start, end) {

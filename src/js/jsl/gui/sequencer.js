@@ -43,8 +43,9 @@ JSL.gui.Sequencer.prototype.init = function(){
 
 
 	$(this._dom).on("change", "#bar-count", function(){
-		this_track.bars = $(this).val();
-		this.redraw();
+		sequencer._track.bars = $(this).val();
+		sequencer.redraw();
+		sequencer.refresh();
 	})
 
 	this.redraw();

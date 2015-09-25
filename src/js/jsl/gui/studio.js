@@ -36,12 +36,12 @@ JSL.gui.Studio.prototype.tick = function(){
 	else
 		this._tickIndex = 0;
 
-	var bpm = this._song.bpm;
-
 	this._song.arrangement.forEach(function(item){
 		var track = studio._song.tracks[item.track];
+
 		if(studio._tickIndex >= item.start && studio._tickIndex < item.start + track.bars * item.repeat){
 			var trackTick = studio._tickIndex-item.start-parseInt(studio._tickIndex/track.bars)*track.bars;
+			
 			switch(track.type){
 				case "sequencer":
 					track.channels.forEach(function(channel, channelIndex){
@@ -54,9 +54,9 @@ JSL.gui.Studio.prototype.tick = function(){
 				case "midi":
 					var now = studio._actx.currentTime;
 					track.events.forEach(function(event){
-						if(parseInt(event.start/bpm*8) == trackTick){		
-							var evStart = event.start/bpm*8-parseInt(event.start/bpm*8)
-							var evDuration = event.duration/bpm*8;
+						if(parseInt(event.start/15) == trackTick){		
+							var evStart = event.start/15-parseInt(event.start/15)
+							var evDuration = event.duration/15;
 							studio._kit["P"].trigger(now+evStart, evDuration, event.note+"4");
 						}
 					})
