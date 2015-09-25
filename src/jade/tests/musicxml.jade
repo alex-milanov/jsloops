@@ -2,7 +2,7 @@ html
 	head
 		title JSLoops MusicXML Tests
 		style.
-			#container { width: 100%; height: 400px;}
+			#container { width: 100%; height: 400px; tab-size: 4}
 	body
 		h1 JSLoops MusicXML Tests
 		button#load-xml Load XML
@@ -19,7 +19,7 @@ html
 		script.
 			$(document).ready(function(){
 				$.ajax({
-					url: "../data/simple.xml"
+					url: "../data/measure.xml"
 				}).then(function(data){
 
 					console.log(data.nodeType);
