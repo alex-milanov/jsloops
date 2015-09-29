@@ -23,7 +23,7 @@ var paths = {
 	sass: ['./src/sass/**/*.scss'],
 	jade: ['./src/jade/**/*.jade'],
 	js: ['./src/js/**/*.js'],
-	data: ['./src/data/**/*']
+	data: ['./src/data/**/*.*']
 };
 
 gulp.task('sass', function(done) {
