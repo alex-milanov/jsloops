@@ -23,7 +23,8 @@ JSL.gui.Studio = function(dom, context){
 	}
 
 	this._sequencer = new JSL.gui.Sequencer($(".sequencer")[0]);
-	this._pianoRoll = new JSL.gui.PianoRoll($(".piano-roll")[0])
+	this._pianoRoll = new JSL.gui.PianoRoll($(".piano-roll")[0]);
+
 }
 
 JSL.gui.Studio.prototype = Object.create( iblokz.Element.prototype );
