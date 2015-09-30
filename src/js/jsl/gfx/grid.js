@@ -11,6 +11,35 @@ JSL.gfx.Grid = function(dom, conf){
 	this._conf = conf;
 	this._position = conf.position;
 
+	this._multiIterate = function(iterator, index, range, direction){
+		var start, limit;
+		switch(direction){
+			case 1:
+				start = (index>0) ? 0 : range.start[index];
+				limit = (index>0) ? range.length[index-1]-1 : range.end[index];
+				if(iterator[index] < limit) {
+					iterator[index] += direction;
+				} else {
+					iterator[index] = start;
+				}
+				break;
+			case -1:
+				start = (index>0) ? range.length[index-1]-1 : range.start[index];
+				limit = (index>0) ? 0 : range.end[index];
+				if(iterator[index] > limit){
+					iterator[index] += direction;
+				} else {
+					iterator[index] = start;
+				}
+				break;
+		}
+		if(index>0 && iterator[index] == start){
+			return this._multiIterate(iterator, index-1, range, direction);
+		}
+
+		return iterator;
+	}
+
 }
 
 JSL.gfx.Grid.prototype = Object.create( JSL.gfx.Canvas.prototype );
@@ -28,6 +57,36 @@ JSL.gfx.Grid.prototype.setPosition = function(position){
 	this._position = position;
 }
 
+JSL.gfx.Grid.prototype.init = function(){
+
+	var grid = this;
+	var position = this._position;
+	var range = this._conf.range;
+
+	$(this._dom).on('mousewheel', function(event) {
+		//console.log(event.originalEvent.deltaX, event.originalEvent.deltaY, event.originalEvent.deltaFactor);
+		var modified = false;
+		if(event.originalEvent.deltaY != 0){
+			var direction = (event.originalEvent.deltaY > 0) ? range.y.direction : -range.y.direction;
+			grid._position.y = grid._multiIterate(grid._position.y, grid._position.y.length-1, range.y, direction);
+			modified = true;
+		}
+
+		if(event.originalEvent.deltaX != 0){
+			var direction = (event.originalEvent.deltaX > 0) ? range.x.direction : -range.x.direction;
+			grid._position.x = grid._multiIterate(grid._position.x, grid._position.x.length-1, range.x, direction);
+			modified = true;
+		}
+
+		if(modified){
+			grid.redraw();
+			console.log(grid._position.x);
+		}
+
+	});
+
+}
+
 JSL.gfx.Grid.prototype.redraw = function(){
 
 	var ctx = this._ctx;
@@ -38,35 +97,6 @@ JSL.gfx.Grid.prototype.redraw = function(){
 
 	var center = [ctx.canvas.width/2,ctx.canvas.height/2];
 	var sizeVector = [ctx.canvas.width,ctx.canvas.height];
-
-	function multiIterate(iterator, index, range){
-		var start, limit;
-		switch(range.direction){
-			case 1:
-				start = (index>0) ? 0 : range.start[index];
-				limit = (index>0) ? range.length[index-1]-1 : range.end[index];
-				if(iterator[index] < limit) {
-					iterator[index] += range.direction;
-				} else {
-					iterator[index] = start;
-				}
-				break;
-			case -1:
-				start = (index>0) ? range.length[index-1]-1 : range.start[index];
-				limit = (index>0) ? 0 : range.end[index];
-				if(iterator[index] > limit){
-					iterator[index] += range.direction;
-				} else {
-					iterator[index] = start;
-				}
-				break;
-		}
-		if(index>0 && iterator[index] == start){
-			return multiIterate(iterator, index-1, range);
-		}
-
-		return iterator;
-	}
 
 	function isNextStep(index, position, length){
 		var isNextStep = true;
@@ -87,9 +117,7 @@ JSL.gfx.Grid.prototype.redraw = function(){
 	var step = conf.step;
 	var sections = conf.sections;
 
-	var position = conf.position;
-
-	var yPosition = _.clone(conf.position.y)
+	var yPosition = _.clone(this._position.y)
 
 	// draw vertical sections
 	for(var yStep = 0; yStep < sizeVector[1]; yStep += step.y){
@@ -124,7 +152,7 @@ JSL.gfx.Grid.prototype.redraw = function(){
 		this.line([step.x,yStep], [sizeVector[0],yStep],null,borderColor);
 
 		// iterate the position
-		yPosition = multiIterate(yPosition, yPosition.length-1, range.y)
+		yPosition = this._multiIterate(yPosition, yPosition.length-1, range.y, range.y.direction)
 	}
 
 	
@@ -146,7 +174,7 @@ JSL.gfx.Grid.prototype.redraw = function(){
 
 		this.line([xStep+step.x,0], [xStep+step.x,sizeVector[1]],null,borderColor);
 		// iterate the position
-		xPosition = multiIterate(xPosition, xPosition.length-1, range.x)
+		xPosition = this._multiIterate(xPosition, xPosition.length-1, range.x, range.y.direction)
 
 		//console.log(xPosition);
 	}

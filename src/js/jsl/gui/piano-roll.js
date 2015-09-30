@@ -119,7 +119,7 @@ JSL.gui.PianoRoll.prototype.init = function(){
 	JSL.gui.Editor.prototype.init.call(this);
 
 
-
+	this._grid.init();
 
 	this.redraw();
 	this.refresh();
