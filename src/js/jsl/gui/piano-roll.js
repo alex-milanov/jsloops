@@ -39,16 +39,16 @@ JSL.gui.PianoRoll = function(dom, context){
 		},
 		"sections": {
 			"x": {
-				"note": {
+				"tick": {
 					"steps": 1,
 					"border": 2
 				},
 				"beat": {
-					"notes": 4,
+					"steps": 4,
 					"border": 3
 				},
 				"measure": {
-					"beats": 4,
+					"beats": 16,
 					"border": 5
 				}
 			},
@@ -58,7 +58,7 @@ JSL.gui.PianoRoll = function(dom, context){
 					"border": 2
 				},
 				"octave": {
-					"tones": 12,
+					"steps": 12,
 					"border": 3,
 					"pattern": {
 						"values": [
@@ -75,44 +75,27 @@ JSL.gui.PianoRoll = function(dom, context){
 				}
 			}
 		},
-		"relations": {
-			"x": ["note","beat","measure"],
-			"y": ["tone","octave"]
+		"order": {
+			"x": ["measure","beat","tick"],
+			"y": ["octave","tone"]
 		},
 		"range": {
-			"start": {
-				"x": {
-					"measure": 0,
-					"beat": 0,
-					"note": 0
-				},
-				"y": {
-					"octave": 8,
-					"tone": 0
-				}
-			},
-			"end": {
-				"x": {
-					"measure": 16,
-					"beat": 3,
-					"note": 3,
-				},
-				"y": {
-					"octave": 0,
-					"tone": 9
-				}
-			}
-		},
-		"position": {
 			"x": {
-				"measure": 0,
-				"beat": 0,
-				"note": 0
+				"start": [0,0,0], // measure, beat, tick
+				"end": [16,3,3],
+				"length": [4,4,1],
+				"direction": 1
 			},
 			"y": {
-				"octave": 5,
-				"tone": 5
+				"start": [8,0], // octave, tone
+				"end": [0,9],
+				"length": [12,1],
+				"direction": -1
 			}
+		},
+		"position": {			// default position
+			"x": [0,0,0],		// measure, beat, tick
+			"y": [5,5]			// octave, tone
 		},
 		"direction": {
 			"x": 1,
