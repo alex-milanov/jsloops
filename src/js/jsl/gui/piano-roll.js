@@ -82,13 +82,13 @@ JSL.gui.PianoRoll = function(dom, context){
 		"range": {
 			"x": {
 				"start": [0,0,0], // measure, beat, tick
-				"end": [16,3,3],
+				"end": [16,0,0],
 				"length": [4,4,1],
 				"direction": 1
 			},
 			"y": {
-				"start": [8,0], // octave, tone
-				"end": [0,9],
+				"start": [0,9], // octave, tone
+				"end": [8,0],
 				"length": [12,1],
 				"direction": -1
 			}
@@ -117,7 +117,6 @@ JSL.gui.PianoRoll.prototype.constructor = JSL.gui.PianoRoll;
 JSL.gui.PianoRoll.prototype.init = function(){
 
 	JSL.gui.Editor.prototype.init.call(this);
-
 
 	this._grid.init();
 
