@@ -100,25 +100,34 @@ JSL.gfx.Grid = function(dom, conf){
 	this._calculateVisible = function(){
 		var sizeVector = [this._ctx.canvas.width,this._ctx.canvas.height];
 
-		var conf = this._conf;
-		var range = conf.range;
-		var step = conf.step;
-
 		var visible = {
 			x: [0,0,0],
 			y: [0,0]
 		}
 
-		for(var xStep = step.x; xStep < sizeVector[0]; xStep += step.x){
-			visible.x = this._multiIterate(visible.x, visible.x.length-1, range.x, 1);
-		}
-
-		for(var yStep = 0; yStep < sizeVector[1]; yStep += step.y){
-			visible.y = this._multiIterate(visible.y, visible.y.length-1, range.y, 1);
-		}
+		visible = this._vectorToPos(visible, sizeVector, {x:1,y:1});
 
 		return visible;
 	}
+
+	this._vectorToPos = function(startPos, vector, direction){
+		var resultPos = _.cloneDeep(startPos);
+
+		var conf = this._conf;
+		var range = conf.range;
+		var step = conf.step;
+		for(var xStep = step.x; xStep < vector[0]; xStep += step.x){
+			resultPos.x = this._multiIterate(resultPos.x, resultPos.x.length-1, range.x, direction.x);
+		}
+
+		for(var yStep = 0; yStep < vector[1]; yStep += step.y){
+			resultPos.y = this._multiIterate(resultPos.y, resultPos.y.length-1, range.y, direction.y);
+		}
+
+		return resultPos;
+
+	}
+
 
 }
 
@@ -145,7 +154,13 @@ JSL.gfx.Grid.prototype.init = function(){
 
 	this._visible = this._calculateVisible();
 
-
+	$(this._dom).on('click', function(event) {
+		var vector = [(event.offsetX-conf.step.x), (event.offsetY-conf.step.y)];
+		console.log(grid._vectorToPos(position,vector,{
+			x: conf.range.x.direction,
+			y: conf.range.y.direction
+		}));
+	})
 
 	$(this._dom).on('mousewheel', function(event) {
 
