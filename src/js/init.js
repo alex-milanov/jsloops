@@ -8,6 +8,15 @@ var durations = {
 	"eighth": 30,
 	"sixteenth": 15,
 }
+
+var intervals = {
+	measure: durations.whole,
+	beat: durations.quarter,
+	tick: durations.sixteenth
+}
+
+var tonesInOctave = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+
 var defaultSong = {
 	name: "Song 1",
 	bpm: 120,

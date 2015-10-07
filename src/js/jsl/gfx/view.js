@@ -8,10 +8,15 @@ JSL.gfx.View = function(dom, context, config){
 
 	this._config = config || {};
 
+	this._position = config.position;
 
-	this._grid = new JSL.gfx.Grid($(this._dom).find("canvas.grid")[0], this._config);
-	this._interaction = new JSL.gfx.Canvas($(this._dom).find("canvas.interaction")[0]);
+	this._elements = [];
 
+	this._layers = {
+		grid: new JSL.gfx.Grid($(this._dom).find("canvas.grid")[0], this._config),
+		elements: new JSL.gfx.Canvas($(this._dom).find("canvas.elements")[0]),
+		interaction: new JSL.gfx.Canvas($(this._dom).find("canvas.interaction")[0])
+	}
 }
 
 JSL.gfx.View.prototype = Object.create( iblokz.Element.prototype );
@@ -19,11 +24,12 @@ JSL.gfx.View.prototype.constructor = JSL.gfx.View;
 
 JSL.gfx.View.prototype.init = function() {
 
-	this._grid.init();
-	this._interaction.init();
+	this._layers.grid.init();
+	this._layers.elements.init();
+	this._layers.interaction.init();
 
 	// grid
-	var grid = this._grid;
+	var grid = this._layers.grid;
 	var conf = this._config;
 	$(this._dom).on('mousewheel', function(event) {
 
@@ -47,13 +53,14 @@ JSL.gfx.View.prototype.init = function() {
 
 		if(modified){
 			grid.refresh();
+			this._position = grid._position;
 			//console.log(grid._position.x);
 		}
 
 	});
 
 	// interaction
-	var interaction = this._interaction;
+	var interaction = this._layers.interaction;
 
 	var startPos = [0,0];
 	var currentPos = [0,0];
@@ -78,5 +85,13 @@ JSL.gfx.View.prototype.init = function() {
 		currentPos = [0, 0];
 		interaction.clear();
 	})
+
+}
+
+JSL.gfx.View.prototype.addElement = function(element){
+	this._layers.grid.addElement(element);
+}
+
+JSL.gfx.View.prototype.refresh = function(){
 
 }

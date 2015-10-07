@@ -11,50 +11,56 @@ JSL.gfx.Grid = function(dom, conf){
 	this._conf = conf;
 	this._position = conf.position;
 
+	this._elements = [];
+
 	this._multiAdd = function(arr1, arr2, length, index){
 		
-		if(arr1.length!=arr2.length)
+		var resultArr  = _.clone(arr1);
+
+		if(resultArr.length!=arr2.length)
 			return false;
 
 		if(typeof index === "undefined")
-			index = arr1.length-1;
+			index = resultArr.length-1;
 
 		if(index > 0){
-			if((arr1[index] + arr2[index]) > length[index-1]-1){
-				arr1[index] += arr2[index] - length[index-1]-1;
-				arr1[index-1]++;
+			if((resultArr[index] + arr2[index]) > length[index-1]-1){
+				resultArr[index] += arr2[index] - length[index-1]-1;
+				resultArr[index-1]++;
 			} else {
-				arr1[index] += arr2[index];
+				resultArr[index] += arr2[index];
 			}
-			arr1 = this._multiAdd(arr1, arr2, length, index-1);
+			resultArr = this._multiAdd(resultArr, arr2, length, index-1);
 		} else {
-			arr1[index] += arr2[index];
+			resultArr[index] += arr2[index];
 		}
 
-		return arr1;
+		return resultArr;
 	}
 
 	this._multiSubtract = function(arr1, arr2, length, index){
+
+		var resultArr  = _.clone(arr1);
 		
-		if(arr1.length!=arr2.length)
+		if(resultArr.length!=arr2.length)
 			return false;
 
 		if(typeof index === "undefined")
-			index = arr1.length-1;
+			index = resultArr.length-1;
 
 		if(index > 0){
-			if((arr1[index]-arr2[index]) < 0){
-				arr1[index] = arr1[index]+length[index-1]-arr2[index];
-				arr1[index-1]--;
+			if((resultArr[index]-arr2[index]) < 0){
+				resultArr[index] = resultArr[index]+length[index-1]-arr2[index];
+				resultArr[index-1]--;
 			} else {
-				arr1[index] -= arr2[index];
+				resultArr[index] -= arr2[index];
 			}
-			arr1 = this._multiSubtract(arr1, arr2, length, index-1);
+			resultArr = this._multiSubtract(resultArr, arr2, length, index-1);
 		} else {
-			arr1[index] -= arr2[index];
+			resultArr[index] -= arr2[index];
 		}
 
-		return arr1;
+		return resultArr;
 	}
 
 	this._multiIterate = function(iterator, index, range, direction){
@@ -125,9 +131,7 @@ JSL.gfx.Grid = function(dom, conf){
 		}
 
 		return resultPos;
-
 	}
-
 
 }
 
@@ -164,42 +168,24 @@ JSL.gfx.Grid.prototype.init = function(){
 	})
 */
 
-	$(this._dom).on('mousewheel', function(event) {
-
-		var range = _.cloneDeep(conf.range);
-		
-		range.y.start = grid._multiAdd(range.y.start,grid._visible.y,range.y.length);
-		range.x.end = grid._multiSubtract(range.x.end,grid._visible.x,range.x.length);
-		//console.log(event.originalEvent.deltaX, event.originalEvent.deltaY, event.originalEvent.deltaFactor);
-		var modified = false;
-		if(event.originalEvent.deltaY != 0){
-			var direction = (event.originalEvent.deltaY > 0) ? range.y.direction : -range.y.direction;
-			grid._position.y = grid._multiIterate(grid._position.y, grid._position.y.length-1, range.y, direction);
-			modified = true;
-		}
-
-		if(event.originalEvent.deltaX != 0){
-			var direction = (event.originalEvent.deltaX > 0) ? range.x.direction : -range.x.direction;
-			grid._position.x = grid._multiIterate(grid._position.x, grid._position.x.length-1, range.x, direction);
-			modified = true;
-		}
-
-		if(modified){
-			grid.refresh();
-			//console.log(grid._position.x);
-		}
-
-	});
+	
 
 
 	grid.refresh();
 
 }
 
+
+JSL.gfx.Grid.prototype.addElement = function(element){
+	this._elements.push(element);
+}
+
+
 JSL.gfx.Grid.prototype.refresh = function(){
 
 	var ctx = this._ctx;
 	var conf = this._conf;
+	var grid = this;
 
 	ctx.canvas.width = $(ctx.canvas.parentNode).width();
 	ctx.canvas.height = $(ctx.canvas.parentNode).height();
@@ -228,6 +214,14 @@ JSL.gfx.Grid.prototype.refresh = function(){
 	var yPosition = _.clone(this._position.y);
 
 	this._visible = this._calculateVisible();
+
+	
+	var visibleRange = {
+		x: grid._multiAdd(grid._position.x,grid._visible.x,conf.range.x.length),
+		y: grid._multiSubtract(grid._position.y,grid._visible.y,conf.range.y.length)
+	}
+	
+	
 
 	// draw vertical sections
 	for(var yStep = 0; yStep < sizeVector[1]; yStep += step.y){
@@ -261,6 +255,22 @@ JSL.gfx.Grid.prototype.refresh = function(){
 
 		this.line([step.x,yStep], [sizeVector[0],yStep],null,borderColor);
 
+		
+		this._elements.forEach(function(element){
+			if(_.isEqual(element.position.y,yPosition)){
+				var relativeXPos = grid._multiSubtract(element.position.x,grid._position.x,conf.range.x.length);
+				var elXPos = step.x+relativeXPos[0]*step.x*16+relativeXPos[1]*step.x*4+relativeXPos[2]*step.x;
+									
+				if(elXPos >= step.x && elXPos < sizeVector[0]-step.x){
+	
+					var relativeXPos = grid._multiSubtract(element.position.x,grid._position.x,conf.range.x.length);
+					var elXPos = step.x+relativeXPos[0]*step.x*16+relativeXPos[1]*step.x*4+relativeXPos[2]*step.x;
+					grid.rect([elXPos,yStep], [step.x,yStep+step.y], "#ccc");
+				}
+			}
+		})
+
+
 		// iterate the position
 		yPosition = this._multiIterate(yPosition, yPosition.length-1, range.y, range.y.direction)
 	}
@@ -289,4 +299,6 @@ JSL.gfx.Grid.prototype.refresh = function(){
 
 		//console.log(xPosition);
 	}
+
+	
 }

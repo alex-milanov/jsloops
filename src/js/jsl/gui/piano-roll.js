@@ -136,28 +136,34 @@ JSL.gui.PianoRoll.prototype.refresh = function(){
 	var bottomCYPos = 12*conf.step[1];
 	var initialXPos = conf.step[0];
 
-	/*
+	function timeToIntervals(time){
+		var measure = parseInt(time/intervals.measure);
+		time = time-measure*intervals.measure;
+		var beat = parseInt(time/intervals.beat);
+		time -= beat*intervals.beat;
+		var tick = parseInt(time/intervals.tick);
+		time -= tick*intervals.tick;
+		return [measure,beat,tick];
+	}
+
 	this._track.events.forEach(function(event){
 		if(event.type == "noteon"){
 			
-			var startPos = [
-				(initialXPos+event.start/30*conf.step[0]),
-				(conf.labels.indexOf(event.note)*conf.step[1])
-			]
 
-			if(event.note == "C"){
-				startPos[1] = bottomCYPos;
+			var element = {
+				position: {
+					x: timeToIntervals(event.start),
+					y: [4, tonesInOctave.indexOf(event.note)]
+				},
+				length: {
+					x: timeToIntervals(event.duration),
+					y: [0,1]
+				}
 			}
-			
-			var endPos = [
-				(event.duration/30*conf.step[0]),
-				conf.step[1]
-			]
 
-			pianoRoll._grid.rect(startPos, endPos, "#999", "#555");
+			pianoRoll._view.addElement(element);
 		}
 	})
-	*/
 
 }
 
