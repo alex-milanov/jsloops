@@ -62,8 +62,12 @@ html
 								i.fa.fa-pencil
 							button#delete-mode
 								i.fa.fa-eraser
-					.body
+					.view
 						canvas.grid
+						canvas.elements
+						canvas.selection
+						canvas.indicators
+						canvas.interaction
 
 
 		
@@ -84,6 +88,7 @@ html
 		script(src="js/jsl/instr/basic-synth.js")
 		script(src="js/jsl/gfx/canvas.js")
 		script(src="js/jsl/gfx/grid.js")
+		script(src="js/jsl/gfx/view.js")
 		script(src="js/jsl/gui/editor.js")
 		script(src="js/jsl/gui/sequencer.js")
 		script(src="js/jsl/gui/piano-roll.js")

@@ -154,6 +154,7 @@ JSL.gfx.Grid.prototype.init = function(){
 
 	this._visible = this._calculateVisible();
 
+	/*
 	$(this._dom).on('click', function(event) {
 		var vector = [(event.offsetX-conf.step.x), (event.offsetY-conf.step.y)];
 		console.log(grid._vectorToPos(position,vector,{
@@ -161,6 +162,7 @@ JSL.gfx.Grid.prototype.init = function(){
 			y: conf.range.y.direction
 		}));
 	})
+*/
 
 	$(this._dom).on('mousewheel', function(event) {
 
@@ -183,15 +185,18 @@ JSL.gfx.Grid.prototype.init = function(){
 		}
 
 		if(modified){
-			grid.redraw();
+			grid.refresh();
 			//console.log(grid._position.x);
 		}
 
 	});
 
+
+	grid.refresh();
+
 }
 
-JSL.gfx.Grid.prototype.redraw = function(){
+JSL.gfx.Grid.prototype.refresh = function(){
 
 	var ctx = this._ctx;
 	var conf = this._conf;

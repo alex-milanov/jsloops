@@ -29,7 +29,7 @@ JSL.gui.PianoRoll = function(dom, context){
 		labelColor: "#555"
 	}*/
 
-	this._gridConf = {
+	this._viewConfig = {
 		"colors": [
 			"#000","#111","#333","#444","#555","#777"
 		],
@@ -103,7 +103,7 @@ JSL.gui.PianoRoll = function(dom, context){
 		}
 	}
 
-	this._grid = new JSL.gfx.Grid($(this._dom).find("canvas.grid")[0],this._gridConf);
+	this._view = new JSL.gfx.View($(this._dom).find(".view")[0],{},this._viewConfig);
 
 	this._track = {};
 
@@ -118,20 +118,20 @@ JSL.gui.PianoRoll.prototype.init = function(){
 
 	JSL.gui.Editor.prototype.init.call(this);
 
-	this._grid.init();
+	this._view.init();
 
 	this.redraw();
 	this.refresh();
 }
 
 JSL.gui.PianoRoll.prototype.redraw = function(){
-	this._grid.redraw();
+	//this._view.redraw();
 }
 
 JSL.gui.PianoRoll.prototype.refresh = function(){
 	
 	var pianoRoll = this;
-	var conf = pianoRoll._gridConf;
+	var conf = pianoRoll._viewConfig;
 
 	var bottomCYPos = 12*conf.step[1];
 	var initialXPos = conf.step[0];
