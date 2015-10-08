@@ -211,7 +211,7 @@ JSL.gfx.Grid.prototype.refresh = function(){
 	var step = conf.step;
 	var sections = conf.sections;
 
-	var yPosition = _.clone(this._position.y);
+	
 
 	this._visible = this._calculateVisible();
 
@@ -220,9 +220,8 @@ JSL.gfx.Grid.prototype.refresh = function(){
 		x: grid._multiAdd(grid._position.x,grid._visible.x,conf.range.x.length),
 		y: grid._multiSubtract(grid._position.y,grid._visible.y,conf.range.y.length)
 	}
-	
-	
 
+	var yPosition = _.clone(this._position.y);
 	// draw vertical sections
 	for(var yStep = 0; yStep < sizeVector[1]; yStep += step.y){
 
@@ -255,28 +254,11 @@ JSL.gfx.Grid.prototype.refresh = function(){
 
 		this.line([step.x,yStep], [sizeVector[0],yStep],null,borderColor);
 
-		
-		this._elements.forEach(function(element){
-			if(_.isEqual(element.position.y,yPosition)){
-				var relativeXPos = grid._multiSubtract(element.position.x,grid._position.x,conf.range.x.length);
-				var elXPos = step.x+relativeXPos[0]*step.x*16+relativeXPos[1]*step.x*4+relativeXPos[2]*step.x;
-									
-				if(elXPos >= step.x && elXPos < sizeVector[0]-step.x){
-	
-					var relativeXPos = grid._multiSubtract(element.position.x,grid._position.x,conf.range.x.length);
-					var elXPos = step.x+relativeXPos[0]*step.x*16+relativeXPos[1]*step.x*4+relativeXPos[2]*step.x;
-					grid.rect([elXPos,yStep], [step.x,yStep+step.y], "#ccc");
-				}
-			}
-		})
-
-
 		// iterate the position
 		yPosition = this._multiIterate(yPosition, yPosition.length-1, range.y, range.y.direction)
 	}
 
-	
-	var xPosition = _.clone(conf.position.x)
+	var xPosition = _.clone(this._position.x)
 	// draw horizontal sections
 	for(var xStep = step.x; xStep < sizeVector[0]; xStep += step.x){
 		var borderColor = "";
@@ -298,6 +280,37 @@ JSL.gfx.Grid.prototype.refresh = function(){
 		xPosition = this._multiIterate(xPosition, xPosition.length-1, range.x, range.x.direction)
 
 		//console.log(xPosition);
+	}
+
+
+	yPosition = _.clone(this._position.y);
+	// draw elements
+	for(var yStep = 0; yStep < sizeVector[1]; yStep += step.y){
+
+		this._elements.forEach(function(element){
+			if(_.isEqual(element.position.y,yPosition)){
+				var relativeXPos = grid._multiSubtract(element.position.x,grid._position.x,conf.range.x.length);
+				var elXPos = step.x+relativeXPos[0]*step.x*16+relativeXPos[1]*step.x*4+relativeXPos[2]*step.x;
+				var elWidth = element.length.x[0]*step.x*16+element.length.x[1]*step.x*4+element.length.x[2]*step.x				
+				if((elXPos >= step.x && elXPos <= sizeVector[0])
+					|| (elXPos+elWidth > step.x && elXPos+elWidth <= sizeVector[0]) 
+					|| (elXPos<step.x && elXPos+elWidth > sizeVector[0]) ){
+					if(elXPos-step.x < 0){
+						elWidth = elWidth+(elXPos-step.x);
+						elXPos = step.x;
+					}
+					if((elXPos+elWidth)>sizeVector[0]){
+						elWidth -= elWidth+elXPos-sizeVector[0];
+					}
+
+					grid.rect([elXPos+1,yStep+1], [elWidth-2,step.y-2], "#ccc");
+				}
+			}
+		})
+
+
+		// iterate the position
+		yPosition = this._multiIterate(yPosition, yPosition.length-1, range.y, range.y.direction)
 	}
 
 	

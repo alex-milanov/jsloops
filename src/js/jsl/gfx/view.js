@@ -28,6 +28,8 @@ JSL.gfx.View.prototype.init = function() {
 	this._layers.elements.init();
 	this._layers.interaction.init();
 
+	var view = this;
+
 	// grid
 	var grid = this._layers.grid;
 	var conf = this._config;
@@ -73,6 +75,7 @@ JSL.gfx.View.prototype.init = function() {
 
 	$(this._dom).on('mousemove', function(event) {
 		if(selecting == true){
+			$(view._dom).css("cursor","crosshair");
 			currentPos = [event.offsetX-startPos[0], event.offsetY-startPos[1]];
 			interaction.clear();
 			interaction.rect(startPos, currentPos, false,"#fff", [7,5]);
@@ -84,6 +87,7 @@ JSL.gfx.View.prototype.init = function() {
 		startPos = [0, 0];
 		currentPos = [0, 0];
 		interaction.clear();
+		$(view._dom).css("cursor","inherit");
 	})
 
 }
