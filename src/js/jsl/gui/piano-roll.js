@@ -3,10 +3,10 @@
 if(typeof JSL === "undefined"){ var JSL = {}; }
 if(typeof JSL.gui === "undefined"){ JSL.gui = {}; }
 
-JSL.gui.PianoRoll = function(dom, context){
-	JSL.gui.Editor.call(this, dom, context);
+JSL.gui.PianoRoll = function(dom){
+	JSL.gui.Editor.call(this, dom);
 
-	/*this._gridConf = {
+	/*this.gridConf = {
 		step: [38,14],
 		sections: [
 			[4,16],
@@ -29,7 +29,7 @@ JSL.gui.PianoRoll = function(dom, context){
 		labelColor: "#555"
 	}*/
 
-	this._viewConfig = {
+	this.viewConfig = {
 		"colors": [
 			"#000","#111","#333","#444","#555","#777"
 		],
@@ -103,9 +103,9 @@ JSL.gui.PianoRoll = function(dom, context){
 		}
 	}
 
-	this._view = new JSL.gfx.View($(this._dom).find(".view")[0],{},this._viewConfig);
+	this.view = new JSL.gfx.View($(this.dom).find(".view")[0],this.viewConfig);
 
-	this._track = {};
+	this.track = {};
 
 
 }
@@ -118,20 +118,20 @@ JSL.gui.PianoRoll.prototype.init = function(){
 
 	JSL.gui.Editor.prototype.init.call(this);
 
-	this._view.init();
+	this.view.init();
 
 	this.redraw();
 	this.refresh();
 }
 
 JSL.gui.PianoRoll.prototype.redraw = function(){
-	//this._view.redraw();
+	//this.view.redraw();
 }
 
 JSL.gui.PianoRoll.prototype.refresh = function(){
 	
 	var pianoRoll = this;
-	var conf = pianoRoll._viewConfig;
+	var conf = pianoRoll.viewConfig;
 
 	var bottomCYPos = 12*conf.step[1];
 	var initialXPos = conf.step[0];
@@ -146,7 +146,7 @@ JSL.gui.PianoRoll.prototype.refresh = function(){
 		return [measure,beat,tick];
 	}
 
-	this._track.events.forEach(function(event){
+	this.track.events.forEach(function(event){
 		if(event.type == "noteon"){
 			
 
@@ -161,14 +161,14 @@ JSL.gui.PianoRoll.prototype.refresh = function(){
 				}
 			}
 
-			pianoRoll._view.addElement(element);
+			pianoRoll.view.addElement(element);
 		}
 	})
 
 }
 
 JSL.gui.PianoRoll.prototype.link = function(track){
-	this._track = track;
+	this.track = track;
 	this.redraw();
 	this.refresh();
 }

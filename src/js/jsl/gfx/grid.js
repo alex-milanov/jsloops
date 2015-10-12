@@ -5,15 +5,14 @@ if(typeof JSL.gfx === "undefined"){ JSL.gfx = {}; }
 
 
 JSL.gfx.Grid = function(dom, conf){
-
 	JSL.gfx.Canvas.call(this, dom);
 
-	this._conf = conf;
-	this._position = conf.position;
+	this.conf = conf;
+	this.position = conf.position;
 
-	this._elements = [];
+	this.elements = [];
 
-	this._multiAdd = function(arr1, arr2, length, index){
+	this.multiAdd = function(arr1, arr2, length, index){
 		
 		var resultArr  = _.clone(arr1);
 
@@ -30,7 +29,7 @@ JSL.gfx.Grid = function(dom, conf){
 			} else {
 				resultArr[index] += arr2[index];
 			}
-			resultArr = this._multiAdd(resultArr, arr2, length, index-1);
+			resultArr = this.multiAdd(resultArr, arr2, length, index-1);
 		} else {
 			resultArr[index] += arr2[index];
 		}
@@ -38,7 +37,7 @@ JSL.gfx.Grid = function(dom, conf){
 		return resultArr;
 	}
 
-	this._multiSubtract = function(arr1, arr2, length, index){
+	this.multiSubtract = function(arr1, arr2, length, index){
 
 		var resultArr  = _.clone(arr1);
 		
@@ -55,7 +54,7 @@ JSL.gfx.Grid = function(dom, conf){
 			} else {
 				resultArr[index] -= arr2[index];
 			}
-			resultArr = this._multiSubtract(resultArr, arr2, length, index-1);
+			resultArr = this.multiSubtract(resultArr, arr2, length, index-1);
 		} else {
 			resultArr[index] -= arr2[index];
 		}
@@ -63,7 +62,7 @@ JSL.gfx.Grid = function(dom, conf){
 		return resultArr;
 	}
 
-	this._multiIterate = function(iterator, index, range, direction){
+	this.multiIterate = function(iterator, index, range, direction){
 		var start, limit;
 		
 		start = (index>0) ? 0 : range.start[index];
@@ -97,37 +96,37 @@ JSL.gfx.Grid = function(dom, conf){
 		}
 
 		if(index>0 && turnover){
-			return this._multiIterate(iterator, index-1, range, direction);
+			return this.multiIterate(iterator, index-1, range, direction);
 		}
 
 		return iterator;
 	}
 
-	this._calculateVisible = function(){
-		var sizeVector = [this._ctx.canvas.width,this._ctx.canvas.height];
+	this.calculateVisible = function(){
+		var sizeVector = [this.ctx.canvas.width,this.ctx.canvas.height];
 
 		var visible = {
 			x: [0,0,0],
 			y: [0,0]
 		}
 
-		visible = this._vectorToPos(visible, sizeVector, {x:1,y:1});
+		visible = this.vectorToPos(visible, sizeVector, {x:1,y:1});
 
 		return visible;
 	}
 
-	this._vectorToPos = function(startPos, vector, direction){
+	this.vectorToPos = function(startPos, vector, direction){
 		var resultPos = _.cloneDeep(startPos);
 
-		var conf = this._conf;
+		var conf = this.conf;
 		var range = conf.range;
 		var step = conf.step;
 		for(var xStep = step.x; xStep < vector[0]; xStep += step.x){
-			resultPos.x = this._multiIterate(resultPos.x, resultPos.x.length-1, range.x, direction.x);
+			resultPos.x = this.multiIterate(resultPos.x, resultPos.x.length-1, range.x, direction.x);
 		}
 
 		for(var yStep = 0; yStep < vector[1]; yStep += step.y){
-			resultPos.y = this._multiIterate(resultPos.y, resultPos.y.length-1, range.y, direction.y);
+			resultPos.y = this.multiIterate(resultPos.y, resultPos.y.length-1, range.y, direction.y);
 		}
 
 		return resultPos;
@@ -140,28 +139,28 @@ JSL.gfx.Grid.prototype.constructor = JSL.gfx.Grid;
 
 
 JSL.gfx.Grid.prototype.setConf = function(conf){
-	this._conf = conf;
+	this.conf = conf;
 	if(conf.position)
-		this._position = conf.position;
+		this.position = conf.position;
 }
 
 
 JSL.gfx.Grid.prototype.setPosition = function(position){
-	this._position = position;
+	this.position = position;
 }
 
 JSL.gfx.Grid.prototype.init = function(){
 
 	var grid = this;
-	var position = this._position;
-	var conf = this._conf;
+	var position = this.position;
+	var conf = this.conf;
 
-	this._visible = this._calculateVisible();
+	this.visible = this.calculateVisible();
 
 	/*
-	$(this._dom).on('click', function(event) {
+	$(this.dom).on('click', function(event) {
 		var vector = [(event.offsetX-conf.step.x), (event.offsetY-conf.step.y)];
-		console.log(grid._vectorToPos(position,vector,{
+		console.log(grid.vectorToPos(position,vector,{
 			x: conf.range.x.direction,
 			y: conf.range.y.direction
 		}));
@@ -177,14 +176,14 @@ JSL.gfx.Grid.prototype.init = function(){
 
 
 JSL.gfx.Grid.prototype.addElement = function(element){
-	this._elements.push(element);
+	this.elements.push(element);
 }
 
 
 JSL.gfx.Grid.prototype.refresh = function(){
 
-	var ctx = this._ctx;
-	var conf = this._conf;
+	var ctx = this.ctx;
+	var conf = this.conf;
 	var grid = this;
 
 	ctx.canvas.width = $(ctx.canvas.parentNode).width();
@@ -213,15 +212,15 @@ JSL.gfx.Grid.prototype.refresh = function(){
 
 	
 
-	this._visible = this._calculateVisible();
+	this.visible = this.calculateVisible();
 
 	
 	var visibleRange = {
-		x: grid._multiAdd(grid._position.x,grid._visible.x,conf.range.x.length),
-		y: grid._multiSubtract(grid._position.y,grid._visible.y,conf.range.y.length)
+		x: grid.multiAdd(grid.position.x,grid.visible.x,conf.range.x.length),
+		y: grid.multiSubtract(grid.position.y,grid.visible.y,conf.range.y.length)
 	}
 
-	var yPosition = _.clone(this._position.y);
+	var yPosition = _.clone(this.position.y);
 	// draw vertical sections
 	for(var yStep = 0; yStep < sizeVector[1]; yStep += step.y){
 
@@ -252,13 +251,13 @@ JSL.gfx.Grid.prototype.refresh = function(){
 			}
 		}
 
-		this.line([step.x,yStep], [sizeVector[0],yStep],null,borderColor);
+		this.line([step.x,yStep], [sizeVector[0],yStep],borderColor);
 
 		// iterate the position
-		yPosition = this._multiIterate(yPosition, yPosition.length-1, range.y, range.y.direction)
+		yPosition = this.multiIterate(yPosition, yPosition.length-1, range.y, range.y.direction)
 	}
 
-	var xPosition = _.clone(this._position.x)
+	var xPosition = _.clone(this.position.x)
 	// draw horizontal sections
 	for(var xStep = step.x; xStep < sizeVector[0]; xStep += step.x){
 		var borderColor = "";
@@ -275,21 +274,21 @@ JSL.gfx.Grid.prototype.refresh = function(){
 			}
 		}
 
-		this.line([xStep+step.x,0], [xStep+step.x,sizeVector[1]],null,borderColor);
+		this.line([xStep+step.x,0], [xStep+step.x,sizeVector[1]],borderColor);
 		// iterate the position
-		xPosition = this._multiIterate(xPosition, xPosition.length-1, range.x, range.x.direction)
+		xPosition = this.multiIterate(xPosition, xPosition.length-1, range.x, range.x.direction)
 
 		//console.log(xPosition);
 	}
 
 
-	yPosition = _.clone(this._position.y);
+	yPosition = _.clone(this.position.y);
 	// draw elements
 	for(var yStep = 0; yStep < sizeVector[1]; yStep += step.y){
 
-		this._elements.forEach(function(element){
+		this.elements.forEach(function(element){
 			if(_.isEqual(element.position.y,yPosition)){
-				var relativeXPos = grid._multiSubtract(element.position.x,grid._position.x,conf.range.x.length);
+				var relativeXPos = grid.multiSubtract(element.position.x,grid.position.x,conf.range.x.length);
 				var elXPos = step.x+relativeXPos[0]*step.x*16+relativeXPos[1]*step.x*4+relativeXPos[2]*step.x;
 				var elWidth = element.length.x[0]*step.x*16+element.length.x[1]*step.x*4+element.length.x[2]*step.x				
 				if((elXPos >= step.x && elXPos <= sizeVector[0])
@@ -310,7 +309,7 @@ JSL.gfx.Grid.prototype.refresh = function(){
 
 
 		// iterate the position
-		yPosition = this._multiIterate(yPosition, yPosition.length-1, range.y, range.y.direction)
+		yPosition = this.multiIterate(yPosition, yPosition.length-1, range.y, range.y.direction)
 	}
 
 	

@@ -4,50 +4,52 @@ if(typeof JSL === "undefined"){ var JSL = {}; }
 if(typeof JSL.gfx === "undefined"){ JSL.gfx = {}; }
 
 JSL.gfx.Canvas = function(dom) {
-	this._dom = dom;
-	this._ctx = dom.getContext("2d");
+	iblokz.Element.call(this, dom);
+	this.ctx = this.dom.getContext("2d");
 }
+
+JSL.gfx.Canvas.prototype = Object.create( iblokz.Element.prototype );
+JSL.gfx.Canvas.prototype.constructor = JSL.gfx.Canvas;
 
 
 JSL.gfx.Canvas.prototype.clear = function(){
-	this._ctx.clearRect(0,0,this._dom.width,this._dom.height);
+	this.ctx.clearRect(0,0,this.dom.width,this.dom.height);
 }
 
-JSL.gfx.Canvas.prototype.line = function(start, finish, dash, stroke){
-	this._ctx.beginPath();
-	this._ctx.moveTo(start[0],start[1]);
-	this._ctx.lineTo(finish[0],finish[1]);
+JSL.gfx.Canvas.prototype.line = function(start, finish, stroke, dash){
+	this.ctx.beginPath();
+	this.ctx.moveTo(start[0],start[1]);
+	this.ctx.lineTo(finish[0],finish[1]);
 	if(dash) {
-		this._ctx.setLineDash(dash);
+		this.ctx.setLineDash(dash);
 	}
-	this._ctx.lineWidth = 1;
-	this._ctx.strokeStyle = stroke;
-	this._ctx.stroke();
+	this.ctx.lineWidth = 1;
+	this.ctx.strokeStyle = stroke;
+	this.ctx.stroke();
 }
 
 JSL.gfx.Canvas.prototype.rect = function(start, finish, background, stroke, dash){
-	this._ctx.beginPath();
-	this._ctx.rect(start[0], start[1], finish[0], finish[1]);
+	this.ctx.beginPath();
+	this.ctx.rect(start[0], start[1], finish[0], finish[1]);
 	if(background){
-		this._ctx.fillStyle = background;
-		this._ctx.fill();
+		this.ctx.fillStyle = background;
+		this.ctx.fill();
 	}
 	if(dash) {
-		this._ctx.setLineDash(dash);
+		this.ctx.setLineDash(dash);
 	}
 	if(stroke){
-		this._ctx.lineWidth = 1;
-		this._ctx.strokeStyle = stroke;
-		this._ctx.stroke();
+		this.ctx.lineWidth = 1;
+		this.ctx.strokeStyle = stroke;
+		this.ctx.stroke();
 	}
 }
-
 
 JSL.gfx.Canvas.prototype.init = function() {
 	this.refresh();
 } 
 
 JSL.gfx.Canvas.prototype.refresh = function() {
-	this._ctx.canvas.width = $(this._ctx.canvas).width();
-	this._ctx.canvas.height = $(this._ctx.canvas).height();
+	this.ctx.canvas.width = $(this.ctx.canvas).width();
+	this.ctx.canvas.height = $(this.ctx.canvas).height();
 } 
