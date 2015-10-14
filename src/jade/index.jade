@@ -56,11 +56,20 @@ html
 					.toolbar
 						.title Piano Roll
 						.toolbar-controls
-							button.selected#edit-mode
+							button.int-mode-option.selected(
+								data-option-param="int-mode",
+								data-option-value="select"
+							)
 								i.fa.fa-mouse-pointer
-							button#edit-mode
+							button.int-mode-option(
+								data-option-param="int-mode",
+								data-option-value="edit"
+							)
 								i.fa.fa-pencil
-							button#delete-mode
+							button.int-mode-option(
+								data-option-param="int-mode",
+								data-option-value="delete"
+							)
 								i.fa.fa-eraser
 					.view
 						canvas.grid
@@ -68,9 +77,6 @@ html
 						canvas.selection
 						canvas.indicators
 						canvas.interaction
-
-
-		
 
 		//- libs
 		script(src="lib/jquery/dist/jquery.js")

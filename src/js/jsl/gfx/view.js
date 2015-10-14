@@ -12,6 +12,10 @@ JSL.gfx.View = function(dom, config){
 
 	this.elements = [];
 
+	this.data = {
+		"int-mode": "select"
+	};
+
 	this.layers = {
 		grid: new JSL.gfx.Grid(this.find("canvas.grid")[0], this.config),
 		elements: new JSL.gfx.Canvas(this.find("canvas.elements")[0]),
@@ -73,23 +77,51 @@ JSL.gfx.View.prototype.init = function() {
 	this.on('mousedown', function(event) {
 		selecting = true;
 		startPos = [event.offsetX, event.offsetY];
+		grid.selection = [];
 	})
 
 	this.on('mousemove', function(event) {
 		if(selecting == true){
+			var x = event.offsetX;
+			var y = event.offsetY;
 			view.dom.style.cursor = "crosshair";
 			currentPos = [event.offsetX-startPos[0], event.offsetY-startPos[1]];
 			interaction.clear();
 			interaction.rect(startPos, currentPos, false,"#fff", [7,5]);
+			grid.selection = [];
+			var start = [((startPos[0] <= x) ? startPos[0] : x),((startPos[1] <= y) ? startPos[1] : y)];
+			var end = [((startPos[0] >= x) ? startPos[0] : x),((startPos[1] >= y) ? startPos[1] : y)];
+			grid.hitAreas.forEach(function(hitArea){
+				if((start[0] <= hitArea.rect.x && hitArea.rect.x+hitArea.rect.width <= end[0])
+					&& (start[1] <= hitArea.rect.y && hitArea.rect.y+hitArea.rect.height <= end[1])) {
+					grid.selection.push(hitArea.elementIndex);
+				}
+			});
+			grid.refresh();
+
 		}
 	})
 
 	this.on('mouseup', function(event) {
+		
+		if(grid.selection.length == 0){
+			var x = event.offsetX;
+			var y = event.offsetY;
+			grid.hitAreas.forEach(function(hitArea){
+				if((x >= hitArea.rect.x && x <= hitArea.rect.x+hitArea.rect.width)
+					&& (y >= hitArea.rect.y && y <= hitArea.rect.y+hitArea.rect.height)) {
+					grid.selection.push(hitArea.elementIndex);
+				}
+			});
+			grid.refresh();
+		}
+		
 		selecting = false;
 		startPos = [0, 0];
 		currentPos = [0, 0];
 		interaction.clear();
 		view.dom.style.cursor = "inherit";
+		
 	})
 
 }

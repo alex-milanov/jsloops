@@ -122,6 +122,21 @@ JSL.gui.PianoRoll.prototype.init = function(){
 
 	this.redraw();
 	this.refresh();
+
+	var pianoRoll = this;
+	var view = this.view;
+
+	$(this.dom).on("click","[class*='-option']",function(_ev){
+
+		var _optionParam = $(this).data("option-param");
+		var _optionValue = $(this).data("option-value");
+
+		$(pianoRoll.dom).find("."+_optionParam+"-option").removeClass("selected");
+		$(this).addClass("selected");
+
+		view.data[_optionParam] = _optionValue;
+	});
+
 }
 
 JSL.gui.PianoRoll.prototype.redraw = function(){
@@ -172,4 +187,3 @@ JSL.gui.PianoRoll.prototype.link = function(track){
 	this.redraw();
 	this.refresh();
 }
-

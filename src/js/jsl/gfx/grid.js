@@ -12,6 +12,10 @@ JSL.gfx.Grid = function(dom, conf){
 
 	this.elements = [];
 
+	this.hitAreas = [];
+
+	this.selection = [];
+
 	this.multiAdd = function(arr1, arr2, length, index){
 		
 		var resultArr  = _.clone(arr1);
@@ -151,6 +155,8 @@ JSL.gfx.Grid.prototype.setPosition = function(position){
 
 JSL.gfx.Grid.prototype.init = function(){
 
+	//JSL.gfx.View.prototype.init.call(this);
+
 	var grid = this;
 	var position = this.position;
 	var conf = this.conf;
@@ -167,9 +173,8 @@ JSL.gfx.Grid.prototype.init = function(){
 	})
 */
 
+
 	
-
-
 	grid.refresh();
 
 }
@@ -283,10 +288,11 @@ JSL.gfx.Grid.prototype.refresh = function(){
 
 
 	yPosition = _.clone(this.position.y);
+	grid.hitAreas = [];
 	// draw elements
 	for(var yStep = 0; yStep < sizeVector[1]; yStep += step.y){
 
-		this.elements.forEach(function(element){
+		this.elements.forEach(function(element, elementIndex){
 			if(_.isEqual(element.position.y,yPosition)){
 				var relativeXPos = grid.multiSubtract(element.position.x,grid.position.x,conf.range.x.length);
 				var elXPos = step.x+relativeXPos[0]*step.x*16+relativeXPos[1]*step.x*4+relativeXPos[2]*step.x;
@@ -302,11 +308,23 @@ JSL.gfx.Grid.prototype.refresh = function(){
 						elWidth -= elWidth+elXPos-sizeVector[0];
 					}
 
-					grid.rect([elXPos+1,yStep+1], [elWidth-2,step.y-2], "#ccc");
+					var elColor = (grid.selection.indexOf(elementIndex)>-1) ? "#ab7" : "#ccc";
+
+					grid.rect([elXPos+1,yStep+1], [elWidth-2,step.y-2], elColor);
+
+					grid.hitAreas.push({
+						rect: {
+							x: elXPos+1,
+							y: yStep+1,
+							width: elWidth-2,
+							height: step.y-2
+						},
+						elementIndex: elementIndex
+					})
+
 				}
 			}
 		})
-
 
 		// iterate the position
 		yPosition = this.multiIterate(yPosition, yPosition.length-1, range.y, range.y.direction)
