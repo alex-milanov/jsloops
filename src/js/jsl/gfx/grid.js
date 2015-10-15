@@ -233,9 +233,9 @@ JSL.gfx.Grid.prototype.refresh = function(){
 		var pianoBGColor = (sections.y.octave.pattern.backgrounds[yPosition[1]] == 1) ?  "#999" : "#000";
 		var pianoFGColor = (sections.y.octave.pattern.backgrounds[yPosition[1]] == 1) ?  "#000" : "#999";
 
-		this.rect([0,yStep], [step.x, yStep+step.y], pianoBGColor,"#000");
+		this.rect(new JSL.gfx.Rect(0, yStep, step.x, yStep+step.y), pianoBGColor,"#000");
 
-		this.rect([step.x,yStep], [sizeVector[0],yStep+step.y], backgroundColor);
+		this.rect(new JSL.gfx.Rect(step.x, yStep, sizeVector[0],yStep+step.y), backgroundColor);
 
 		if(sections.y.octave.pattern.labels[yPosition[1]]!=""){
 			ctx.font="12px Arial";
@@ -310,15 +310,15 @@ JSL.gfx.Grid.prototype.refresh = function(){
 
 					var elColor = (grid.selection.indexOf(elementIndex)>-1) ? "#ab7" : "#ccc";
 
-					grid.rect([elXPos+1,yStep+1], [elWidth-2,step.y-2], elColor);
+					grid.rect(new JSL.gfx.Rect(elXPos+1, yStep+1, elWidth-2, step.y-2), elColor);
 
 					grid.hitAreas.push({
-						rect: {
+						rect: new JSL.gfx.Rect().copy({
 							x: elXPos+1,
 							y: yStep+1,
 							width: elWidth-2,
 							height: step.y-2
-						},
+						}),
 						elementIndex: elementIndex
 					})
 

@@ -28,9 +28,9 @@ JSL.gfx.Canvas.prototype.line = function(start, finish, stroke, dash){
 	this.ctx.stroke();
 }
 
-JSL.gfx.Canvas.prototype.rect = function(start, finish, background, stroke, dash){
+JSL.gfx.Canvas.prototype.rect = function(rect, background, stroke, dash){
 	this.ctx.beginPath();
-	this.ctx.rect(start[0], start[1], finish[0], finish[1]);
+	this.ctx.rect(rect.x, rect.y, rect.width, rect.height);
 	if(background){
 		this.ctx.fillStyle = background;
 		this.ctx.fill();
