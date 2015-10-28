@@ -7,23 +7,24 @@ JSL.gui.Studio = function(dom, context){
 	iblokz.Element.call(this, dom, context);
 
 
-	this._actx = new AudioContext;
+	this.actx = new AudioContext;
 
-	this._tickIndex = -1;
-	this._playLoop = false;
+	this.tickIndex = -1;
+	this.playLoop = false;
 
-	this._song = {};
+	this.song = {};
 
-	this._kit = {
-		K: new JSL.instr.Sampler(this._actx, "samples/kick01.ogg"),
-		H: new JSL.instr.Sampler(this._actx, "samples/hihat_opened02.ogg"),
-		S: new JSL.instr.Sampler(this._actx, "samples/snare01.ogg"),
-		C: new JSL.instr.Sampler(this._actx, "samples/clap01.ogg"),
-		"P": new JSL.instr.BasicSynth(this._actx, "C5")
+	this.kit = {
+		K: new JSL.instr.Sampler(this.actx, "samples/kick01.ogg"),
+		H: new JSL.instr.Sampler(this.actx, "samples/hihat_opened02.ogg"),
+		S: new JSL.instr.Sampler(this.actx, "samples/snare01.ogg"),
+		C: new JSL.instr.Sampler(this.actx, "samples/clap01.ogg"),
+		"P": new JSL.instr.BasicSynth(this.actx, "C5")
 	}
 
-	this._sequencer = new JSL.gui.Sequencer($(".sequencer")[0]);
-	this._pianoRoll = new JSL.gui.PianoRoll($(".piano-roll")[0])
+	this.sequencer = new JSL.gui.Sequencer($(".sequencer")[0]);
+	this.pianoRoll = new JSL.gui.PianoRoll($(".piano-roll")[0]);
+
 }
 
 JSL.gui.Studio.prototype = Object.create( iblokz.Element.prototype );
@@ -31,33 +32,33 @@ JSL.gui.Studio.prototype.constructor = JSL.gui.Studio;
 
 JSL.gui.Studio.prototype.tick = function(){
 	var studio = this;
-	if(this._tickIndex < this._song.bars -1)
-		this._tickIndex++;
+	if(this.tickIndex < this.song.bars -1)
+		this.tickIndex++;
 	else
-		this._tickIndex = 0;
+		this.tickIndex = 0;
 
-	this._song.arrangement.forEach(function(item){
-		var track = studio._song.tracks[item.track];
+	this.song.arrangement.forEach(function(item){
+		var track = studio.song.tracks[item.track];
 
-		if(studio._tickIndex >= item.start && studio._tickIndex < item.start + track.bars * item.repeat){
-			var trackTick = studio._tickIndex-item.start-parseInt(studio._tickIndex/track.bars)*track.bars;
+		if(studio.tickIndex >= item.start && studio.tickIndex < item.start + track.bars * item.repeat){
+			var trackTick = studio.tickIndex-item.start-parseInt(studio.tickIndex/track.bars)*track.bars;
 			
 			switch(track.type){
 				case "sequencer":
 					track.channels.forEach(function(channel, channelIndex){
 						if(channel.pattern && channel.pattern[trackTick] == 1) {
-							studio._kit[channel.note].play();
+							studio.kit[channel.note].play();
 						}
 					})
-					studio._sequencer.tick(trackTick);
+					studio.sequencer.tick(trackTick);
 					break;
 				case "midi":
-					var now = studio._actx.currentTime;
+					var now = studio.actx.currentTime;
 					track.events.forEach(function(event){
 						if(parseInt(event.start/15) == trackTick){		
 							var evStart = event.start/15-parseInt(event.start/15)
 							var evDuration = event.duration/15;
-							studio._kit["P"].trigger(now+evStart, evDuration, event.note+"4");
+							studio.kit["P"].trigger(now+evStart, evDuration, event.note+"4");
 						}
 					})
 					break;
@@ -65,27 +66,27 @@ JSL.gui.Studio.prototype.tick = function(){
 		}		
 	})
 
-	if(this._sequencer){
+	if(this.sequencer){
 		
 	}
 }
 
 JSL.gui.Studio.prototype.load = function(data){
-	this._song = _.cloneDeep(data);
-	$("#bpm").val(this._song.bpm);
-	this._sequencer.link(this._song.tracks[0]);
-	this._pianoRoll.link(this._song.tracks[1]);
+	this.song = _.cloneDeep(data);
+	$("#bpm").val(this.song.bpm);
+	this.sequencer.link(this.song.tracks[0]);
+	this.pianoRoll.link(this.song.tracks[1]);
 }
 
 JSL.gui.Studio.prototype.init = function(){
-	iblokz.Element.prototype.init.call(this);
+	//iblokz.Element.prototype.init.call(this);
 
-	var song = this._song;
-	var sequencer = this._sequencer;
-	var pianoRoll = this._pianoRoll;
+	var song = this.song;
+	var sequencer = this.sequencer;
+	var pianoRoll = this.pianoRoll;
 
-	var playLoop = this._playLoop;
-	var tickIndex = this._tickIndex;
+	var playLoop = this.playLoop;
+	var tickIndex = this.tickIndex;
 
 	var studio = this;
 
@@ -121,7 +122,7 @@ JSL.gui.Studio.prototype.init = function(){
 			$(this).find(".bar").removeClass("current");
 		});
 
-		studio._tickIndex = -1;
+		studio.tickIndex = -1;
 
 		$("#play").removeClass("active");
 	})

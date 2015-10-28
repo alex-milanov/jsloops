@@ -56,17 +56,27 @@ html
 					.toolbar
 						.title Piano Roll
 						.toolbar-controls
-							button.selected#edit-mode
+							button.int-mode-option.selected(
+								data-option-param="int-mode",
+								data-option-value="select"
+							)
 								i.fa.fa-mouse-pointer
-							button#edit-mode
+							button.int-mode-option(
+								data-option-param="int-mode",
+								data-option-value="edit"
+							)
 								i.fa.fa-pencil
-							button#delete-mode
+							button.int-mode-option(
+								data-option-param="int-mode",
+								data-option-value="delete"
+							)
 								i.fa.fa-eraser
-					.body
+					.view
 						canvas.grid
-
-
-		
+						canvas.elements
+						canvas.selection
+						canvas.indicators
+						canvas.interaction
 
 		//- libs
 		script(src="lib/jquery/dist/jquery.js")
@@ -79,11 +89,15 @@ html
 		script(src="js/iblokz/element.js")
 		//- app
 		script(src="js/jsl/jsl.js")
+		script(src="js/jsl/etc/counter.js")
 		script(src="js/jsl/store/song.js")
 		script(src="js/jsl/instr/sampler.js")
 		script(src="js/jsl/instr/basic-synth.js")
+		script(src="js/jsl/gfx/vector2.js")
+		script(src="js/jsl/gfx/rect.js")
 		script(src="js/jsl/gfx/canvas.js")
 		script(src="js/jsl/gfx/grid.js")
+		script(src="js/jsl/gfx/view.js")
 		script(src="js/jsl/gui/editor.js")
 		script(src="js/jsl/gui/sequencer.js")
 		script(src="js/jsl/gui/piano-roll.js")
