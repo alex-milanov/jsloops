@@ -82,12 +82,12 @@ JSL.gui.PianoRoll = function(dom){
 		"range": {
 			"x": {
 				"start": [0,0,0], // measure, beat, tick
-				"end": [16,0,0],
+				"end": [16,0,1],
 				"length": [4,4,1],
 				"direction": 1
 			},
 			"y": {
-				"start": [0,9], // octave, tone
+				"start": [0,8], // octave, tone
 				"end": [8,0],
 				"length": [12,1],
 				"direction": -1

@@ -54,8 +54,8 @@ JSL.gfx.Vector2.prototype.add = function(v){
 }
 
 JSL.gfx.Vector2.prototype.multiply = function(v){
-	this.x /= v.x;
-	this.y /= v.y;
+	this.x *= v.x;
+	this.y *= v.y;
 
 	return this;
 }

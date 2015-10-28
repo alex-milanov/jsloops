@@ -69,7 +69,9 @@ JSL.gfx.Grid.prototype.pan = function(vector){
 
 	var gridRect = this.getSize();
 
-	gridRect.pan(vector);
+	gridRect.pan(vector.clone().multiply(this.conf.step));
+
+	//console.log(this.range, vector.clone().multiply(this.conf.step));
 
 	if(this.range.contains(gridRect)){
 		if(vector.y!=0){
@@ -79,7 +81,7 @@ JSL.gfx.Grid.prototype.pan = function(vector){
 		if(vector.x!=0){
 			this.counter.x.iterate(1, vector.x);
 		}
-		this.offset.add(vector);
+		this.offset = gridRect.getStart();
 		this.refresh();
 	}
 }
