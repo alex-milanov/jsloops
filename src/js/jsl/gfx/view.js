@@ -49,35 +49,19 @@ JSL.gfx.View.prototype.init = function() {
 
 	this.on('mousewheel', function(event) {
 
-		var range = _.cloneDeep(conf.range);
-		
-		range.y.start = grid.multiAdd(range.y.start,grid.visible.y,range.y.length);
-		range.x.end = grid.multiSubtract(range.x.end,grid.visible.x,range.x.length);
-		//console.log(event.originalEvent.deltaX, event.originalEvent.deltaY, event.originalEvent.deltaFactor);
-		var modified = false;
+		var panVector = new JSL.gfx.Vector2(0,0);
+
 		if(event.deltaY != 0){
-			var direction = (event.deltaY > 0) ? range.y.direction : -range.y.direction;
-			grid.position.y = grid.multiIterate(grid.position.y, grid.position.y.length-1, range.y, direction);
-			modified = true;
+			panVector.y = (event.deltaY > 0) ? 1 : -1;
 		}
 
 		if(event.deltaX != 0){
-			var direction = (event.deltaX > 0) ? range.x.direction : -range.x.direction;
-			grid.position.x = grid.multiIterate(grid.position.x, grid.position.x.length-1, range.x, direction);
-			modified = true;
+			panVector.x = (event.deltaX > 0) ? 1 : -1;
 		}
 
-		if(modified){
-			grid.refresh();
-			this.position = grid.position;
-			//console.log(grid.position.x);
-		}
+		grid.pan(panVector);
 
 	});
-
-	var posInsideRect = function(pos, rect){
-
-	}
 
 	// interaction
 	var interactionLayer = this.layers.interaction;

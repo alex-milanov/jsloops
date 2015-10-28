@@ -8,7 +8,30 @@ JSL.gfx.Grid = function(dom, conf){
 	JSL.gfx.Canvas.call(this, dom);
 
 	this.conf = conf;
-	this.position = conf.position;
+	var range = conf.range;
+	var position = conf.position;
+
+	this.counter = {
+		x: new JSL.etc.Counter(range.x.length, [range.x.start,range.x.end], range.x.direction, position.x),
+		y: new JSL.etc.Counter(range.y.length, [range.y.start,range.y.end], range.y.direction, position.y)
+	}
+
+	this.offset = new JSL.gfx.Vector2(
+		this.counter.x.toSteps()*conf.step.x,
+		this.counter.y.toSteps()*conf.step.y
+	);
+
+	this.range = new JSL.gfx.Rect();
+
+	this.range.setStart({
+		x: this.counter.x.clone().setPositionStart().toSteps()*conf.step.x,
+		y: this.counter.y.clone().setPositionStart().toSteps()*conf.step.y
+	})
+
+	this.range.setEnd({
+		x: this.counter.x.clone().setPositionEnd().toSteps()*conf.step.x,
+		y: this.counter.y.clone().setPositionEnd().toSteps()*conf.step.y
+	})
 
 	this.elements = [];
 
@@ -16,125 +39,6 @@ JSL.gfx.Grid = function(dom, conf){
 
 	this.selection = [];
 
-	this.multiAdd = function(arr1, arr2, length, index){
-		
-		var resultArr  = _.clone(arr1);
-
-		if(resultArr.length!=arr2.length)
-			return false;
-
-		if(typeof index === "undefined")
-			index = resultArr.length-1;
-
-		if(index > 0){
-			if((resultArr[index] + arr2[index]) > length[index-1]-1){
-				resultArr[index] += arr2[index] - length[index-1]-1;
-				resultArr[index-1]++;
-			} else {
-				resultArr[index] += arr2[index];
-			}
-			resultArr = this.multiAdd(resultArr, arr2, length, index-1);
-		} else {
-			resultArr[index] += arr2[index];
-		}
-
-		return resultArr;
-	}
-
-	this.multiSubtract = function(arr1, arr2, length, index){
-
-		var resultArr  = _.clone(arr1);
-		
-		if(resultArr.length!=arr2.length)
-			return false;
-
-		if(typeof index === "undefined")
-			index = resultArr.length-1;
-
-		if(index > 0){
-			if((resultArr[index]-arr2[index]) < 0){
-				resultArr[index] = resultArr[index]+length[index-1]-arr2[index];
-				resultArr[index-1]--;
-			} else {
-				resultArr[index] -= arr2[index];
-			}
-			resultArr = this.multiSubtract(resultArr, arr2, length, index-1);
-		} else {
-			resultArr[index] -= arr2[index];
-		}
-
-		return resultArr;
-	}
-
-	this.multiIterate = function(iterator, index, range, direction){
-		var start, limit;
-		
-		start = (index>0) ? 0 : range.start[index];
-		limit = (index>0) ? range.length[index-1]-1 : range.end[index];
-		
-		var turnover = false;
-		
-		switch(direction){
-			case 1:
-				if(_.isEqual(iterator,range.end)){
-					return iterator;
-				}
-				if(iterator[index] < limit) {
-					iterator[index] += direction;
-				} else {
-					iterator[index] = start;
-					turnover = true;
-				}
-				break;
-			case -1:
-				if(_.isEqual(iterator,range.start)){
-					return iterator;
-				}
-				if(iterator[index] > start){
-					iterator[index] += direction;
-				} else {
-					iterator[index] = limit;
-					turnover = true;
-				}
-				break;
-		}
-
-		if(index>0 && turnover){
-			return this.multiIterate(iterator, index-1, range, direction);
-		}
-
-		return iterator;
-	}
-
-	this.calculateVisible = function(){
-		var sizeVector = [this.ctx.canvas.width,this.ctx.canvas.height];
-
-		var visible = {
-			x: [0,0,0],
-			y: [0,0]
-		}
-
-		visible = this.vectorToPos(visible, sizeVector, {x:1,y:1});
-
-		return visible;
-	}
-
-	this.vectorToPos = function(startPos, vector, direction){
-		var resultPos = _.cloneDeep(startPos);
-
-		var conf = this.conf;
-		var range = conf.range;
-		var step = conf.step;
-		for(var xStep = step.x; xStep < vector[0]; xStep += step.x){
-			resultPos.x = this.multiIterate(resultPos.x, resultPos.x.length-1, range.x, direction.x);
-		}
-
-		for(var yStep = 0; yStep < vector[1]; yStep += step.y){
-			resultPos.y = this.multiIterate(resultPos.y, resultPos.y.length-1, range.y, direction.y);
-		}
-
-		return resultPos;
-	}
 
 }
 
@@ -148,37 +52,37 @@ JSL.gfx.Grid.prototype.setConf = function(conf){
 		this.position = conf.position;
 }
 
-
-JSL.gfx.Grid.prototype.setPosition = function(position){
-	this.position = position;
-}
-
 JSL.gfx.Grid.prototype.init = function(){
 
-	//JSL.gfx.View.prototype.init.call(this);
-
 	var grid = this;
-	var position = this.position;
-	var conf = this.conf;
-
-	this.visible = this.calculateVisible();
-
-	/*
-	$(this.dom).on('click', function(event) {
-		var vector = [(event.offsetX-conf.step.x), (event.offsetY-conf.step.y)];
-		console.log(grid.vectorToPos(position,vector,{
-			x: conf.range.x.direction,
-			y: conf.range.y.direction
-		}));
-	})
-*/
-
-
 	
 	grid.refresh();
 
 }
 
+
+JSL.gfx.Grid.prototype.pan = function(vector){
+
+	if(vector.x == 0 && vector.y == 0){
+		return false;
+	}
+
+	var gridRect = this.getSize();
+
+	gridRect.pan(vector);
+
+	if(this.range.contains(gridRect)){
+		if(vector.y!=0){
+			this.counter.y.iterate(1, vector.y);
+
+		}
+		if(vector.x!=0){
+			this.counter.x.iterate(1, vector.x);
+		}
+		this.offset.add(vector);
+		this.refresh();
+	}
+}
 
 JSL.gfx.Grid.prototype.addElement = function(element){
 	this.elements.push(element);
@@ -216,41 +120,43 @@ JSL.gfx.Grid.prototype.refresh = function(){
 	var sections = conf.sections;
 
 	
-
+/*
 	this.visible = this.calculateVisible();
 
 	
 	var visibleRange = {
 		x: grid.multiAdd(grid.position.x,grid.visible.x,conf.range.x.length),
 		y: grid.multiSubtract(grid.position.y,grid.visible.y,conf.range.y.length)
-	}
+	}*/
 
-	var yPosition = _.clone(this.position.y);
+	var yCounter = this.counter.y.clone();
+	var xCounter = this.counter.x.clone();
+
 	// draw vertical sections
 	for(var yStep = 0; yStep < sizeVector[1]; yStep += step.y){
 
-		var backgroundColor = colors[sections.y.octave.pattern.backgrounds[yPosition[1]]];
-		var pianoBGColor = (sections.y.octave.pattern.backgrounds[yPosition[1]] == 1) ?  "#999" : "#000";
-		var pianoFGColor = (sections.y.octave.pattern.backgrounds[yPosition[1]] == 1) ?  "#000" : "#999";
+		var backgroundColor = colors[sections.y.octave.pattern.backgrounds[yCounter.position[1]]];
+		var pianoBGColor = (sections.y.octave.pattern.backgrounds[yCounter.position[1]] == 1) ?  "#999" : "#000";
+		var pianoFGColor = (sections.y.octave.pattern.backgrounds[yCounter.position[1]] == 1) ?  "#000" : "#999";
 
 		this.rect(new JSL.gfx.Rect(0, yStep, step.x, yStep+step.y), pianoBGColor,"#000");
 
 		this.rect(new JSL.gfx.Rect(step.x, yStep, sizeVector[0],yStep+step.y), backgroundColor);
 
-		if(sections.y.octave.pattern.labels[yPosition[1]]!=""){
+		if(sections.y.octave.pattern.labels[yCounter.position[1]]!=""){
 			ctx.font="12px Arial";
 			ctx.fillStyle=pianoFGColor;
-			ctx.fillText(sections.y.octave.pattern.labels[yPosition[1]]+yPosition[0],2,yStep-6+18);
+			ctx.fillText(sections.y.octave.pattern.labels[yCounter.position[1]]+yCounter.position[0],2,yStep-6+18);
 		}
 
 		var borderColor = "";
-		for(var index = yPosition.length-1; index >= 0; index--){
-			if(index == yPosition.length-1){
-				if(parseInt((yPosition[index]+1)/range.y.length[index]) == ((yPosition[index]+1)/range.y.length[index])){
+		for(var index = yCounter.position.length-1; index >= 0; index--){
+			if(index == yCounter.position.length-1){
+				if(parseInt((yCounter.position[index]+1)/range.y.length[index]) == ((yCounter.position[index]+1)/range.y.length[index])){
 					borderColor = colors[sections.y[conf.order.y[index]].border];
 				}
 			} else {
-				if(isNextStep(index,yPosition,range.y.length)){
+				if(isNextStep(index,yCounter.position,range.y.length)){
 					borderColor = colors[sections.y[conf.order.y[index]].border];
 				}
 			}
@@ -259,21 +165,20 @@ JSL.gfx.Grid.prototype.refresh = function(){
 		this.line([step.x,yStep], [sizeVector[0],yStep],borderColor);
 
 		// iterate the position
-		yPosition = this.multiIterate(yPosition, yPosition.length-1, range.y, range.y.direction)
+		yCounter.iterate(1);
 	}
 
-	var xPosition = _.clone(this.position.x)
 	// draw horizontal sections
 	for(var xStep = step.x; xStep < sizeVector[0]; xStep += step.x){
 		var borderColor = "";
 
-		for(var index = xPosition.length-1; index >= 0; index--){
-			if(index == xPosition.length-1){
-				if(parseInt((xPosition[index]+1)/range.x.length[index]) == ((xPosition[index]+1)/range.x.length[index])){
+		for(var index = xCounter.position.length-1; index >= 0; index--){
+			if(index == xCounter.position.length-1){
+				if(parseInt((xCounter.position[index]+1)/range.x.length[index]) == ((xCounter.position[index]+1)/range.x.length[index])){
 					borderColor = colors[sections.x[conf.order.x[index]].border];
 				}
 			} else {
-				if(isNextStep(index,xPosition,range.x.length)){
+				if(isNextStep(index,xCounter.position,range.x.length)){
 					borderColor = colors[sections.x[conf.order.x[index]].border];
 				}
 			}
@@ -281,20 +186,18 @@ JSL.gfx.Grid.prototype.refresh = function(){
 
 		this.line([xStep+step.x,0], [xStep+step.x,sizeVector[1]],borderColor);
 		// iterate the position
-		xPosition = this.multiIterate(xPosition, xPosition.length-1, range.x, range.x.direction)
-
-		//console.log(xPosition);
+		xCounter.iterate(1);
 	}
 
 
-	yPosition = _.clone(this.position.y);
+	yCounter.setPosition(this.counter.y.position);
 	grid.hitAreas = [];
 	// draw elements
 	for(var yStep = 0; yStep < sizeVector[1]; yStep += step.y){
 
 		this.elements.forEach(function(element, elementIndex){
-			if(_.isEqual(element.position.y,yPosition)){
-				var relativeXPos = grid.multiSubtract(element.position.x,grid.position.x,conf.range.x.length);
+			if(_.isEqual(element.position.y,yCounter.position)){
+				var relativeXPos = xCounter.clone().setPosition(element.position.x).merge(grid.counter.x, -1).position;
 				var elXPos = step.x+relativeXPos[0]*step.x*16+relativeXPos[1]*step.x*4+relativeXPos[2]*step.x;
 				var elWidth = element.length.x[0]*step.x*16+element.length.x[1]*step.x*4+element.length.x[2]*step.x				
 				if((elXPos >= step.x && elXPos <= sizeVector[0])
@@ -327,7 +230,7 @@ JSL.gfx.Grid.prototype.refresh = function(){
 		})
 
 		// iterate the position
-		yPosition = this.multiIterate(yPosition, yPosition.length-1, range.y, range.y.direction)
+		yCounter.iterate(1);
 	}
 
 	

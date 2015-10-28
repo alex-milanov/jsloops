@@ -25,6 +25,16 @@ JSL.etc.Counter.prototype.setPosition = function(position){
 	return this;
 }
 
+JSL.etc.Counter.prototype.setPositionStart = function(){
+	this.position = (this.direction == 1) ? this.range[0].slice() : this.range[1].slice();
+	return this;
+}
+
+JSL.etc.Counter.prototype.setPositionEnd = function(){
+	this.position = (this.direction == 1) ? this.range[1].slice() : this.range[0].slice();
+	return this;
+}
+
 JSL.etc.Counter.prototype.fromSteps = function(steps){
 	this.setPosition();
 	this.iterate(steps)
@@ -52,7 +62,7 @@ JSL.etc.Counter.prototype.iterate = function(steps, direction){
 		direction *= this.direction;
 	}
 
-	for(var index = this.position.length-1; index >= 0; index --){
+	for(var index = this.position.length-1; index >= 0 && steps > 0; index --){
 		if(index > 0){
 			var interval = this.intervals[index-1];
 			var change = steps - parseInt(steps/interval)*interval;
@@ -76,8 +86,9 @@ JSL.etc.Counter.prototype.iterate = function(steps, direction){
 	return this;
 }
 
-JSL.etc.Counter.merge = function(counter){
-	this.iterate(counter.toSteps);
+JSL.etc.Counter.prototype.merge = function(counter, direction){
+	this.iterate(counter.toSteps(), direction);
+	return this;
 }
 
 JSL.etc.Counter.prototype.clone = function(){

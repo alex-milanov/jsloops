@@ -18,11 +18,24 @@ JSL.gfx.Rect.prototype.set = function(x, y, width, height) {
 	return this;
 }
 
+JSL.gfx.Rect.prototype.setStart = function(start){
+	this.x = start.x;
+	this.y = start.y;
+	return this;
+}
+
 JSL.gfx.Rect.prototype.getStart = function(){
 	var start = new JSL.gfx.Vector2();
 	start.x = this.x;
 	start.y = this.y;
 	return start;
+}
+
+
+JSL.gfx.Rect.prototype.setEnd = function(end){
+	this.width = end.x - this.x;
+	this.height = end.y - this.y;
+	return this;
 }
 
 JSL.gfx.Rect.prototype.getEnd = function(){
@@ -31,6 +44,7 @@ JSL.gfx.Rect.prototype.getEnd = function(){
 	end.y = this.y + this.height;
 	return end;
 }
+
 
 JSL.gfx.Rect.prototype.getSize = function(){
 	var end = new JSL.gfx.Vector2();
@@ -57,6 +71,20 @@ JSL.gfx.Rect.prototype.fromVectors = function(a, b){
 		this.height = a.y - b.y;
 	}
 
+	return this;
+}
+
+JSL.gfx.Rect.prototype.pan = function(v) {
+	var start = this.getStart();
+	start.add(v);
+	this.setStart(start);
+	return this;
+}
+
+JSL.gfx.Rect.prototype.resize = function(v) {
+	var end = this.getEnd();
+	end.add(v);
+	this.setEnd(end);
 	return this;
 }
 

@@ -6,6 +6,8 @@ if(typeof JSL.gfx === "undefined"){ JSL.gfx = {}; }
 JSL.gfx.Canvas = function(dom) {
 	iblokz.Element.call(this, dom);
 	this.ctx = this.dom.getContext("2d");
+
+	this.offset = new JSL.gfx.Vector2(0,0);
 }
 
 JSL.gfx.Canvas.prototype = Object.create( iblokz.Element.prototype );
@@ -43,6 +45,15 @@ JSL.gfx.Canvas.prototype.rect = function(rect, background, stroke, dash){
 		this.ctx.strokeStyle = stroke;
 		this.ctx.stroke();
 	}
+}
+
+JSL.gfx.Canvas.prototype.getSize = function(){
+	var size = new JSL.gfx.Rect();
+	size.width = this.ctx.canvas.width;
+	size.height = this.ctx.canvas.height;
+	size.x = this.offset.x;
+	size.y = this.offset.y;
+	return size;
 }
 
 JSL.gfx.Canvas.prototype.init = function() {
