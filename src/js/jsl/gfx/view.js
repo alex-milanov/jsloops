@@ -103,8 +103,9 @@ JSL.gfx.View.prototype.init = function() {
 	})
 
 	this.on('mouseup', function(event) {
-		
-		if(grid.selection.length == 0){
+		//console.log(grid.selection.length, view.interaction.status);
+		if(grid.selection.length == 0 || view.interaction.status == "mousedown"){
+			grid.selection = [];
 			var currentPos = new JSL.gfx.Vector2(event.offsetX, event.offsetY);
 			grid.hitAreas.forEach(function(hitArea){
 				if(hitArea.rect.contains(currentPos)) {
