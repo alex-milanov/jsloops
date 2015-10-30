@@ -144,14 +144,14 @@ JSL.gui.PianoRoll.prototype.redraw = function(){
 }
 
 JSL.gui.PianoRoll.prototype.refresh = function(){
-	
+
 	var pianoRoll = this;
 	var conf = pianoRoll.viewConfig;
 
 	var bottomCYPos = 12*conf.step[1];
 	var initialXPos = conf.step[0];
 
-	function timeToIntervals(time){
+	function timeToPosition(time){
 		var measure = parseInt(time/intervals.measure);
 		time = time-measure*intervals.measure;
 		var beat = parseInt(time/intervals.beat);
@@ -161,18 +161,33 @@ JSL.gui.PianoRoll.prototype.refresh = function(){
 		return [measure,beat,tick];
 	}
 
-	this.track.events.forEach(function(event){
+	function positionToTime(position){
+			var time = 0;
+			time += position[0]*intervals.measure;
+			time += position[1]*intervals.beat;
+			time += position[2]*intervals.tick;
+			return time;
+	}
+
+	pianoRoll.view.layers.grid.elements = [];
+	pianoRoll.track.events.forEach(function(event, eventIndex){
 		if(event.type == "noteon"){
-			
+
 
 			var element = {
 				position: {
-					x: timeToIntervals(event.start),
-					y: [4, tonesInOctave.indexOf(event.note)]
+					x: timeToPosition(event.start),
+					y: [event.octave || 4, tonesInOctave.indexOf(event.note)]
 				},
 				length: {
-					x: timeToIntervals(event.duration),
+					x: timeToPosition(event.duration),
 					y: [0,1]
+				},
+				update: function(){
+					pianoRoll.track.events[eventIndex].start = positionToTime(this.position.x);
+					pianoRoll.track.events[eventIndex].note = tonesInOctave[this.position.y[1]];
+					pianoRoll.track.events[eventIndex].octave = this.position.y[0];
+					event.duration = positionToTime(this.length.x);
 				}
 			}
 

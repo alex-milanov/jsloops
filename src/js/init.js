@@ -53,109 +53,115 @@ var defaultSong = {
 			type: "midi",
 			bars: 32,
 			events: [
-				{ 
-					type: "noteon", 
+				{
+					type: "noteon",
 					note: "E",
+					octave: 4,
 					start: 0,
-					duration: durations.quarter+durations.eighth 
+					duration: durations.quarter+durations.eighth
 				},
-				{ 
-					type: "noteon", 
+				{
+					type: "noteon",
 					note: "E",
+					octave: 4,
 					start: durations.quarter+durations.eighth,
-					duration: durations.quarter+durations.eighth 
+					duration: durations.quarter+durations.eighth
 				},
-				{ 
-					type: "noteon", 
+				{
+					type: "noteon",
 					note: "E",
+					octave: 4,
 					start: (durations.quarter+durations.eighth)*2,
-					duration: durations.quarter 
-				},
-				{ 
-					type: "noteon", 
-					note: "F",
-					start: durations.whole,
-					duration: durations.quarter+durations.eighth 
-				},
-				{ 
-					type: "noteon", 
-					note: "F",
-					start: durations.whole+durations.quarter+durations.eighth,
-					duration: durations.quarter+durations.eighth 
-				},
-				{ 
-					type: "noteon", 
-					note: "F",
-					start: durations.whole+(durations.quarter+durations.eighth)*2,
-					duration: durations.quarter 
-				},
-			]
-			/*events: [
-				{ 
-					type: "noteon", 
-					note: "C",
-					start: 0,
-					duration: durations.eighth 
-				},
-				{ 
-					type: "noteon", 
-					note: "E",
-					start: durations.eighth,
-					duration: durations.eighth 
-				},
-				{ 
-					type: "noteon", 
-					note: "C",
-					start: durations.eighth*2,
-					duration: durations.eighth 
-				},
-				{ 
-					type: "noteon", 
-					note: "E",
-					start: durations.eighth*3,
-					duration: durations.eighth 
-				},
-				{ 
-					type: "noteon", 
-					note: "G",
-					start: durations.eighth*4,
-					duration: durations.half 
-				},
-				{ 
-					type: "noteon", 
-					note: "E",
-					start: durations.whole-durations.eighth,
-					duration: durations.eighth 
+					duration: durations.quarter
 				},
 				{
 					type: "noteon", 
+					note: "F",
+					octave: 4,
+					start: durations.whole,
+					duration: durations.quarter+durations.eighth
+				},
+				{
+					type: "noteon",
+					note: "F",
+					octave: 4,
+					start: durations.whole+durations.quarter+durations.eighth,
+					duration: durations.quarter+durations.eighth
+				},
+				{
+					type: "noteon",
+					note: "F",
+					octave: 4,
+					start: durations.whole+(durations.quarter+durations.eighth)*2,
+					duration: durations.quarter
+				},
+			]
+			/*events: [
+				{
+					type: "noteon",
+					note: "C",
+					start: 0,
+					duration: durations.eighth
+				},
+				{
+					type: "noteon",
+					note: "E",
+					start: durations.eighth,
+					duration: durations.eighth
+				},
+				{
+					type: "noteon",
+					note: "C",
+					start: durations.eighth*2,
+					duration: durations.eighth
+				},
+				{
+					type: "noteon",
+					note: "E",
+					start: durations.eighth*3,
+					duration: durations.eighth
+				},
+				{
+					type: "noteon",
+					note: "G",
+					start: durations.eighth*4,
+					duration: durations.half
+				},
+				{
+					type: "noteon",
+					note: "E",
+					start: durations.whole-durations.eighth,
+					duration: durations.eighth
+				},
+				{
+					type: "noteon",
 					note: "G",
 					start: durations.whole,
-					duration: durations.eighth 
+					duration: durations.eighth
 				},
-				{ 
-					type: "noteon", 
+				{
+					type: "noteon",
 					note: "G",
 					start: durations.whole+durations.eighth,
-					duration: durations.eighth 
+					duration: durations.eighth
 				},
-				{ 
-					type: "noteon", 
+				{
+					type: "noteon",
 					note: "F",
 					start: durations.whole+durations.eighth*2,
-					duration: durations.eighth 
+					duration: durations.eighth
 				},
-				{ 
-					type: "noteon", 
+				{
+					type: "noteon",
 					note: "F",
 					start: durations.whole+durations.eighth*3,
-					duration: durations.eighth 
+					duration: durations.eighth
 				},
-				{ 
-					type: "noteon", 
+				{
+					type: "noteon",
 					note: "E",
 					start: durations.whole+durations.eighth*4,
-					duration: durations.half 
+					duration: durations.half
 				}
 			]*/
 		}

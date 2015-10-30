@@ -68,9 +68,25 @@ JSL.gfx.View.prototype.init = function() {
 
 	this.on('mousedown', function(event) {
 		view.interaction.status = "mousedown";
-		view.interaction.action = "selecting"; // TODO: moving when the start is inside a selected hitArea
 		view.interaction.start.set(event.offsetX, event.offsetY);
-		view.interaction.last.set(0, 0);
+		// determine the action
+		var elementIndex = false;
+		grid.hitAreas.forEach(function(hitArea){
+			if(hitArea.rect.contains(view.interaction.start)){
+				elementIndex = hitArea.elementIndex;
+			}
+		});
+		if(elementIndex !== false){
+			view.interaction.action = "moving";
+			view.interaction.elementIndex = elementIndex;
+			view.interaction.counter = {
+				x: grid.counter.x.clone().setPosition(grid.elements[elementIndex].position.x),
+				y: grid.counter.y.clone().setPosition(grid.elements[elementIndex].position.y)
+			}
+		} else {
+			view.interaction.action = "selecting";
+		}
+		view.interaction.last.copy(view.interaction.start);
 	})
 
 	this.on('mousemove', function(event) {
@@ -79,7 +95,6 @@ JSL.gfx.View.prototype.init = function() {
 			var currentPos = new JSL.gfx.Vector2(event.offsetX, event.offsetY);
 			var changeVector = currentPos.clone().sub(view.interaction.start);
 
-			view.interaction.last = changeVector;
 			switch(view.interaction.action){
 				/* when selecting */
 				case "selecting":
@@ -88,15 +103,31 @@ JSL.gfx.View.prototype.init = function() {
 					interactionLayer.clear();
 					interactionLayer.rect(selectionRect, false,"#fff", [7,5]);
 					grid.selection = [];
-					
+
 					grid.hitAreas.forEach(function(hitArea){
 						if(selectionRect.contains(hitArea.rect)){
 							grid.selection.push(hitArea.elementIndex);
 						}
 					});
 					grid.refresh();
+					view.interaction.last = currentPos.clone();
 					break;
 				case "moving":
+					var changeSinceLast = currentPos.clone().sub(view.interaction.last);
+					xSteps = parseInt(Math.abs(changeSinceLast.x)/grid.conf.step.x);
+					ySteps = parseInt(Math.abs(changeSinceLast.y)/grid.conf.step.y);
+					console.log(changeSinceLast, xSteps, ySteps, view.interaction.elementIndex, grid.elements);
+					if(xSteps != 0 || ySteps != 0){
+						view.interaction.counter.x.iterate(xSteps, changeSinceLast.x/Math.abs(changeSinceLast.x));
+						view.interaction.counter.y.iterate(ySteps, changeSinceLast.y/Math.abs(changeSinceLast.y));
+						grid.elements[view.interaction.elementIndex].position = {
+							x: view.interaction.counter.x.position,
+							y: view.interaction.counter.y.position
+						}
+						grid.elements[view.interaction.elementIndex].update();
+						grid.refresh();
+						view.interaction.last = currentPos.clone();
+					}
 					break;
 			}
 		}
@@ -104,17 +135,19 @@ JSL.gfx.View.prototype.init = function() {
 
 	this.on('mouseup', function(event) {
 		//console.log(grid.selection.length, view.interaction.status);
-		if(grid.selection.length == 0 || view.interaction.status == "mousedown"){
-			grid.selection = [];
-			var currentPos = new JSL.gfx.Vector2(event.offsetX, event.offsetY);
-			grid.hitAreas.forEach(function(hitArea){
-				if(hitArea.rect.contains(currentPos)) {
-					grid.selection.push(hitArea.elementIndex);
-				}
-			});
-			grid.refresh();
+		if(view.interaction.action == "selecting"){
+			if(grid.selection.length == 0 || view.interaction.status == "mousedown"){
+				grid.selection = [];
+				var currentPos = new JSL.gfx.Vector2(event.offsetX, event.offsetY);
+				grid.hitAreas.forEach(function(hitArea){
+					if(hitArea.rect.contains(currentPos)) {
+						grid.selection.push(hitArea.elementIndex);
+					}
+				});
+				grid.refresh();
+			}
 		}
-		
+
 		view.interaction = {
 			status: "idle",
 			action: "none",
@@ -123,7 +156,7 @@ JSL.gfx.View.prototype.init = function() {
 		}
 		interactionLayer.clear();
 		view.dom.style.cursor = "inherit";
-		
+
 	})
 
 }
