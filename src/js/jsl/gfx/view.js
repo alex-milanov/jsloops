@@ -67,6 +67,8 @@ JSL.gfx.View.prototype.init = function() {
 	var interactionLayer = this.layers.interaction;
 
 	this.on('mousedown', function(event) {
+
+		console.log(view.data);
 		view.interaction.status = "mousedown";
 		view.interaction.start.set(event.offsetX, event.offsetY);
 		// determine the action
@@ -76,16 +78,25 @@ JSL.gfx.View.prototype.init = function() {
 				elementIndex = hitArea.elementIndex;
 			}
 		});
-		if(elementIndex !== false){
-			view.interaction.action = "moving";
-			view.interaction.elementIndex = elementIndex;
-			view.interaction.counter = {
-				x: grid.counter.x.clone().setPosition(grid.elements[elementIndex].position.x),
-				y: grid.counter.y.clone().setPosition(grid.elements[elementIndex].position.y)
-			}
-		} else {
-			view.interaction.action = "selecting";
+
+		switch(view.data["int-mode"]){
+			case "select":
+				if(elementIndex !== false){
+					view.interaction.action = "moving";
+					view.interaction.elementIndex = elementIndex;
+				} else {
+					view.interaction.action = "selecting";
+				}
+				break;
+			case "edit":
+				if(elementIndex !== false){
+					view.interaction.action = "moving";
+					view.interaction.elementIndex = elementIndex;
+				} else {
+					view.interaction.action = "creating";
+				}
 		}
+
 		view.interaction.last.copy(view.interaction.start);
 	})
 
@@ -116,18 +127,19 @@ JSL.gfx.View.prototype.init = function() {
 					var changeSinceLast = currentPos.clone().sub(view.interaction.last);
 					xSteps = parseInt(Math.abs(changeSinceLast.x)/grid.conf.step.x);
 					ySteps = parseInt(Math.abs(changeSinceLast.y)/grid.conf.step.y);
-					console.log(changeSinceLast, xSteps, ySteps, view.interaction.elementIndex, grid.elements);
 					if(xSteps != 0 || ySteps != 0){
-						view.interaction.counter.x.iterate(xSteps, changeSinceLast.x/Math.abs(changeSinceLast.x));
-						view.interaction.counter.y.iterate(ySteps, changeSinceLast.y/Math.abs(changeSinceLast.y));
-						grid.elements[view.interaction.elementIndex].position = {
-							x: view.interaction.counter.x.position,
-							y: view.interaction.counter.y.position
-						}
+						grid.elements[view.interaction.elementIndex].counter.x.iterate(xSteps, changeSinceLast.x/Math.abs(changeSinceLast.x));
+						grid.elements[view.interaction.elementIndex].counter.y.iterate(ySteps, changeSinceLast.y/Math.abs(changeSinceLast.y));
 						grid.elements[view.interaction.elementIndex].update();
 						grid.refresh();
-						view.interaction.last = currentPos.clone();
+						view.interaction.last.add(new JSL.gfx.Vector2(
+							parseInt(changeSinceLast.x/grid.conf.step.x)*grid.conf.step.x,
+							parseInt(changeSinceLast.y/grid.conf.step.y)*grid.conf.step.y
+						));
 					}
+					break;
+				default:
+					view.interaction.last = currentPos.clone();
 					break;
 			}
 		}
@@ -135,19 +147,25 @@ JSL.gfx.View.prototype.init = function() {
 
 	this.on('mouseup', function(event) {
 		//console.log(grid.selection.length, view.interaction.status);
-		if(view.interaction.action == "selecting"){
-			if(grid.selection.length == 0 || view.interaction.status == "mousedown"){
-				grid.selection = [];
-				var currentPos = new JSL.gfx.Vector2(event.offsetX, event.offsetY);
-				grid.hitAreas.forEach(function(hitArea){
-					if(hitArea.rect.contains(currentPos)) {
-						grid.selection.push(hitArea.elementIndex);
-					}
-				});
-				grid.refresh();
-			}
-		}
 
+		switch(view.interaction.action){
+			case "selecting":
+				if(grid.selection.length == 0 || view.interaction.status == "mousedown"){
+					grid.selection = [];
+					var currentPos = new JSL.gfx.Vector2(event.offsetX, event.offsetY);
+					grid.hitAreas.forEach(function(hitArea){
+						if(hitArea.rect.contains(currentPos)) {
+							grid.selection.push(hitArea.elementIndex);
+						}
+					});
+					grid.refresh();
+				}
+				break;
+			case "creating":
+				break;
+			case "deleting":
+				break;
+		}
 		view.interaction = {
 			status: "idle",
 			action: "none",

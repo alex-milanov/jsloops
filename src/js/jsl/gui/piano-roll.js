@@ -184,9 +184,9 @@ JSL.gui.PianoRoll.prototype.refresh = function(){
 					y: [0,1]
 				},
 				update: function(){
-					pianoRoll.track.events[eventIndex].start = positionToTime(this.position.x);
-					pianoRoll.track.events[eventIndex].note = tonesInOctave[this.position.y[1]];
-					pianoRoll.track.events[eventIndex].octave = this.position.y[0];
+					pianoRoll.track.events[eventIndex].start = positionToTime(this.counter.x.position);
+					pianoRoll.track.events[eventIndex].note = tonesInOctave[this.counter.y.position[1]];
+					pianoRoll.track.events[eventIndex].octave = this.counter.y.position[0];
 					event.duration = positionToTime(this.length.x);
 				}
 			}
