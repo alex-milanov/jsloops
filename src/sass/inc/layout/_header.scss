@@ -8,8 +8,8 @@
 		height: $jsloops-header-height;
 		background: $jsloops-header-bg-color;
 		color: $jsloops-header-fg-color;
-		border-top: 1px solid #777;
-		border-bottom: 3px solid #999;
+		border-top: 1px solid $jsloops-header-border-color;
+		border-bottom: 3px solid $jsloops-header-border-color;
 		> * {
 			display: block;
 			margin: 0px;
@@ -18,6 +18,7 @@
 			line-height: $jsloops-header-height;
 			float: left;
 			> button {
+				color: inherit;
 				display: inline-block;
 				margin: 0px 5px;
 				padding: 0px;
@@ -40,6 +41,12 @@
 			margin: 0px 20px;
 			font-weight: bold;
 			font-size: 22px;
+			i {
+				color: $jsloops-logo-sign-color;
+			}
+			span {
+				color: $jsloops-logo-text-color;
+			}
 		}
 		.indicators {
 			height: $jsloops-header-height;

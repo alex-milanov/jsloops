@@ -15,7 +15,7 @@
 		> * {
 			position: absolute;
 			display: block;
-			background: #3a3b3c;
+			background: $jsloops-panel-bg-color;
 			border: 1px solid $jsloops-border-color;
 			min-width: 400px;
 			.toolbar {
