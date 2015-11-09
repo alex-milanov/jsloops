@@ -79,11 +79,15 @@ JSL.gfx.View.prototype.init = function() {
 			}
 		});
 
+		if(elementIndex !== false && grid.selection.indexOf(elementIndex) === -1){
+			grid.selection = [elementIndex];
+			grid.refresh();
+		}
+
 		switch(view.data["int-mode"]){
 			case "select":
 				if(elementIndex !== false){
 					view.interaction.action = "moving";
-					view.interaction.elementIndex = elementIndex;
 				} else {
 					view.interaction.action = "selecting";
 				}
@@ -91,7 +95,6 @@ JSL.gfx.View.prototype.init = function() {
 			case "edit":
 				if(elementIndex !== false){
 					view.interaction.action = "moving";
-					view.interaction.elementIndex = elementIndex;
 				} else {
 					view.interaction.action = "creating";
 				}
@@ -128,9 +131,12 @@ JSL.gfx.View.prototype.init = function() {
 					xSteps = parseInt(Math.abs(changeSinceLast.x)/grid.conf.step.x);
 					ySteps = parseInt(Math.abs(changeSinceLast.y)/grid.conf.step.y);
 					if(xSteps != 0 || ySteps != 0){
-						grid.elements[view.interaction.elementIndex].counter.x.iterate(xSteps, changeSinceLast.x/Math.abs(changeSinceLast.x));
-						grid.elements[view.interaction.elementIndex].counter.y.iterate(ySteps, changeSinceLast.y/Math.abs(changeSinceLast.y));
-						grid.elements[view.interaction.elementIndex].update();
+						
+						grid.selection.forEach(function(elementIndex){
+							grid.elements[elementIndex].counter.x.iterate(xSteps, changeSinceLast.x/Math.abs(changeSinceLast.x));
+							grid.elements[elementIndex].counter.y.iterate(ySteps, changeSinceLast.y/Math.abs(changeSinceLast.y));
+							grid.elements[elementIndex].update();
+						})
 						grid.refresh();
 						view.interaction.last.add(new JSL.gfx.Vector2(
 							parseInt(changeSinceLast.x/grid.conf.step.x)*grid.conf.step.x,
