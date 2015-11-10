@@ -55,7 +55,7 @@ JSL.gfx.Grid.prototype.setConf = function(conf){
 JSL.gfx.Grid.prototype.init = function(){
 
 	var grid = this;
-	
+
 	grid.refresh();
 
 }
@@ -87,6 +87,13 @@ JSL.gfx.Grid.prototype.pan = function(vector){
 }
 
 JSL.gfx.Grid.prototype.addElement = function(element){
+	element.counter = {
+		x: this.counter.x.clone().setPosition(element.position.x),
+		y: this.counter.y.clone().setPosition(element.position.y)
+	}
+	var length = this.counter.x.clone().setPosition(element.length);
+	element.length = length;
+	delete(element.position);
 	this.elements.push(element);
 }
 
@@ -121,11 +128,11 @@ JSL.gfx.Grid.prototype.refresh = function(){
 	var step = conf.step;
 	var sections = conf.sections;
 
-	
+
 /*
 	this.visible = this.calculateVisible();
 
-	
+
 	var visibleRange = {
 		x: grid.multiAdd(grid.position.x,grid.visible.x,conf.range.x.length),
 		y: grid.multiSubtract(grid.position.y,grid.visible.y,conf.range.y.length)
@@ -198,12 +205,12 @@ JSL.gfx.Grid.prototype.refresh = function(){
 	for(var yStep = 0; yStep < sizeVector[1]; yStep += step.y){
 
 		this.elements.forEach(function(element, elementIndex){
-			if(_.isEqual(element.position.y,yCounter.position)){
-				var relativeXPos = xCounter.clone().setPosition(element.position.x).merge(grid.counter.x, -1).position;
-				var elXPos = step.x+relativeXPos[0]*step.x*16+relativeXPos[1]*step.x*4+relativeXPos[2]*step.x;
-				var elWidth = element.length.x[0]*step.x*16+element.length.x[1]*step.x*4+element.length.x[2]*step.x				
+			if(_.isEqual(element.counter.y.position,yCounter.position)){
+				var relativeXSteps = element.counter.x.clone().merge(grid.counter.x, -1).toSteps();
+				var elXPos = step.x+relativeXSteps*step.x;
+				var elWidth = element.length.position[0]*step.x*16+element.length.position[1]*step.x*4+element.length.position[2]*step.x
 				if((elXPos >= step.x && elXPos <= sizeVector[0])
-					|| (elXPos+elWidth > step.x && elXPos+elWidth <= sizeVector[0]) 
+					|| (elXPos+elWidth > step.x && elXPos+elWidth <= sizeVector[0])
 					|| (elXPos<step.x && elXPos+elWidth > sizeVector[0]) ){
 					if(elXPos-step.x < 0){
 						elWidth = elWidth+(elXPos-step.x);
@@ -235,5 +242,5 @@ JSL.gfx.Grid.prototype.refresh = function(){
 		yCounter.iterate(1);
 	}
 
-	
+
 }

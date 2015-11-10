@@ -3,7 +3,6 @@
 if(typeof JSL === "undefined"){ var JSL = {}; }
 if(typeof JSL.etc === "undefined"){ JSL.etc = {}; }
 
-
 JSL.etc.Counter = function(intervals, range, direction, position){
 	// [12,1] in case of octaves -> tones
 	// [4,4,1] measure -> beat -> tick
