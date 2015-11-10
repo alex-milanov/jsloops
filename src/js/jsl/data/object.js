@@ -15,7 +15,6 @@ JSL.data.Object = function(data){
 
 	this.parent = null;
 	this.children = [];
-
 }
 
 JSL.data.Object.prototype = {

@@ -21,14 +21,18 @@ JSL.gfx.View = function(dom, config){
 		action: "none", // selecting, moving, resizing
 		start: new JSL.gfx.Vector2(0,0),
 		last: new JSL.gfx.Vector2(0,0)
-	}
+	};
+
+	this.signals = {
+		create:  new JSL.etc.Signal()
+	};
 
 
 	this.layers = {
 		grid: new JSL.gfx.Grid(this.find("canvas.grid")[0], this.config),
 		elements: new JSL.gfx.Canvas(this.find("canvas.elements")[0]),
 		interaction: new JSL.gfx.Canvas(this.find("canvas.interaction")[0])
-	}
+	};
 }
 
 JSL.gfx.View.prototype = Object.create( iblokz.Element.prototype );
@@ -68,18 +72,19 @@ JSL.gfx.View.prototype.init = function() {
 
 	this.on('mousedown', function(event) {
 
-		console.log(view.data);
 		view.interaction.status = "mousedown";
 		view.interaction.start.set(event.offsetX, event.offsetY);
 		// determine the action
 		var elementIndex = false;
+		var edgeDistance = 0;
 		grid.hitAreas.forEach(function(hitArea){
 			if(hitArea.rect.contains(view.interaction.start)){
 				elementIndex = hitArea.elementIndex;
+				edgeDistance = hitArea.rect.x + hitArea.rect.width - view.interaction.start.x;
 			}
 		});
 
-		if(elementIndex !== false && grid.selection.indexOf(elementIndex) === -1){
+		if(view.data["int-mode"] !== "delete" && elementIndex !== false && grid.selection.indexOf(elementIndex) === -1){
 			grid.selection = [elementIndex];
 			grid.refresh();
 		}
@@ -94,10 +99,20 @@ JSL.gfx.View.prototype.init = function() {
 				break;
 			case "edit":
 				if(elementIndex !== false){
-					view.interaction.action = "moving";
+					if(edgeDistance < grid.conf.step.x/4){
+						view.interaction.action = "resizing";
+					} else {
+						view.interaction.action = "moving";
+					}
 				} else {
 					view.interaction.action = "creating";
 				}
+				break;
+			case "delete":
+				if(elementIndex !== false){
+					view.interaction.action = "deleting";
+				}
+				break;
 		}
 
 		view.interaction.last.copy(view.interaction.start);
@@ -128,13 +143,28 @@ JSL.gfx.View.prototype.init = function() {
 					break;
 				case "moving":
 					var changeSinceLast = currentPos.clone().sub(view.interaction.last);
-					xSteps = parseInt(Math.abs(changeSinceLast.x)/grid.conf.step.x);
-					ySteps = parseInt(Math.abs(changeSinceLast.y)/grid.conf.step.y);
+					var xSteps = parseInt(Math.abs(changeSinceLast.x)/grid.conf.step.x);
+					var ySteps = parseInt(Math.abs(changeSinceLast.y)/grid.conf.step.y);
 					if(xSteps != 0 || ySteps != 0){
 						
 						grid.selection.forEach(function(elementIndex){
 							grid.elements[elementIndex].counter.x.iterate(xSteps, changeSinceLast.x/Math.abs(changeSinceLast.x));
 							grid.elements[elementIndex].counter.y.iterate(ySteps, changeSinceLast.y/Math.abs(changeSinceLast.y));
+							grid.elements[elementIndex].update();
+						})
+						grid.refresh();
+						view.interaction.last.add(new JSL.gfx.Vector2(
+							parseInt(changeSinceLast.x/grid.conf.step.x)*grid.conf.step.x,
+							parseInt(changeSinceLast.y/grid.conf.step.y)*grid.conf.step.y
+						));
+					}
+					break;
+				case "resizing":
+					var changeSinceLast = currentPos.clone().sub(view.interaction.last);
+					var xSteps = parseInt(Math.abs(changeSinceLast.x)/grid.conf.step.x);
+					if(xSteps != 0 ){
+						grid.selection.forEach(function(elementIndex){
+							grid.elements[elementIndex].length.iterate(xSteps, changeSinceLast.x/Math.abs(changeSinceLast.x));
 							grid.elements[elementIndex].update();
 						})
 						grid.refresh();
@@ -168,8 +198,26 @@ JSL.gfx.View.prototype.init = function() {
 				}
 				break;
 			case "creating":
+
+				var xSteps = parseInt(Math.abs(view.interaction.last.x)/grid.conf.step.x);
+				var ySteps = parseInt(Math.abs(view.interaction.last.y)/grid.conf.step.y);
+
+				xSteps = (xSteps > 0) ? xSteps-1 : xSteps;
+
+				var counter = {
+					x: grid.counter.x.clone().iterate(xSteps),
+					y: grid.counter.y.clone().iterate(ySteps)
+				}
+
+				view.signals.create.dispatch(counter);
+
 				break;
 			case "deleting":
+				grid.hitAreas.forEach(function(hitArea){
+					if(hitArea.rect.contains(view.interaction.start)) {
+						grid.elements[hitArea.elementIndex].remove();
+					}
+				});
 				break;
 		}
 		view.interaction = {
@@ -190,5 +238,5 @@ JSL.gfx.View.prototype.addElement = function(element){
 }
 
 JSL.gfx.View.prototype.refresh = function(){
-
+	this.layers.grid.refresh();
 }

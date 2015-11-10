@@ -53,7 +53,7 @@ var defaultSong = {
 			type: "midi",
 			bars: 32,
 			events: [
-				{
+				/*{
 					type: "noteon",
 					note: "E",
 					octave: 4,
@@ -94,7 +94,7 @@ var defaultSong = {
 					octave: 4,
 					start: durations.whole+(durations.quarter+durations.eighth)*2,
 					duration: durations.quarter
-				},
+				},*/
 			]
 			/*events: [
 				{

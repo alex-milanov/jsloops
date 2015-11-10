@@ -91,6 +91,8 @@ JSL.gfx.Grid.prototype.addElement = function(element){
 		x: this.counter.x.clone().setPosition(element.position.x),
 		y: this.counter.y.clone().setPosition(element.position.y)
 	}
+	var length = this.counter.x.clone().setPosition(element.length);
+	element.length = length;
 	delete(element.position);
 	this.elements.push(element);
 }
@@ -206,7 +208,7 @@ JSL.gfx.Grid.prototype.refresh = function(){
 			if(_.isEqual(element.counter.y.position,yCounter.position)){
 				var relativeXSteps = element.counter.x.clone().merge(grid.counter.x, -1).toSteps();
 				var elXPos = step.x+relativeXSteps*step.x;
-				var elWidth = element.length.x[0]*step.x*16+element.length.x[1]*step.x*4+element.length.x[2]*step.x
+				var elWidth = element.length.position[0]*step.x*16+element.length.position[1]*step.x*4+element.length.position[2]*step.x
 				if((elXPos >= step.x && elXPos <= sizeVector[0])
 					|| (elXPos+elWidth > step.x && elXPos+elWidth <= sizeVector[0])
 					|| (elXPos<step.x && elXPos+elWidth > sizeVector[0]) ){
