@@ -42,7 +42,7 @@ JSL.gui.Studio.prototype.tick = function(){
 
 		if(studio.tickIndex >= item.start && studio.tickIndex < item.start + track.bars * item.repeat){
 			var trackTick = studio.tickIndex-item.start-parseInt(studio.tickIndex/track.bars)*track.bars;
-			
+
 			switch(track.type){
 				case "sequencer":
 					track.channels.forEach(function(channel, channelIndex){
@@ -55,19 +55,19 @@ JSL.gui.Studio.prototype.tick = function(){
 				case "midi":
 					var now = studio.actx.currentTime;
 					track.events.forEach(function(event){
-						if(parseInt(event.start/15) == trackTick){		
+						if(parseInt(event.start/15) == trackTick){
 							var evStart = event.start/15-parseInt(event.start/15)
 							var evDuration = event.duration/15;
-							studio.kit["P"].trigger(now+evStart, evDuration, event.note+"4");
+							studio.kit["P"].trigger(now+evStart, evDuration, event.note+event.octave);
 						}
 					})
 					break;
 			}
-		}		
+		}
 	})
 
 	if(this.sequencer){
-		
+
 	}
 }
 
@@ -152,7 +152,7 @@ JSL.gui.Studio.prototype.init = function(){
 		var fr = new FileReader();
 		fr.onload = receivedText;
 		fr.readAsText(file);
-		
+
 		function receivedText(e) {
 			var data = JSON.parse(e.target.result);
 			studio.load(data);
@@ -167,5 +167,5 @@ JSL.gui.Studio.prototype.init = function(){
 }
 
 JSL.gui.Studio.prototype.refresh = function(){
-	
+
 }

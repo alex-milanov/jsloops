@@ -107,6 +107,24 @@ JSL.gui.PianoRoll = function(dom){
 
 	this.track = {};
 
+	this.timeToPosition = function(time){
+		var measure = parseInt(time/intervals.measure);
+		time = time-measure*intervals.measure;
+		var beat = parseInt(time/intervals.beat);
+		time -= beat*intervals.beat;
+		var tick = parseInt(time/intervals.tick);
+		time -= tick*intervals.tick;
+		return [measure,beat,tick];
+	}
+
+	this.positionToTime = function(position){
+			var time = 0;
+			time += position[0]*intervals.measure;
+			time += position[1]*intervals.beat;
+			time += position[2]*intervals.tick;
+			return time;
+	}
+
 
 }
 
@@ -137,48 +155,68 @@ JSL.gui.PianoRoll.prototype.init = function(){
 		view.data[_optionParam] = _optionValue;
 	});
 
+	view.signals.create.add(this.create());
+
 }
+
+JSL.gui.PianoRoll.prototype.create = function(){
+	var scope = this;
+	return function(counter){
+		var event = {};
+		event.type = "noteon";
+	 	event.start = scope.positionToTime(counter.x.position);
+		event.note = tonesInOctave[counter.y.position[1]];
+		event.octave = counter.y.position[0];
+		event.duration = durations.eighth;
+		scope.track.events.push(event);
+		scope.refresh();
+	}
+}
+
 
 JSL.gui.PianoRoll.prototype.redraw = function(){
 	//this.view.redraw();
 }
 
 JSL.gui.PianoRoll.prototype.refresh = function(){
-	
+
 	var pianoRoll = this;
 	var conf = pianoRoll.viewConfig;
 
 	var bottomCYPos = 12*conf.step[1];
 	var initialXPos = conf.step[0];
 
-	function timeToIntervals(time){
-		var measure = parseInt(time/intervals.measure);
-		time = time-measure*intervals.measure;
-		var beat = parseInt(time/intervals.beat);
-		time -= beat*intervals.beat;
-		var tick = parseInt(time/intervals.tick);
-		time -= tick*intervals.tick;
-		return [measure,beat,tick];
-	}
+	
 
-	this.track.events.forEach(function(event){
+	pianoRoll.view.layers.grid.elements = [];
+	pianoRoll.track.events.forEach(function(event, eventIndex){
 		if(event.type == "noteon"){
-			
+
 
 			var element = {
 				position: {
-					x: timeToIntervals(event.start),
-					y: [4, tonesInOctave.indexOf(event.note)]
+					x: pianoRoll.timeToPosition(event.start),
+					y: [event.octave || 4, tonesInOctave.indexOf(event.note)]
 				},
-				length: {
-					x: timeToIntervals(event.duration),
-					y: [0,1]
+				length: pianoRoll.timeToPosition(event.duration),
+				update: function(){
+					pianoRoll.track.events[eventIndex].start = pianoRoll.positionToTime(this.counter.x.position);
+					pianoRoll.track.events[eventIndex].note = tonesInOctave[this.counter.y.position[1]];
+					pianoRoll.track.events[eventIndex].octave = this.counter.y.position[0];
+					pianoRoll.track.events[eventIndex].duration = pianoRoll.positionToTime(this.length.position);
+				},
+				remove: function(){
+					console.log(eventIndex);
+					pianoRoll.track.events.splice(eventIndex,1);
+					pianoRoll.refresh();
 				}
 			}
 
 			pianoRoll.view.addElement(element);
 		}
 	})
+
+	pianoRoll.view.refresh();
 
 }
 
