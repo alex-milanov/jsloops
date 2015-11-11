@@ -72,7 +72,7 @@ JSL.instr.BasicSynth.prototype.trigger = function(time, duration, note) {
 	duration = duration || 0.5;
 	note = note || this.note || "C";
 	
-	//console.log(time, duration, note)
+	console.log(time, duration, note)
 
 	this.setup(note);
     
@@ -83,6 +83,7 @@ JSL.instr.BasicSynth.prototype.trigger = function(time, duration, note) {
 
     this.output.gain.linearRampToValueAtTime(0.0, time + duration - 0.01);
 
+    this.vco.stop(time + duration);
 
     /*
 	this.gain.gain.setValueAtTime(0.1, time);
@@ -95,8 +96,12 @@ JSL.instr.BasicSynth.prototype.trigger = function(time, duration, note) {
 	*/
 };
 
-
 JSL.instr.BasicSynth.prototype.play = function(){
 	var now = this.context.currentTime;
 	this.trigger(now); 
+}
+
+JSL.instr.BasicSynth.prototype.clone = function(){
+	var synth = new JSL.instr.BasicSynth(this.context, this.note);
+	return synth;
 }

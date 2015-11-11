@@ -57,8 +57,8 @@ JSL.gui.Studio.prototype.tick = function(){
 					track.events.forEach(function(event){
 						if(parseInt(event.start/15) == trackTick){
 							var evStart = event.start/15-parseInt(event.start/15)
-							var evDuration = event.duration/15;
-							studio.kit["P"].trigger(now+evStart, evDuration, event.note+event.octave);
+							var evDuration = event.duration/60;
+							studio.kit["P"].clone().trigger(now+evStart, evDuration, event.note+event.octave);
 						}
 					})
 					break;
