@@ -1,0 +1,50 @@
+.layout {
+	.workspace {
+		.track-list {
+			.tracks {
+				box-sizing: border-box;
+				position: absolute;
+				top: 35px;
+				bottom: 10px;
+				left: 10px;
+				right: 10px;
+				overflow-y: scroll;
+				.track {
+					position: relative;
+					height: 50px;
+					width: 100%;
+					border: 1px solid #444;
+					box-sizing: border-box;
+					> * {
+						position: absolute;
+						height: 50px;
+					}
+					.track-head {
+						line-height: 50px;
+						border-right: 2px solid #444;
+						background: #333;
+						left: 0px;
+						top: 0px;
+						padding: 0px 10px;
+						width: 180px;
+						> * {
+							display: inline-block;
+						}
+						.title {
+							width: 60px;
+						}
+					}
+					.track-path {
+						top: 0px;
+						right: 0px;
+						left: 180px;
+						background: #222;
+						canvas {
+							height: 50px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
