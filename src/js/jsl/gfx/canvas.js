@@ -13,7 +13,6 @@ JSL.gfx.Canvas = function(dom) {
 JSL.gfx.Canvas.prototype = Object.create( iblokz.Element.prototype );
 JSL.gfx.Canvas.prototype.constructor = JSL.gfx.Canvas;
 
-
 JSL.gfx.Canvas.prototype.clear = function(){
 	this.ctx.clearRect(0,0,this.dom.width,this.dom.height);
 }
