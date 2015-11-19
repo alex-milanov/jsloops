@@ -77,6 +77,54 @@ html
 						canvas.selection
 						canvas.indicators
 						canvas.interaction
+				.track-list
+					.toolbar
+						.title Track List
+					.tracks
+						.track
+							.track-head
+								.track-title Track 1
+								.track-type
+									| seq
+								.track-operations
+									button M
+									button S
+									button R
+								.track-settings
+									label 
+									input(type="range",min=0,max=100,step=5)
+							.track-path
+								canvas.events
+						.track
+							.track-head
+								.track-title Track 2
+								.track-type
+									| midi
+								.track-operations
+									button M
+									button S
+									button R
+								.track-settings
+									label 
+									input(type="range",min=0,max=100,step=5)
+							.track-path
+								canvas.events
+						.track
+							.track-head
+								.track-title Track 3
+								.track-type
+									| wave
+								.track-operations
+									button M
+									button S
+									button R
+								.track-settings
+									label 
+									input(type="range",min=0,max=100,step=5)
+							.track-path
+								canvas.events
+
+
 
 		//- libs
 		script(src="lib/jquery/dist/jquery.js")
