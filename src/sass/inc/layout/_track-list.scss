@@ -32,7 +32,7 @@
 						> * {
 							position: absolute;
 						}
-						.title {
+						.track-title {
 							top: 3px;
 							left: 7px;
 							width: 70px;
@@ -40,6 +40,12 @@
 							line-height: 18px;
 							font-size: 14px;
 							color: #ccc;
+						}
+						.track-type {
+							top: 3px;
+							right: 7px;
+							font-size: 12px;
+							color: #aaa;
 						}
 						.track-operations {
 							top: 20px;
