@@ -15,11 +15,13 @@ JSL.gui.Studio = function(dom, context){
 	this.song = {};
 
 	this.kit = {
-		K: new JSL.instr.Sampler(this.actx, "samples/kick01.ogg"),
-		H: new JSL.instr.Sampler(this.actx, "samples/hihat_opened02.ogg"),
-		S: new JSL.instr.Sampler(this.actx, "samples/snare01.ogg"),
-		C: new JSL.instr.Sampler(this.actx, "samples/clap01.ogg"),
-		"P": new JSL.instr.BasicSynth(this.actx, "C5")
+		Sampler: {
+			B0: new JSL.instr.Sampler(this.actx, "samples/kick01.ogg"),
+			Bb1: new JSL.instr.Sampler(this.actx, "samples/hihat_opened02.ogg"),
+			D1: new JSL.instr.Sampler(this.actx, "samples/snare01.ogg"),
+			Eb1: new JSL.instr.Sampler(this.actx, "samples/clap01.ogg"),
+		},
+		Piano: new JSL.instr.BasicSynth(this.actx, "C5")
 	}
 
 	this.sequencer = new JSL.gui.Sequencer($(".sequencer")[0]);
@@ -47,7 +49,7 @@ JSL.gui.Studio.prototype.tick = function(){
 				case "sequencer":
 					track.channels.forEach(function(channel, channelIndex){
 						if(channel.pattern && channel.pattern[trackTick] == 1) {
-							studio.kit[channel.note].play();
+							studio.kit.Sampler[channel.note].play();
 						}
 					})
 					studio.sequencer.tick(trackTick);
@@ -58,7 +60,7 @@ JSL.gui.Studio.prototype.tick = function(){
 						if(parseInt(event.start/15) == trackTick){
 							var evStart = event.start/15-parseInt(event.start/15)
 							var evDuration = event.duration/60;
-							studio.kit["P"].clone().trigger(now+evStart, evDuration, event.note+event.octave);
+							studio.kit.Piano.clone().trigger(now+evStart, evDuration, event.note+event.octave);
 						}
 					})
 					break;

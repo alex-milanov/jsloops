@@ -26,25 +26,77 @@ var defaultSong = {
 			name: "Track 1",
 			type: "sequencer",
 			bars: 16,
+			instr: [{
+				name: "Sampler",
+				settings: {
+					mapping: {
+						B0: "samples/kick01.ogg",
+						Bb1: "samples/hihat_opened02.ogg",
+						D1: "samples/snare01.ogg",
+						Eb1: "samples/clap01.ogg"
+					}
+				}
+			}],
 			channels: [
 				{
 					name: "Channel 0",
-					note: "K",
+					instr: "Sampler",
+					note: "B0",
 					pattern: [1,0,0,0,0,0,0,0]
 				},
 				{
 					name: "Channel 1",
-					note: "H",
+					instr: "Sampler",
+					note: "Bb1",
 					pattern: [0,0,1,0,0,0,1,0]
 				},
 				{
 					name: "Channel 2",
-					note: "S",
+					instr: "Sampler",
+					note: "D1",
 					pattern: [0,0,0,0,1,0,0,0]
 				},
 				{
 					name: "Channel 3",
-					note: "C"
+					instr: "Sampler",
+					note: "Eb1"
+				}
+			],
+			measures: [
+				{
+					start: 0,
+					length: 16, //bars
+					repeat: 4,
+					events: [
+						{
+							type: "noteon",
+							note: "B",
+							octave: 0,
+							start: 0,
+							duration: durations.eighth
+						},
+						{
+							type: "noteon",
+							note: "Bb",
+							octave: 1,
+							start: durations.eighth*2,
+							duration: durations.eighth
+						},
+						{
+							type: "noteon",
+							note: "D",
+							octave: 1,
+							start: durations.eighth*4,
+							duration: durations.eighth
+						},
+						{
+							type: "noteon",
+							note: "Bb",
+							octave: 1,
+							start: durations.eighth*6,
+							duration: durations.eighth
+						}
+					]
 				}
 			]
 		},
@@ -52,6 +104,92 @@ var defaultSong = {
 			name: "Track 2",
 			type: "midi",
 			bars: 32,
+			measures: [
+				{
+					start: 0,
+					length: 16, //bars
+					repeat: 1,
+					events: [
+						{
+							type: "noteon",
+							note: "E",
+							octave: 4,
+							start: 0,
+							duration: durations.quarter+durations.eighth
+						},
+						{
+							type: "noteon",
+							note: "E",
+							octave: 4,
+							start: durations.quarter+durations.eighth,
+							duration: durations.quarter+durations.eighth
+						},
+						{
+							type: "noteon",
+							note: "E",
+							octave: 4,
+							start: (durations.quarter+durations.eighth)*2,
+							duration: durations.quarter
+						}
+					]
+				},
+				{
+					start: 32,
+					bars: 16,
+					repeat: 0,
+					events: [
+						{
+							type: "noteon", 
+							note: "F",
+							octave: 4,
+							start: durations.whole,
+							duration: durations.quarter+durations.eighth
+						},
+						{
+							type: "noteon",
+							note: "F",
+							octave: 4,
+							start: durations.whole+durations.quarter+durations.eighth,
+							duration: durations.quarter+durations.eighth
+						},
+						{
+							type: "noteon",
+							note: "F",
+							octave: 4,
+							start: durations.whole+(durations.quarter+durations.eighth)*2,
+							duration: durations.quarter
+						}
+					]
+				},
+				{
+					start: 48,
+					length: 16, //bars
+					repeat: 0,
+					events: [
+						{
+							type: "noteon",
+							note: "E",
+							octave: 4,
+							start: 0,
+							duration: durations.quarter+durations.eighth
+						},
+						{
+							type: "noteon",
+							note: "E",
+							octave: 4,
+							start: durations.quarter+durations.eighth,
+							duration: durations.quarter+durations.eighth
+						},
+						{
+							type: "noteon",
+							note: "E",
+							octave: 4,
+							start: (durations.quarter+durations.eighth)*2,
+							duration: durations.quarter
+						}
+					]
+				},
+			],
 			events: [
 				/*{
 					type: "noteon",
