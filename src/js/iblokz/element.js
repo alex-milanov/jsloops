@@ -2,7 +2,7 @@
 
 if(typeof iblokz === "undefined"){ var iblokz = {}; }
 
-iblokz.Element = function(dom){
+iblokz.Element = function(dom, parent){
 
 	this.dom = null;
 
@@ -13,6 +13,8 @@ iblokz.Element = function(dom){
 		"header","section","canvas"
 	];
 
+	var cssSelectorRegEx = new RegExp("^[a-z]{1,9}?(([\#\.]{1}[a-z0-9A-Z\-\_]{1,9})+)?$");
+
 	switch( typeof dom){
 		case "object":
 			if( !!dom && dom instanceof HTMLElement){
@@ -22,12 +24,22 @@ iblokz.Element = function(dom){
 		case "string":
 			if(htmlTags.indexOf(dom) > -1){
 				this.dom = document.createElement(dom);
-			} else {
+			} else if (dom != "" && dom.match(cssSelectorRegEx) !== null){
 				var selected = document.querySelector(dom);
 				if(!!selected)
 					this.dom = selected;
 			}
+			// if not a tag or a selector must be jade instruction
+			if(this.dom === null && typeof jade !== "undefined"){
+				var tmpEl = document.createElement('div');
+    			tmpEl.innerHTML = jade.render(dom);
+    			this.dom = tmpEl.childNodes[0] || tmpEl;
+			}
 			break;
+	}
+
+	if(typeof parent !== "undefined"){
+		this.appendTo(parent);
 	}
 
 };
@@ -58,9 +70,11 @@ iblokz.Element.prototype.find = function(selector){
 	return this.dom.querySelectorAll(selector);
 }
 
-/*
+
 iblokz.Element.prototype.init = function(){
 
+}
+/*
 	var context = this._context;
 
 	$(this._dom).on("click","[class*='-toggle']",function(){

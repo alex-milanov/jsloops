@@ -18,6 +18,7 @@
     "audiosynth": "keithwhor/audiosynth",
     "file-saver.js": "~1.20150507.2",
     "font-awesome": "~4.4.0",
+    "jade": "~1.11.0",
     "jasmid": "*",
     "jquery": "~2.1.4",
     "jquery-ui": "~1.11.4",
@@ -40,6 +41,9 @@
         "*.js",
         "*.mid"
       ]
+    },
+    "jade": {
+      "main": "jade.js"
     }
   }
 }
