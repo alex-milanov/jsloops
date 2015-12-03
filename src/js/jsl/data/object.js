@@ -8,7 +8,7 @@ JSL.data.ObjectIdCount = 0;
 JSL.data.Object = function(data){
 	Object.defineProperty( this, 'id', { value: JSL.data.ObjectIdCount ++ } );
 
-	this.uuid = THREE.Math.generateUUID();
+	this.uuid = JSL.etc.Math.generateUUID();
 
 	this.name = '';
 	this.type = 'Object';

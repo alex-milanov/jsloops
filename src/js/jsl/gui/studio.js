@@ -44,9 +44,19 @@ JSL.gui.Studio.prototype.tick = function(){
 
 		if(studio.tickIndex >= item.start && studio.tickIndex < item.start + track.bars * item.repeat){
 			var trackTick = studio.tickIndex-item.start-parseInt(studio.tickIndex/track.bars)*track.bars;
-
+			var now = studio.actx.currentTime;
+					
 			switch(track.type){
 				case "sequencer":
+					/*track.events.forEach(function(event){
+						if(parseInt(event.start/15) == trackTick){
+							//var evStart = event.start/15-parseInt(event.start/15)
+							//var evDuration = event.duration/60;
+							if(studio.kit.Sampler[event.note+event.octave])
+								studio.kit.Sampler[event.note+event.octave].play();
+						}
+					})*/
+					
 					track.channels.forEach(function(channel, channelIndex){
 						if(channel.pattern && channel.pattern[trackTick] == 1) {
 							studio.kit.Sampler[channel.note].play();
@@ -55,7 +65,6 @@ JSL.gui.Studio.prototype.tick = function(){
 					studio.sequencer.tick(trackTick);
 					break;
 				case "midi":
-					var now = studio.actx.currentTime;
 					track.events.forEach(function(event){
 						if(parseInt(event.start/15) == trackTick){
 							var evStart = event.start/15-parseInt(event.start/15)
