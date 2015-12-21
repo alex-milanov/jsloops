@@ -25,12 +25,11 @@
 				height: $jsloops-sequencer-toolbar-height;
 				line-height: $jsloops-sequencer-toolbar-height;
 				> * {
-					display: block;
+					display: inline-block;
 					margin: 0px;
 					padding: 0px;
 					height: $jsloops-sequencer-toolbar-height;
 					line-height: $jsloops-sequencer-toolbar-height;
-					float: left;
 					> button {
 						display: inline-block;
 						margin: 0px 2px;
@@ -85,15 +84,15 @@
 			}
 		}
 		.track-list {
-			left: 10px;
+			right: 10px;
 			top: 10px;
-			right: 480px;
+			left: 480px;
 			height: 200px;
 		}
 
 		.sequencer {
 			top: 10px;
-			right: 10px;
+			left: 10px;
 			width: 460px;
 		}
 

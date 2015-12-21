@@ -231,6 +231,19 @@ JSL.gfx.View.prototype.init = function() {
 
 	})
 
+	document.addEventListener("keyup", function(event){
+		switch(event.keyCode){
+			case 188:
+				grid.playHead.iterate(1, -1);
+				grid.refresh();
+				break;
+			case 190:
+				grid.playHead.iterate(1, 1);
+				grid.refresh();
+				break;
+		}
+	})
+
 }
 
 JSL.gfx.View.prototype.addElement = function(element){

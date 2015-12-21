@@ -71,6 +71,23 @@ html
 								data-option-value="delete"
 							)
 								i.fa.fa-eraser
+						.toolbar-controls
+							button.clone-trigger(
+								data-option-param="clone",
+								title="clone"
+							)
+								i.fa.fa-clone
+						.toolbar-controls
+							button.copy-trigger(
+								data-option-param="copy",
+								title="copy"
+							)
+								i.fa.fa-copy
+							button.paste-trigger(
+								data-option-param="paste"
+								title="paste"
+							)
+								i.fa.fa-paste
 					.view
 						canvas.grid
 						canvas.elements

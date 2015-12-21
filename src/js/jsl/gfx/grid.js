@@ -11,10 +11,14 @@ JSL.gfx.Grid = function(dom, conf){
 	var range = conf.range;
 	var position = conf.position;
 
+	this.step = new JSL.gfx.Vector2().copy(conf.step);
+
 	this.counter = {
 		x: new JSL.etc.Counter(range.x.length, [range.x.start,range.x.end], range.x.direction, position.x),
 		y: new JSL.etc.Counter(range.y.length, [range.y.start,range.y.end], range.y.direction, position.y)
 	}
+
+	this.playHead = this.counter.x.clone();
 
 	this.offset = new JSL.gfx.Vector2(
 		this.counter.x.toSteps()*conf.step.x,
@@ -69,7 +73,7 @@ JSL.gfx.Grid.prototype.pan = function(vector){
 
 	var gridRect = this.getSize();
 
-	gridRect.pan(vector.clone().multiply(this.conf.step));
+	gridRect.pan(vector.clone().multiply(this.step));
 
 	//console.log(this.range, vector.clone().multiply(this.conf.step));
 
@@ -194,6 +198,11 @@ JSL.gfx.Grid.prototype.refresh = function(){
 		}
 
 		this.line([xStep+step.x,0], [xStep+step.x,sizeVector[1]],borderColor);
+
+		if(xCounter.toSteps() == grid.playHead.toSteps()){
+			this.line([xStep,0], [xStep,sizeVector[1]],"#ccc");
+		}
+
 		// iterate the position
 		xCounter.iterate(1);
 	}
@@ -241,6 +250,5 @@ JSL.gfx.Grid.prototype.refresh = function(){
 		// iterate the position
 		yCounter.iterate(1);
 	}
-
 
 }
