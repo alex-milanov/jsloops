@@ -1,127 +1,126 @@
-"use strict";
+'use strict';
 
-if(typeof JSL === "undefined"){ var JSL = {}; }
-if(typeof JSL.gui === "undefined"){ JSL.gui = {}; }
+import jQuery from 'jquery';
+import Editor from './editor';
 
-JSL.gui.Sequencer = function(dom, context){
-	JSL.gui.Editor.call(this, dom, context);
-
-	this.track = false;
-}
-
-JSL.gui.Sequencer.prototype = Object.create( JSL.gui.Editor.prototype );
-JSL.gui.Sequencer.prototype.constructor = JSL.gui.Sequencer;
-
-JSL.gui.Sequencer.prototype.init = function(){
-	JSL.gui.Editor.prototype.init.call(this);
-
-	var sequencer = this;
-
-	var mousedown = false;
-	var lastBar = false;
-
-	$(this.dom).on("mousedown", ".bar", function(){
-		mousedown = true;
-		lastBar = this;
-		$(this).toggleClass("selected");
-		sequencer.refresh();
-	})
-
-	$(this.dom).on("mousemove", ".bar", function(){
-		if(mousedown == true && lastBar !== this){
-			lastBar = this;
-			$(this).toggleClass("selected");
-			sequencer.refresh();
-		}
-	})
-
-
-	$("body").on("mouseup", function(){
-		mousedown = false;
-		lastBar = false;
-	})
-
-
-	$(this.dom).on("change", "#bar-count", function(){
-		sequencer.track.bars = $(this).val();
-		sequencer.redraw();
-		sequencer.refresh();
-	})
-
-	this.redraw();
-
-}
-
-JSL.gui.Sequencer.prototype.redraw = function(){
-
-	var $channels = $(this.dom).find(".channels");
-	$channels.html("");
-	if(this.track && this.track.channels){
-		this.track.channels.forEach(function(channel, index){
-			var $channel = $("<div></div>").addClass("channel").attr("id","channel"+index);
-			$channel.append($("<div></div>").addClass("channel-name").html(channel.name));
-			$channel.append($("<input></input>").addClass("channel-note").val(channel.note));
-			var $bars = $("<div></div>").addClass("bars");
-
-			var patternIndex = 0;
-			for(var bar = 0; bar < $("#bar-count").val(); bar++){
-				var $bar = $("<div></div>").addClass("bar").attr("id","channel"+index+"-bar"+bar);
-				if(channel.pattern){
-					if(channel.pattern[patternIndex] == 1){
-						$bar.addClass("selected");
-					}
-					if(patternIndex < channel.pattern.length-1){
-						patternIndex++;
-					} else {
-						patternIndex = 0;
-					}
-				}
-				$bars.append($bar);
-					
-			}
-			$channel.append($bars);
-			$channels.append($channel);
-		})
+class Sequencer extends Editor {
+	constructor(dom, context) {
+		super(dom, context);
+		this.track = false;
 	}
-}
 
-JSL.gui.Sequencer.prototype.refresh = function(){
-	var sequencer = this;
-	if(sequencer.track){
-		// refresh bars pattern
-		$(this.dom).find(".bars").each(function(channelIndex){
-			sequencer.track.channels[channelIndex].pattern = [];
-			$(this).find(".bar").each(function(barIndex){
-				if($(this).hasClass("selected")){
-					sequencer.track.channels[channelIndex].pattern.push(1);
-				} else {
-					sequencer.track.channels[channelIndex].pattern.push(0);
+	init() {
+		super.init(this);
+
+		var sequencer = this;
+
+		var mousedown = false;
+		var lastBar = false;
+
+		jQuery(this.dom).on('mousedown', '.bar', function() {
+			mousedown = true;
+			lastBar = this;
+			jQuery(this).toggleClass('selected');
+			sequencer.refresh();
+		});
+
+		jQuery(this.dom).on('mousemove', '.bar', function() {
+			if (mousedown === true && lastBar !== this) {
+				lastBar = this;
+				jQuery(this).toggleClass('selected');
+				sequencer.refresh();
+			}
+		});
+
+		jQuery('body').on('mouseup', function() {
+			mousedown = false;
+			lastBar = false;
+		});
+
+		jQuery(this.dom).on('change', '#bar-count', function() {
+			sequencer.track.bars = jQuery(this).val();
+			sequencer.redraw();
+			sequencer.refresh();
+		});
+
+		this.redraw();
+	}
+
+	redraw() {
+		var jQuerychannels = jQuery(this.dom).find('.channels');
+		jQuerychannels.html('');
+		if (this.track && this.track.channels) {
+			this.track.channels.forEach(function(channel, index) {
+				var jQuerychannel = jQuery('<div></div>')
+					.addClass('channel').attr('id', 'channel' + index);
+				jQuerychannel.append(jQuery('<div></div>')
+					.addClass('channel-name').html(channel.name));
+				jQuerychannel.append(jQuery('<input></input>')
+					.addClass('channel-note').val(channel.note));
+				var jQuerybars = jQuery('<div></div>').addClass('bars');
+
+				var patternIndex = 0;
+				for (let bar = 0; bar < jQuery('#bar-count').val(); bar++) {
+					var jQuerybar = jQuery('<div></div>')
+						.addClass('bar').attr('id', 'channel' + index + '-bar' + bar);
+					if (channel.pattern) {
+						if (channel.pattern[patternIndex] === 1) {
+							jQuerybar.addClass('selected');
+						}
+						if (patternIndex < channel.pattern.length - 1) {
+							patternIndex++;
+						} else {
+							patternIndex = 0;
+						}
+					}
+					jQuerybars.append(jQuerybar);
 				}
+
+				jQuerychannel.append(jQuerybars);
+				jQuerychannels.append(jQuerychannel);
+			});
+		}
+	}
+
+	refresh() {
+		var sequencer = this;
+		if (sequencer.track) {
+			// refresh bars pattern
+			jQuery(this.dom).find('.bars').each(function(channelIndex) {
+				sequencer.track.channels[channelIndex].pattern = [];
+				jQuery(this).find('.bar').each(function(barIndex) {
+					if (jQuery(this).hasClass('selected')) {
+						sequencer.track.channels[channelIndex].pattern.push(1);
+					} else {
+						sequencer.track.channels[channelIndex].pattern.push(0);
+					}
+				});
+			});
+		}
+	}
+
+	link(track) {
+		this.track = track;
+		jQuery(this.dom).find('#bar-count').val(track.bars);
+		this.redraw();
+		this.refresh();
+	}
+
+	tick(barIndex) {
+		jQuery(this.dom).find('.bars').each(function() {
+			jQuery(this).find('.bar').removeClass('current');
+		});
+
+		jQuery(this.dom).find('.bars').each(function(channelIndex) {
+			jQuery(this).find('.bar').eq(barIndex).each(function() {
+				jQuery(this).addClass('current');
 			});
 		});
 	}
+
+	stop() {
+
+	}
 }
 
-
-JSL.gui.Sequencer.prototype.link = function(track){
-	this.track = track;
-	$(this.dom).find("#bar-count").val(track.bars);
-	this.redraw();
-	this.refresh();
-}
-
-JSL.gui.Sequencer.prototype.tick = function(barIndex){
-	$(this.dom).find(".bars").each(function(){
-		$(this).find(".bar").removeClass("current");
-	});
-
-	$(this.dom).find(".bars").each(function(channelIndex){
-		$(this).find(".bar").eq(barIndex).each(function(){
-			$(this).addClass("current");
-		});		
-	});
-}
-
-JSL.gui.Sequencer.prototype.stop = function(){
-	
-}
+export default Sequencer;

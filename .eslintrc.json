@@ -1,0 +1,18 @@
+{
+	"env": {
+		"es6": true,
+		"browser": true,
+		"node": true
+	},
+	"extends": "google",
+	"rules": {
+		"indent": ["error", "tab", {"SwitchCase": 1}],
+		"max-len": ["warn", 100],
+		"no-nested-ternary": 0,
+		"operator-linebreak": ["error", "after", { "overrides": { "?": "before", ":": "before", "&&": "before", "||": "before" } }],
+		"no-return-assign": ["error", "except-parens"],
+		"no-sequences": 1,
+		"dot-notation": 0,
+		"no-loop-func": 1
+	}
+}

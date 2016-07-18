@@ -1,30 +1,30 @@
-"use strict";
+'use strict';
 
-if(typeof JSL === "undefined"){ var JSL = {}; }
-if(typeof JSL.etc === "undefined"){ JSL.etc = {}; }
+class Signal {
+	constructor() {
+		this.listeners = [];
+	}
 
-JSL.etc.Signal = function(){
-	this.listeners = [];
-}
-
-JSL.etc.Signal.prototype = {
-	constructor: JSL.etc.Signal,
-	add: function(listener){
+	add(listener) {
 		this.listeners.push(listener);
 		return this.listeners.indexOf(listener);
-	},
-	remove: function(listener){
+	}
+
+	remove(listener) {
 		var index = this.listeners.indexOf(listener);
-		if(index>-1){
-			this.listeners.splice(index,1);
+		if (index > -1) {
+			this.listeners.splice(index, 1);
 		}
 		return true;
-	},
-	dispatch: function(){
+	}
+
+	dispatch() {
 		var args = Array.prototype.slice.call(arguments);
-		//console.log(args, arguments);
-		this.listeners.forEach(function(listener){
+		// console.log(args, arguments);
+		this.listeners.forEach(function(listener) {
 			listener.apply(null, args);
-		})
+		});
 	}
 }
+
+export default Signal;

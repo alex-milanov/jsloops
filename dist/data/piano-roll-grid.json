@@ -1,0 +1,75 @@
+{
+	"colors": [
+		"#000","#111","#333","#444","#555","#777"
+	],
+	"step": {
+		"x": 38,
+		"y": 14
+	},
+	"sections": {
+		"x": {
+			"note": {
+				"steps": 1,
+				"border": 2
+			},
+			"beat": {
+				"notes": 4,
+				"border": 3
+			},
+			"measure": {
+				"beats": 4,
+				"border": 5
+			}
+		},
+		"y": {
+			"tone": {
+				"steps": 1,
+				"border": 2
+			},
+			"octave": {
+				"tones": 12,
+				"border": 3,
+				"pattern": {
+					"values": [
+						"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"
+					],
+					"labels": [
+						"C","","D","","E","F","","G","","A","","B"
+					],
+					"backgrounds": [
+						1,0,1,0,1,1,0,1,0,1,0,1
+					],
+					"color": 4
+				}
+			}
+		}
+	},
+	"relations": {
+		"x": ["note","beat","measure"],
+		"y": ["tone","octave"]
+	},
+	"range": {
+		"start": {
+			"measure": 0,
+			"beat": 0,
+			"octave": 8,
+			"tone": 0
+		},
+		"end": {
+			"measure": 16,
+			"beat": 3,
+			"octave": 0,
+			"tone": 9
+		}
+	},
+	"position": {
+		"measure": 0,
+		"beat": 0,
+		"octave": 5,
+		"tone": 5
+	},
+	"direction": {
+		"x": 1,
+		"y": -1
+	}
+}

@@ -1,0 +1,45 @@
+{
+	"score-partwise": {
+		"@attributes": {
+			"version": 3
+		},
+		"part-list": {
+			"score-part": {
+				"@attributes": {
+					"id": "P1"
+				},
+				"part-name": "Music"
+			}
+		},
+		"part": {
+			"@attributes": {
+				"id": "P1"
+			},
+			"measure": {
+				"@attributes": {
+					"number": 1
+				},
+				"attributes": {
+					"divisions": 1,
+					"key": {},
+					"time": {
+						"beats": 4,
+						"beat-type": 4
+					},
+					"clef": {
+						"sign": "G",
+						"line": 2
+					}
+				},
+				"note": {
+					"pitch": {
+						"step": "C",
+						"octave": 4
+					},
+					"duration": 4,
+					"type": "whole"
+				}
+			}
+		}
+	}
+}

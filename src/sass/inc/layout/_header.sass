@@ -1,0 +1,81 @@
+.layout
+	.header
+		position: absolute
+		display: block
+		top: 0px
+		left: 0px
+		right: 0px
+		height: $jsloops-header-height
+		background: $jsloops-header-bg-color
+		color: $jsloops-header-fg-color
+		border-top: 1px solid $jsloops-header-border-color
+		border-bottom: 3px solid $jsloops-header-border-color
+		-webkit-touch-callout: none
+		-webkit-user-select: none
+		-khtml-user-select: none
+		-moz-user-select: none
+		-ms-user-select: none
+		> *
+			display: block
+			margin: 0px
+			padding: 0px
+			height: $jsloops-header-height
+			line-height: $jsloops-header-height
+			float: left
+			> button
+				color: inherit
+				display: inline-block
+				margin: 0px 5px
+				padding: 0px
+				height: $jsloops-header-element-height
+				line-height: $jsloops-header-element-height
+				padding: 0px 10px
+				border: 0px
+				cursor: pointer
+				outline: none
+				background: inherit
+				position: relative
+				-webkit-transition: background 0.5s
+				transition: background 0.5s
+				&:hover
+					background: #aaa
+
+		.logo
+			margin: 0px 20px
+			font-weight: bold
+			font-size: 22px
+			i
+				color: $jsloops-logo-sign-color
+			span
+				color: $jsloops-logo-text-color
+
+		.indicators
+			height: $jsloops-header-height
+			line-height: $jsloops-header-height
+			padding: 0px
+			> *
+				display: inline-block
+				height: $jsloops-header-element-height
+				line-height: $jsloops-header-element-height
+				margin: 0px 5px
+				border-radius: 1px
+			input
+				border: 0px
+				outline: none
+				background: #bbb
+				width: 50px
+				padding: 0px
+				padding-left: 2px
+				margin-top: -1px
+
+		.controls
+			margin: 0px 20px
+			#play.active
+				color: #bd7
+				background: #aaa
+
+		.file-operations
+			float: right
+			margin: 0px 10px
+			#load-file
+				display: none

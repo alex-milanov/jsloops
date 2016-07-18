@@ -1,0 +1,89 @@
+
+<html>
+  <head>
+    <title>JSLoops - Music Making App</title>
+    <link rel="stylesheet" href="css/style.css"/>
+  </head>
+  <body>
+    <div class="layout">
+      <div class="header">
+        <div class="logo"><i class="fa fa-music"></i><span>JSLoops</span></div>
+        <div class="indicators"><span>BPM</span>
+          <input id="bpm" value="120"/>
+        </div>
+        <div class="controls">
+          <button id="play"><i class="fa fa-play"></i></button>
+          <button id="stop"><i class="fa fa-stop"></i></button>
+        </div>
+        <div class="file-operations">
+          <button type="link" id="save"><i class="fa fa-floppy-o"></i></button>
+          <input id="load-file" type="file"/>
+          <button id="load"><i class="fa fa-upload"></i></button>
+          <button id="clear"><i class="fa fa-trash"></i></button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="instruments-pane">
+          <div class="section">
+            <div class="title">Instruments</div>
+            <ul class="entities">
+              <li>Sampler</li>
+              <li>Synth</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="workspace">
+        <div class="sequencer">
+          <div class="toolbar">
+            <div class="title">Sequencer</div>
+            <div class="prefs"><span>Bar Count</span>
+              <input id="bar-count" value="16"/>
+            </div>
+          </div>
+          <div class="channels">
+            <div class="channel" id="channel0">
+              <div class="channel-name">channel 0</div>
+              <input class="channel-note" id="channel0-note" value="C"/>
+              <div class="bars">
+                <div class="bar current" id="channel0-bar0"></div>
+                <div class="bar" id="channel0-bar1"></div>
+                <div class="bar" id="channel0-bar2"></div>
+                <div class="bar" id="channel0-bar3"></div>
+                <div class="bar" id="channel0-bar4"></div>
+                <div class="bar" id="channel0-bar5"></div>
+                <div class="bar" id="channel0-bar6"></div>
+                <div class="bar" id="channel0-bar7"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="piano-roll">
+          <div class="toolbar">
+            <div class="title">Piano Roll</div>
+            <div class="toolbar-controls">
+              <button class="int-mode-option selected" data-option-param="int-mode" data-option-value="select"><i class="fa fa-mouse-pointer"></i></button>
+              <button class="int-mode-option" data-option-param="int-mode" data-option-value="edit"><i class="fa fa-pencil"></i></button>
+              <button class="int-mode-option" data-option-param="int-mode" data-option-value="delete"><i class="fa fa-eraser"></i></button>
+            </div>
+            <div class="toolbar-controls">
+              <button class="clone-trigger" data-option-param="clone" title="clone"><i class="fa fa-clone"></i></button>
+            </div>
+            <div class="toolbar-controls">
+              <button class="copy-trigger" data-option-param="copy" title="copy"><i class="fa fa-copy"></i></button>
+              <button class="paste-trigger" data-option-param="paste" title="paste"><i class="fa fa-paste"></i></button>
+            </div>
+          </div>
+          <div class="view">
+            <canvas class="grid"></canvas>
+            <canvas class="elements"></canvas>
+            <canvas class="selection"></canvas>
+            <canvas class="indicators"></canvas>
+            <canvas class="interaction"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/app.js"></script>
+  </body>
+</html>

@@ -1,7 +1,6 @@
 html
 	head
 		title JSLoops - Music Making App
-		link(rel="stylesheet",href="lib/font-awesome/css/font-awesome.css")
 		link(rel="stylesheet",href="css/style.css")
 	body
 		.layout
@@ -94,83 +93,14 @@ html
 						canvas.selection
 						canvas.indicators
 						canvas.interaction
-				.track-list
-					.toolbar
-						.title Track List
-					.tracks
-						.track
-							.track-head
-								.track-title Track 1
-								.track-type
-									| seq
-								.track-operations
-									button M
-									button S
-									button R
-								.track-settings
-									label 
-									input(type="range",min=0,max=100,step=5)
-							.track-path
-								canvas.events
-						.track
-							.track-head
-								.track-title Track 2
-								.track-type
-									| midi
-								.track-operations
-									button M
-									button S
-									button R
-								.track-settings
-									label 
-									input(type="range",min=0,max=100,step=5)
-							.track-path
-								canvas.events
-						.track
-							.track-head
-								.track-title Track 3
-								.track-type
-									| wave
-								.track-operations
-									button M
-									button S
-									button R
-								.track-settings
-									label 
-									input(type="range",min=0,max=100,step=5)
-							.track-path
-								canvas.events
-
-
 
 		//- libs
-		script(src="lib/jquery/dist/jquery.js")
-		script(src="lib/jquery-ui/jquery-ui.js")
-		script(src="lib/lodash/lodash.js")
-		script(src="lib/moment/moment.js")
-		script(src="lib/jade/jade.js")
-		script(src="lib/audiosynth/audiosynth.js")
-		script(src="lib/file-saver.js/FileSaver.js")
-		//- iblokz
-		script(src="js/iblokz/element.js")
+		//- script(src="lib/jquery/dist/jquery.js")
+		//- script(src="lib/jquery-ui/jquery-ui.js")
+		//- script(src="lib/lodash/lodash.js")
+		//- script(src="lib/moment/moment.js")
+		//- script(src="lib/jade/jade.js")
+		//- script(src="lib/audiosynth/audiosynth.js")
+		//- script(src="lib/file-saver.js/FileSaver.js")
 		//- app
-		script(src="js/jsl/jsl.js")
-		script(src="js/jsl/etc/math.js")
-		script(src="js/jsl/etc/counter.js")
-		script(src="js/jsl/etc/signal.js")
-		script(src="js/jsl/data/object.js")
-		script(src="js/jsl/data/event.js")
-		script(src="js/jsl/data/track.js")
-		script(src="js/jsl/data/song.js")
-		script(src="js/jsl/instr/sampler.js")
-		script(src="js/jsl/instr/basic-synth.js")
-		script(src="js/jsl/gfx/vector2.js")
-		script(src="js/jsl/gfx/rect.js")
-		script(src="js/jsl/gfx/canvas.js")
-		script(src="js/jsl/gfx/grid.js")
-		script(src="js/jsl/gfx/view.js")
-		script(src="js/jsl/gui/editor.js")
-		script(src="js/jsl/gui/sequencer.js")
-		script(src="js/jsl/gui/piano-roll.js")
-		script(src="js/jsl/gui/studio.js")
-		script(src="js/init.js")
+		script(src="js/app.js")

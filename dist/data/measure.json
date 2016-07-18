@@ -1,0 +1,1096 @@
+{
+	"score-partwise": {
+		"@attributes": {
+			"version": 1.1
+		},
+		"work": {
+			"work-title": "Not Yet Titled"
+		},
+		"movement-title": "not yet subtitled",
+		"identification": {
+			"creator": [
+				{
+					"@attributes": {
+						"type": "composer"
+					}
+				},
+				{
+					"@attributes": {
+						"type": "lyricist"
+					}
+				},
+				{
+					"@attributes": {
+						"type": "arranger"
+					}
+				}
+			],
+			"rights": "Copyright (c) xxxx Copyright Holder",
+			"encoding": {
+				"software": "Rosegarden v14.02",
+				"encoding-date": "2015-09-25"
+			}
+		},
+		"part-list": {
+			"score-part": [
+				{
+					"@attributes": {
+						"id": "P0"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P0-I2000"
+						},
+						"instrument-name": "P0"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P0-I2000"
+						},
+						"midi-channel": 1,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P1"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P1-I2001"
+						},
+						"instrument-name": "P1"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P1-I2001"
+						},
+						"midi-channel": 2,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P2"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P2-I2002"
+						},
+						"instrument-name": "P2"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P2-I2002"
+						},
+						"midi-channel": 3,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P3"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P3-I2003"
+						},
+						"instrument-name": "P3"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P3-I2003"
+						},
+						"midi-channel": 4,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P4"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P4-I2004"
+						},
+						"instrument-name": "P4"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P4-I2004"
+						},
+						"midi-channel": 5,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P5"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P5-I2005"
+						},
+						"instrument-name": "P5"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P5-I2005"
+						},
+						"midi-channel": 6,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P6"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P6-I2006"
+						},
+						"instrument-name": "P6"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P6-I2006"
+						},
+						"midi-channel": 7,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P7"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P7-I2007"
+						},
+						"instrument-name": "P7"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P7-I2007"
+						},
+						"midi-channel": 8,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P8"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P8-I2008"
+						},
+						"instrument-name": "P8"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P8-I2008"
+						},
+						"midi-channel": 9,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P10"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P10-I2010"
+						},
+						"instrument-name": "P10"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P10-I2010"
+						},
+						"midi-channel": 11,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P11"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P11-I2011"
+						},
+						"instrument-name": "P11"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P11-I2011"
+						},
+						"midi-channel": 12,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P12"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P12-I2012"
+						},
+						"instrument-name": "P12"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P12-I2012"
+						},
+						"midi-channel": 13,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P13"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P13-I2013"
+						},
+						"instrument-name": "P13"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P13-I2013"
+						},
+						"midi-channel": 14,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P14"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P14-I2014"
+						},
+						"instrument-name": "P14"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P14-I2014"
+						},
+						"midi-channel": 15,
+						"midi-program": 1
+					}
+				},
+				{
+					"@attributes": {
+						"id": "P15"
+					},
+					"part-name": {},
+					"score-instrument": {
+						"@attributes": {
+							"id": "P15-I2015"
+						},
+						"instrument-name": "P15"
+					},
+					"midi-instrument": {
+						"@attributes": {
+							"id": "P15-I2015"
+						},
+						"midi-channel": 16,
+						"midi-program": 1
+					}
+				}
+			]
+		},
+		"part": [
+			{
+				"@attributes": {
+					"id": "P0"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"key": {
+							"mode": "major"
+						},
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": [
+						{
+							"pitch": {
+								"step": "C",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "begin"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "begin"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "D",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "continue"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "continue"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "E",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "continue"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "continue"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "F",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "end"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "end"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "G",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "begin"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "begin"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "A",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "continue"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "continue"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "B",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "continue"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "continue"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "C",
+								"octave": 5
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "end"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "end"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "C",
+								"octave": 5
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "begin"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "begin"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "B",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "continue"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "continue"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "A",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "continue"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "continue"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "G",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "end"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "end"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "F",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "begin"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "begin"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "E",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "continue"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "continue"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "D",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "continue"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "continue"
+								}
+							]
+						},
+						{
+							"pitch": {
+								"step": "C",
+								"octave": 4
+							},
+							"duration": 240,
+							"voice": 1,
+							"type": "16th",
+							"stem": "up",
+							"beam": [
+								{
+									"@attributes": {
+										"number": 1
+									},
+									"#text": "end"
+								},
+								{
+									"@attributes": {
+										"number": 2
+									},
+									"#text": "end"
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P1"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P2"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P3"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P4"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P5"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P6"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P7"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P8"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P10"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P11"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P12"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P13"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P14"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			},
+			{
+				"@attributes": {
+					"id": "P15"
+				},
+				"measure": {
+					"@attributes": {
+						"number": 1
+					},
+					"attributes": {
+						"divisions": 960,
+						"time": {
+							"beats": 4,
+							"beat-type": 4
+						}
+					},
+					"note": {
+						"rest": {
+							"@attributes": {
+								"measure": "yes"
+							}
+						},
+						"duration": 3840,
+						"type": "whole"
+					}
+				}
+			}
+		]
+	}
+}

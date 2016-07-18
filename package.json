@@ -1,33 +1,40 @@
 {
   "name": "jsloops",
   "version": "0.1.0",
-  "description": "Music Making App",
+  "description": "Web Based DAW",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prebuild": "node bin/move-assets.js",
+    "build": "npm run build:js && npm run build:sass && npm run build:pug",
+    "build:js": "browserify src/js/index.js -o dist/js/app.js -t [ babelify --presets [ es2015 ] ]",
+    "build:sass": "node-sass --include-path=$(node bin/sass-paths.js) src/sass/style.sass dist/css/style.css",
+    "build:pug": "pug --out dist --pretty src/pug",
+    "watch": "npm run watch:js & npm run watch:sass & npm run watch:pug & npm run livereload",
+    "watch:js": "nodemon --watch 'src/js' --exec 'npm run build:js'",
+    "watch:sass": "npm run build:sass -- --watch src/sass/**/*",
+    "watch:pug": "npm run build:pug -- --watch",
+    "livereload": "livereload dist",
+    "start": "npm run build && serve --path dist & npm run watch"
   },
-  "author": "",
+  "author": "Alex Milanov <alex@i4web.biz>",
   "license": "ISC",
   "devDependencies": {
-    "connect-livereload": "^0.5.3",
-    "del": "^1.2.0",
-    "event-stream": "^3.3.1",
-    "express": "^4.12.4",
-    "gulp": "^3.9.0",
-    "gulp-concat": "^2.2.0",
-    "gulp-filter": "^2.0.2",
-    "gulp-jade": "^1.0.1",
-    "gulp-jshint": "^1.11.2",
-    "gulp-livereload": "^3.8.0",
-    "gulp-minify-css": "^0.3.0",
-    "gulp-nodemon": "^2.0.3",
-    "gulp-rename": "^1.2.0",
-    "gulp-sass": "^1.3.3",
-    "gulp-util": "^2.2.14",
-    "jshint-stylish": "^2.0.1",
-    "main-bower-files": "^2.9.0",
-    "marked": "^0.3.3",
-    "shelljs": "^0.3.0",
-    "tiny-lr": "^0.1.6"
+    "babel-plugin-transform-object-set-prototype-of-to-assign": "^6.8.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "eslint": "^3.1.0",
+    "eslint-config-google": "^0.6.0",
+    "fs-extra": "^0.30.0",
+    "livereload": "^0.5.0",
+    "node-sass": "^3.8.0",
+    "node-serve": "0.0.3",
+    "nodemon": "^1.9.2",
+    "pug-cli": "^1.0.0-alpha6"
+  },
+  "dependencies": {
+    "font-awesome": "^4.6.3",
+    "jquery": "^3.1.0",
+    "lodash": "^4.13.1"
   }
 }

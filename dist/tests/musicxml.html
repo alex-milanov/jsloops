@@ -1,0 +1,29 @@
+
+<html>
+  <head>
+    <title>JSLoops MusicXML Tests</title>
+    <style>#container { width: 100%; height: 400px; tab-size: 4}</style>
+  </head>
+  <body>
+    <h1>JSLoops MusicXML Tests</h1>
+    <button id="load-xml">Load XML</button>
+    <textarea id="container"></textarea>
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../lib/lodash/lodash.js"></script>
+    <script src="../lib/moment/moment.js"></script>
+    <script src="../js/util/xml2json.js"></script>
+    <script>
+      $(document).ready(function(){
+      	$.ajax({
+      		url: "../data/hello.xml"
+      	}).then(function(data){
+      
+      		console.log(data.nodeType);
+      		var jsonData = JSON.stringify(util.xmlToJson(data), null, '\t');
+      		
+      		$("#container").text(jsonData);
+      	})
+      })
+    </script>
+  </body>
+</html>
