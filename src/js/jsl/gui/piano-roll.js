@@ -2,7 +2,8 @@
 
 import {durations, intervals, tonesInOctave} from '../../config/measure';
 
-import jQuery from 'jquery';
+import d from '../../iblokz/dom';
+import cursor from '../../iblokz/cursor';
 
 import View from '../gfx/view';
 import Editor from './editor';
@@ -85,7 +86,7 @@ class PianoRoll extends Editor {
 			}
 		};
 
-		this.view = new View(jQuery(this.dom).find('.view')[0], this.viewConfig);
+		this.view = new View(d.findOne(this.dom, '.view'), this.viewConfig);
 
 		this.track = {};
 
@@ -117,14 +118,25 @@ class PianoRoll extends Editor {
 		var pianoRoll = this;
 		var view = this.view;
 
-		jQuery(this.dom).on('click', `[class*='-option']`, function(_ev) {
-			var _optionParam = jQuery(this).data('option-param');
-			var _optionValue = jQuery(this).data('option-value');
+		const icons = cursor.prepIcons({
+			edit: '\uf040',
+			delete: '\uf12d'
+		});
 
-			jQuery(pianoRoll.dom).find(`.${_optionParam}-option`).removeClass('selected');
-			jQuery(this).addClass('selected');
+		d.on(this.dom, 'click', `[class*='-option']`, function(ev) {
+			var optionParam = d.get(ev.target, 'data-option-param');
+			var optionValue = d.get(ev.target, 'data-option-value');
+			d.find(pianoRoll.dom, `.${optionParam}-option`)
+				.map(el => el.classList.remove('selected'));
+			ev.target.classList.add('selected');
 
-			view.data[_optionParam] = _optionValue;
+			if (icons[optionValue]) {
+				cursor.setCursor(view.dom, icons[optionValue]);
+			} else {
+				view.dom.style.cursor = 'default';
+			}
+
+			view.data[optionParam] = optionValue;
 		});
 
 		view.signals.create.add(this.create());

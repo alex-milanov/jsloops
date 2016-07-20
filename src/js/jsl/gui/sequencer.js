@@ -1,6 +1,6 @@
 'use strict';
 
-import jQuery from 'jquery';
+import d from '../../iblokz/dom';
 import Editor from './editor';
 
 class Sequencer extends Editor {
@@ -17,28 +17,30 @@ class Sequencer extends Editor {
 		var mousedown = false;
 		var lastBar = false;
 
-		jQuery(this.dom).on('mousedown', '.bar', function() {
+		console.log(this.dom);
+
+		d.on(this.dom, 'mousedown', '.bar', ev => {
 			mousedown = true;
-			lastBar = this;
-			jQuery(this).toggleClass('selected');
+			lastBar = ev.target;
+			ev.target.classList.toggle('selected');
 			sequencer.refresh();
 		});
 
-		jQuery(this.dom).on('mousemove', '.bar', function() {
+		d.on(this.dom, 'mousemove', '.bar', ev => {
 			if (mousedown === true && lastBar !== this) {
 				lastBar = this;
-				jQuery(this).toggleClass('selected');
+				ev.target.classList.toggle('selected');
 				sequencer.refresh();
 			}
 		});
 
-		jQuery('body').on('mouseup', function() {
+		d.on(document, 'mouseup', function() {
 			mousedown = false;
 			lastBar = false;
 		});
 
-		jQuery(this.dom).on('change', '#bar-count', function() {
-			sequencer.track.bars = jQuery(this).val();
+		d.on(this.dom, 'change', '#bar-count', ev => {
+			sequencer.track.bars = ev.target.value;
 			sequencer.redraw();
 			sequencer.refresh();
 		});
@@ -47,37 +49,38 @@ class Sequencer extends Editor {
 	}
 
 	redraw() {
-		var jQuerychannels = jQuery(this.dom).find('.channels');
-		jQuerychannels.html('');
+		var channelsEl = d.findOne(this.dom, '.channels');
+		d.clear(channelsEl);
 		if (this.track && this.track.channels) {
-			this.track.channels.forEach(function(channel, index) {
-				var jQuerychannel = jQuery('<div></div>')
-					.addClass('channel').attr('id', 'channel' + index);
-				jQuerychannel.append(jQuery('<div></div>')
-					.addClass('channel-name').html(channel.name));
-				jQuerychannel.append(jQuery('<input></input>')
-					.addClass('channel-note').val(channel.note));
-				var jQuerybars = jQuery('<div></div>').addClass('bars');
+			this.track.channels.forEach(function(chan, i) {
+				var chanEl = d.create(`div.channel#channel${i}`);
+				chanEl.appendChild(d.create(`div.channel-name`, {
+					textContent: chan.name
+				}));
+				chanEl.appendChild(d.create(`input.channel-note`, {
+					value: chan.note
+				}));
+
+				var barsEl = d.create(`div.bars`);
 
 				var patternIndex = 0;
-				for (let bar = 0; bar < jQuery('#bar-count').val(); bar++) {
-					var jQuerybar = jQuery('<div></div>')
-						.addClass('bar').attr('id', 'channel' + index + '-bar' + bar);
-					if (channel.pattern) {
-						if (channel.pattern[patternIndex] === 1) {
-							jQuerybar.addClass('selected');
+				for (let bar = 0; bar < d.findOne('#bar-count').value; bar++) {
+					var barEl = d.create(`div.bar#channel${i}-bar${bar}`);
+					if (chan.pattern) {
+						if (chan.pattern[patternIndex] === 1) {
+							barEl.classList.add('selected');
 						}
-						if (patternIndex < channel.pattern.length - 1) {
+						if (patternIndex < chan.pattern.length - 1) {
 							patternIndex++;
 						} else {
 							patternIndex = 0;
 						}
 					}
-					jQuerybars.append(jQuerybar);
+					barsEl.appendChild(barEl);
 				}
 
-				jQuerychannel.append(jQuerybars);
-				jQuerychannels.append(jQuerychannel);
+				chanEl.appendChild(barsEl);
+				channelsEl.appendChild(chanEl);
 			});
 		}
 	}
@@ -86,36 +89,30 @@ class Sequencer extends Editor {
 		var sequencer = this;
 		if (sequencer.track) {
 			// refresh bars pattern
-			jQuery(this.dom).find('.bars').each(function(channelIndex) {
-				sequencer.track.channels[channelIndex].pattern = [];
-				jQuery(this).find('.bar').each(function(barIndex) {
-					if (jQuery(this).hasClass('selected')) {
-						sequencer.track.channels[channelIndex].pattern.push(1);
-					} else {
-						sequencer.track.channels[channelIndex].pattern.push(0);
-					}
-				});
+			d.find(this.dom, '.bars').forEach((barsEl, chanI) => {
+				sequencer.track.channels[chanI].pattern =
+					d.find(barsEl, '.bar')
+						.map((barEl, barI) => (barEl.classList.contains('selected'))
+							? 1 : 0
+					);
 			});
 		}
 	}
 
 	link(track) {
 		this.track = track;
-		jQuery(this.dom).find('#bar-count').val(track.bars);
+		d.findOne(this.dom, '#bar-count').value = track.bars;
 		this.redraw();
 		this.refresh();
 	}
 
 	tick(barIndex) {
-		jQuery(this.dom).find('.bars').each(function() {
-			jQuery(this).find('.bar').removeClass('current');
-		});
-
-		jQuery(this.dom).find('.bars').each(function(channelIndex) {
-			jQuery(this).find('.bar').eq(barIndex).each(function() {
-				jQuery(this).addClass('current');
-			});
-		});
+		d.find(this.dom, '.bars').forEach(chanEl =>
+			d.find(chanEl, '.bar').forEach((el, i) => (i === barIndex)
+				? (!el.classList.contains('current')) && el.classList.add('current')
+				: el.classList.remove('current')
+			)
+		);
 	}
 
 	stop() {

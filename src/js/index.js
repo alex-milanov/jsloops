@@ -2,6 +2,10 @@
 
 import JSL from './jsl';
 
+import dom from './iblokz/dom';
+
+window.domUtil = dom;
+
 var durations = {
 	whole: 240,
 	half: 120,
@@ -324,8 +328,10 @@ var defaultSong = {
 // unused vars
 console.log('unused global vars', intervals, tonesInOctave);
 
-var studio = new JSL.gui.Studio('body');
+window.loadApp = () => {
+	var studio = new JSL.gui.Studio('body');
 
-studio.load(defaultSong);
+	studio.load(defaultSong);
 
-studio.init();
+	studio.init();
+};

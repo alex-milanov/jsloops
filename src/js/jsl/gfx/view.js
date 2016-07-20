@@ -1,6 +1,6 @@
 'use strict';
 
-import jQuery from 'jquery';
+import d from '../../iblokz/dom';
 
 import Signal from '../etc/signal';
 
@@ -11,7 +11,7 @@ import Grid from './grid';
 
 class View {
 	constructor(dom, config) {
-		this.dom = jQuery(dom);
+		this.dom = (dom instanceof HTMLElement) ? dom : d.findOne(dom);
 
 		this.config = config || {};
 
@@ -35,9 +35,9 @@ class View {
 		};
 
 		this.layers = {
-			grid: new Grid(jQuery('canvas.grid')[0], this.config),
-			elements: new Canvas(jQuery('canvas.elements')[0]),
-			interaction: new Canvas(jQuery('canvas.interaction')[0])
+			grid: new Grid(d.findOne(this.dom, 'canvas.grid'), this.config),
+			elements: new Canvas(d.findOne(this.dom, 'canvas.elements')),
+			interaction: new Canvas(d.findOne(this.dom, 'canvas.interaction'))
 		};
 	}
 
@@ -52,7 +52,7 @@ class View {
 		var grid = this.layers.grid;
 		// var conf = this.config;
 
-		this.dom.on('mousewheel', function(event) {
+		d.on(this.dom, 'mousewheel', function(event) {
 			var panVector = new Vector2(0, 0);
 
 			if (event.deltaY !== 0) {
@@ -69,7 +69,7 @@ class View {
 		// interaction
 		var interactionLayer = this.layers.interaction;
 
-		this.dom.on('mousedown', function(event) {
+		d.on(this.dom, 'mousedown', function(event) {
 			view.interaction.status = 'mousedown';
 			view.interaction.start.set(event.offsetX, event.offsetY);
 			// determine the action
@@ -119,7 +119,7 @@ class View {
 			view.interaction.last.copy(view.interaction.start);
 		});
 
-		this.dom.on('mousemove', function(event) {
+		d.on(this.dom, 'mousemove', function(event) {
 			if (['mousedown', 'mousemove'].indexOf(view.interaction.status) > -1) {
 				view.interaction.status = 'mousemove';
 				var currentPos = new Vector2(event.offsetX, event.offsetY);
@@ -130,7 +130,7 @@ class View {
 					case 'selecting': {
 						var selectionRect = new Rect()
 							.fromVectors(view.interaction.start, currentPos);
-						view.dom[0].style.cursor = 'crosshair';
+						view.dom.style.cursor = 'crosshair';
 						interactionLayer.clear();
 						interactionLayer.rect(selectionRect, false, '#fff', [7, 5]);
 						grid.selection = [];
@@ -196,7 +196,7 @@ class View {
 			}
 		});
 
-		this.dom.on('mouseup', function(event) {
+		d.on(this.dom, 'mouseup', function(event) {
 			// console.log(grid.selection.length, view.interaction.status);
 			switch (view.interaction.action) {
 				case 'selecting':
@@ -245,10 +245,10 @@ class View {
 			};
 
 			interactionLayer.clear();
-			view.dom[0].style.cursor = 'inherit';
+			// view.dom.style.cursor = 'inherit';
 		});
 
-		document.addEventListener('keyup', function(event) {
+		d.on(document, 'keyup', function(event) {
 			switch (event.keyCode) {
 				case 188:
 					grid.playHead.iterate(1, -1);

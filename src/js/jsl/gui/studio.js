@@ -1,6 +1,6 @@
 'use strict';
 
-import jQuery from 'jquery';
+import d from '../../iblokz/dom';
 
 import Sampler from '../instr/sampler';
 import BasicSynth from '../instr/basic-synth';
@@ -30,8 +30,8 @@ class Studio extends Editor {
 			Piano: new BasicSynth(this.actx, 'C5')
 		};
 
-		this.sequencer = new Sequencer(jQuery('.sequencer')[0]);
-		this.pianoRoll = new PianoRoll(jQuery('.piano-roll')[0]);
+		this.sequencer = new Sequencer(d.findOne(this.dom, '.sequencer'));
+		this.pianoRoll = new PianoRoll(d.findOne(this.dom, '.piano-roll'));
 	}
 
 	tick() {
@@ -94,7 +94,7 @@ class Studio extends Editor {
 
 	load(data) {
 		this.song = Object.assign({}, data);
-		jQuery('#bpm').val(this.song.bpm);
+		d.findOne('#bpm').value = this.song.bpm;
 		this.sequencer.link(this.song.tracks[0]);
 		this.pianoRoll.link(this.song.tracks[1]);
 	}
@@ -114,12 +114,12 @@ class Studio extends Editor {
 		sequencer.init();
 		pianoRoll.init();
 
-		jQuery('#play').click(function() {
+		d.on(d.findOne(this.dom, '#play'), 'click', ev => {
 			if (playLoop) {
 				clearInterval(playLoop);
 				playLoop = false;
 			} else {
-				var bpm = parseInt(jQuery('#bpm').val(), 10);
+				var bpm = parseInt(d.findOne('#bpm').value, 10);
 				playLoop = setInterval(function() {
 					studio.tick();
 				}, 60 / bpm * 1000 / 4);
@@ -132,45 +132,45 @@ class Studio extends Editor {
 					});*/
 			}
 
-			jQuery(this).toggleClass('active');
+			ev.target.classList.toggle('active');
 		});
 
-		jQuery('#stop').click(function() {
+		d.on(d.findOne(this.dom, '#stop'), 'click', ev => {
 			if (playLoop) {
 				clearInterval(playLoop);
 			}
 			playLoop = false;
-			jQuery('.bars').each(function() {
-				jQuery(this).find('.bar').removeClass('current');
+			d.find(this.dom, '.bars .bar').forEach(barEl => {
+				barEl.classList.remove('current');
 			});
 
 			studio.tickIndex = -1;
 
-			jQuery('#play').removeClass('active');
+			d.findOne('#play').classList.remove('active');
 		});
 
-		jQuery('#bpm').change(function() {
-			song.bpm = jQuery(this).val();
+		d.on(d.findOne(this.dom, '#bpm'), 'change', ev => {
+			song.bpm = ev.target.value;
 			if (playLoop) {
 				clearInterval(playLoop);
 				playLoop = setInterval(function() {
 					studio.tick();
-				}, 60 / jQuery('#bpm').val() * 1000 / 4);
+				}, 60 / ev.target.value * 1000 / 4);
 			}
 		});
 
-		jQuery('#save').click(function() {
+		d.on(d.findOne(this.dom, '#save'), 'click', ev => {
 			var blob = new Blob([JSON.stringify(song)], {type: 'text/plain;charset=utf-8'});
 			window.saveAs(blob, 'song.json');
 		});
 
-		jQuery('#load').click(function() {
-			jQuery('#load-file').click();
+		d.on(d.findOne(this.dom, '#load'), 'click', ev => {
+			d.findOne('#load-file').click();
 		});
 
-		jQuery('#load-file').change(function() {
-			const receivedText = e => {
-				var data = JSON.parse(e.target.result);
+		d.on(d.findOne(this.dom, '#load-file'), 'change', ev => {
+			const receivedText = ev => {
+				var data = JSON.parse(ev.target.result);
 				studio.load(data);
 			};
 
@@ -180,8 +180,8 @@ class Studio extends Editor {
 			fr.readAsText(file);
 		});
 
-		jQuery('#clear').click(function() {
-			// studio.load(defaultSong);
+		d.on(d.findOne(this.dom, '#clear'), 'click', ev => {
+			// TODO: studio.load(defaultSong);
 			studio.load({});
 		});
 	}

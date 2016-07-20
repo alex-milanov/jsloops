@@ -1,13 +1,13 @@
 'use strict';
 
-import jQuery from 'jquery';
+import d from '../../iblokz/dom';
 
 import Vector2 from './vector2';
 import Rect from './rect';
 
 class Canvas {
 	constructor(dom) {
-		this.dom = jQuery(dom)[0];
+		this.dom = (dom instanceof HTMLElement) ? dom : d.findOne(dom);
 		this.ctx = this.dom.getContext('2d');
 		this.offset = new Vector2(0, 0);
 	}
@@ -59,8 +59,8 @@ class Canvas {
 	}
 
 	refresh() {
-		this.ctx.canvas.width = jQuery(this.ctx.canvas).width();
-		this.ctx.canvas.height = jQuery(this.ctx.canvas).height();
+		this.ctx.canvas.width = this.dom.clientWidth;
+		this.ctx.canvas.height = this.dom.clientHeight;
 	}
 }
 

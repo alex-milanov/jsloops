@@ -1,7 +1,8 @@
 'use strict';
 
-import jQuery from 'jquery';
 import _ from 'lodash';
+
+// import d from '../../iblokz/dom';
 
 import Counter from '../etc/counter';
 
@@ -105,8 +106,8 @@ class Grid extends Canvas {
 		var conf = this.conf;
 		var grid = this;
 
-		ctx.canvas.width = jQuery(ctx.canvas.parentNode).width();
-		ctx.canvas.height = jQuery(ctx.canvas.parentNode).height();
+		ctx.canvas.width = ctx.canvas.parentNode.clientWidth;
+		ctx.canvas.height = ctx.canvas.parentNode.clientHeight;
 
 		// var center = [ctx.canvas.width / 2, ctx.canvas.height / 2];
 		var sizeVector = [ctx.canvas.width, ctx.canvas.height];
