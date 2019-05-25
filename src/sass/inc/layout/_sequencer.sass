@@ -1,0 +1,43 @@
+.layout
+	.workspace
+		.sequencer
+			.channels
+				clear: both
+				margin: 10px
+				.channel
+					height: $jsloops-sequencer-channel-height
+					line-height: $jsloops-sequencer-channel-height
+					display: block
+					margin: 10px 0px
+					padding: 0px
+					> *
+						display: inline-block
+						height: $jsloops-sequencer-channel-height
+						line-height: $jsloops-sequencer-channel-height
+						margin: 0px
+						margin-right: 10px
+						padding: 0px
+						box-sizing: border-box
+						float: left
+					.channel-name
+						color: #ccc
+					.channel-note
+						width: 40px
+						border: 0px
+						outline: none
+						background: #999
+						padding: 0px
+						padding-left: 3px
+					.bars
+						.bar
+							display: inline-block
+							background: #454d4f
+							border-radius: 3px
+							width: $jsloops-sequencer-bar-width
+							height: $jsloops-sequencer-channel-height
+							margin: 0px 2px
+							cursor: pointer
+							&.selected
+								background: #b8bec1
+							&.current
+								background: #a4aa64

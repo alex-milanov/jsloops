@@ -335,3 +335,7 @@ window.loadApp = () => {
 
 	studio.init();
 };
+
+// document.querySelector()
+
+dom.set(dom.findOne('body'), 'onLoad', 'loadApp()');

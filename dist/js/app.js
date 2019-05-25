@@ -16533,7 +16533,7 @@ var create = function create(code, attr) {
 
 var singleOn = function singleOn(el, eventName, selector, cb) {
 	return el instanceof HTMLElement || el === document ? el.addEventListener(eventName, function (ev) {
-		// if (eventName === 'click' && typeof selector === 'string') {
+		// if (eventName === 'mousedown' && typeof selector === 'string') {
 		// 	console.log(ev, ev.target, listToArray(el.querySelectorAll(selector)));
 		// }
 		if (typeof selector === 'string' && typeof cb !== 'undefined') {
@@ -16544,7 +16544,14 @@ var singleOn = function singleOn(el, eventName, selector, cb) {
 					return sel || selectedList.indexOf(el) > -1 && el || null;
 				}, null);
 				if (selectedEl) {
-					cb(Object.assign({}, ev, { target: selectedEl }));
+					var newEv = {};
+					for (var i in ev) {
+						if ({}.hasOwnProperty.call(ev, i)) {
+							newEv[i] = ev[i];
+						}
+					}
+					newEv.target = selectedEl;
+					cb(newEv);
 				}
 			})();
 		} else {
@@ -16915,6 +16922,10 @@ window.loadApp = function () {
 
 	studio.init();
 };
+
+// document.querySelector()
+
+_dom2.default.set(_dom2.default.findOne('body'), 'onLoad', 'loadApp()');
 
 },{"./iblokz/dom":4,"./jsl":19}],7:[function(require,module,exports){
 'use strict';
@@ -18093,6 +18104,8 @@ var Editor = function () {
 	_createClass(Editor, [{
 		key: 'init',
 		value: function init() {
+			var _this = this;
+
 			var between = function between(a, b, c) {
 				return a < b && b < c;
 			};
@@ -18104,6 +18117,56 @@ var Editor = function () {
 			// });
 
 			var editor = this;
+
+			var state = 'idle';
+			var offset = { x: 0, y: 0 };
+			var props = {};
+
+			_dom2.default.on(this.dom, 'mousedown', '.toolbar', function (ev) {
+				if (state === 'idle') {
+					state = 'dragging';
+					offset = {
+						x: ev.clientX - _this.dom.offsetLeft,
+						y: ev.clientY - _this.dom.offsetTop
+					};
+				}
+			});
+
+			_dom2.default.on(this.dom.parentNode, 'mousemove', function (ev) {
+				if (state === 'dragging') {
+					_this.dom.style.left = ev.clientX - offset.x + 'px';
+					_this.dom.style.top = ev.clientY - offset.y + 'px';
+				}
+				if (state === 'resizing') {
+					if (props.direction.x) _this.dom.style.width = ev.clientX - _this.dom.offsetLeft + offset.x + 'px';
+					if (props.direction.y) _this.dom.style.height = ev.clientY - _this.dom.offsetTop + offset.y + 'px';
+				}
+			});
+
+			// d.on(this.dom.parentNode, 'mouseout', ev => {
+			// 	dragging = false;
+			// 	offset = {x: 0, y: 0};
+			// });
+
+			_dom2.default.on(this.dom.parentNode, 'mouseup', function (ev) {
+				state = 'idle';
+				offset = { x: 0, y: 0 };
+				props = {};
+			});
+
+			_dom2.default.on(this.dom, 'mousedown', function (ev) {
+				if (state === 'idle') {
+					state = 'resizing';
+					offset = {
+						x: _this.dom.clientWidth - ev.clientX + _this.dom.offsetLeft,
+						y: _this.dom.clientHeight - ev.clientY + _this.dom.offsetTop
+					};
+					if (between(0, editor.dom.clientWidth - ev.offsetX, 7) && between(0, editor.dom.clientHeight - ev.offsetY, 7)) props.direction = { x: true, y: true };else if (between(0, editor.dom.clientWidth - ev.offsetX, 7)) props.direction = { x: true, y: false };else if (between(0, editor.dom.clientHeight - ev.offsetY, 7)) props.direction = { x: false, y: true };else {
+						state = 'idle';
+						offset = { x: 0, y: 0 };
+					}
+				}
+			});
 
 			_dom2.default.on(this.dom, 'mousemove', function (ev) {
 				if (between(0, editor.dom.clientWidth - ev.offsetX, 7) && between(0, editor.dom.clientHeight - ev.offsetY, 7)) editor.dom.style.cursor = 'se-resize';else if (between(0, editor.dom.clientWidth - ev.offsetX, 7)) editor.dom.style.cursor = 'ew-resize';else if (between(0, editor.dom.clientHeight - ev.offsetY, 7)) editor.dom.style.cursor = 'ns-resize';else editor.dom.style.cursor = 'default';

@@ -34,7 +34,7 @@ const create = (code, attr) => {
 const singleOn = (el, eventName, selector, cb) =>
 	(el instanceof HTMLElement || el === document)
 		? el.addEventListener(eventName, ev => {
-			// if (eventName === 'click' && typeof selector === 'string') {
+			// if (eventName === 'mousedown' && typeof selector === 'string') {
 			// 	console.log(ev, ev.target, listToArray(el.querySelectorAll(selector)));
 			// }
 			if (typeof selector === 'string' && typeof cb !== 'undefined') {
@@ -45,7 +45,14 @@ const singleOn = (el, eventName, selector, cb) =>
 					null
 				);
 				if (selectedEl) {
-					cb(Object.assign({}, ev, {target: selectedEl}));
+					let newEv = {};
+					for (let i in ev) {
+						if ({}.hasOwnProperty.call(ev, i)) {
+							newEv[i] = ev[i];
+						}
+					}
+					newEv.target = selectedEl;
+					cb(newEv);
 				}
 			} else {
 				(cb => cb(ev))(selector);
